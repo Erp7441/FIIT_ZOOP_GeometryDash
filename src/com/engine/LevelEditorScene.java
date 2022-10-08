@@ -1,6 +1,7 @@
 package com.engine;
 
 import com.components.*;
+
 import com.util.Constants;
 import com.util.Transform;
 import com.util.Vector2D;
@@ -12,13 +13,20 @@ public class LevelEditorScene extends Scene{
 
     public GameObject player = null;
     GameObject ground = null;
+    Grid grid = null;
+    CameraControls cameraControls = null;
 
     public LevelEditorScene(String name) {
         super.Scene(name);
+
     }
 
     @Override
     public void init() {
+
+        grid = new Grid();
+        cameraControls = new CameraControls();
+
         Spritesheet layerOne = new Spritesheet("assets/player/layerOne.png", 42, 42, 2, 13, 13 * 5);
         Spritesheet layerTwo = new Spritesheet("assets/player/layerTwo.png", 42, 42, 2, 13, 13 * 5);
         Spritesheet layerThree = new Spritesheet("assets/player/layerThree.png", 42, 42, 2, 13, 13 * 5);
@@ -42,14 +50,6 @@ public class LevelEditorScene extends Scene{
     @Override
     public void update(double deltaTime) {
 
-        if (player.transform.position.x - camera.position.x > Constants.CAMERA_OFFSET_X){
-            camera.position.x = player.transform.position.x - Constants.CAMERA_OFFSET_X;
-        }
-
-        if (player.transform.position.y - camera.position.y > Constants.CAMERA_OFFSET_Y){
-            camera.position.y = player.transform.position.y - Constants.CAMERA_OFFSET_Y;
-        }
-
         if (camera.position.y - ground.transform.position.y > Constants.CAMERA_OFFSET_GROUND_Y){
             camera.position.y = Constants.CAMERA_OFFSET_GROUND_Y;
         }
@@ -57,6 +57,10 @@ public class LevelEditorScene extends Scene{
         for (GameObject gameObject : gameObjects){
             gameObject.update(deltaTime);
         }
+
+        cameraControls.update(deltaTime);
+        grid.update(deltaTime);
+
     }
 
     @Override
@@ -65,5 +69,6 @@ public class LevelEditorScene extends Scene{
         graphics2D.fillRect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
         renderer.render(graphics2D);
+        grid.draw(graphics2D);
     }
 }

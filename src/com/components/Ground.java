@@ -1,7 +1,12 @@
 package com.components;
 
-import com.engine.*;
+import com.engine.Component;
+import com.engine.GameObject;
+import com.engine.LevelScene;
+import com.engine.Window;
+
 import com.util.Constants;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 

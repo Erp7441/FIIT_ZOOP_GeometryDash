@@ -1,11 +1,13 @@
 package com.engine;
+
 import com.util.Constants;
 import com.util.Time;
 
 import javax.swing.JFrame;
-import java.awt.Image;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 
 public class Window extends JFrame implements Runnable {
 
@@ -35,7 +37,7 @@ public class Window extends JFrame implements Runnable {
     }
 
     public void init(){
-        changeScene(1);
+        changeScene(0);
     }
 
     public Scene getCurrentScene(){
@@ -47,10 +49,12 @@ public class Window extends JFrame implements Runnable {
             case 0:
                 isInEditor = true;
                 this.currentScene = new LevelEditorScene("Level Editor");
+                this.currentScene.init();
                 break;
             case 1:
                 isInEditor = false;
-                currentScene = new LevelScene("Level");
+                this.currentScene = new LevelScene("Level");
+                this.currentScene.init();
                 break;
             default:
                 System.err.println("Invalid scene");

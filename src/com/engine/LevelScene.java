@@ -1,11 +1,18 @@
 package com.engine;
 
-import com.components.*;
+import com.components.BoxBounds;
+import com.components.Ground;
+import com.components.Player;
+import com.components.RigidBody;
+import com.components.Spritesheet;
+
 import com.util.Constants;
 import com.util.Transform;
 import com.util.Vector2D;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
+
 
 public class LevelScene extends Scene {
 

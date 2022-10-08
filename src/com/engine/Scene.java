@@ -3,6 +3,7 @@ package com.engine;
 import com.util.Vector2D;
 
 import java.awt.Graphics2D;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,6 @@ public abstract class Scene {
         this.camera = new Camera(new Vector2D());
         this.gameObjects = new ArrayList<GameObject>();
         this.renderer = new Renderer(this.camera);
-        this.init();
     }
 
     public void addGameObject(GameObject gameObject) {
