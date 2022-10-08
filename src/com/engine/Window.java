@@ -39,7 +39,7 @@ public class Window extends JFrame implements Runnable {
     public void changeScene(int scene){
         switch (scene){
             case 0:
-                this.currentScene = new LevelEditorScene("LevelEditorScene");
+                this.currentScene = LevelEditorScene.getScene();
                 break;
             default:
                 System.err.println("Invalid scene");

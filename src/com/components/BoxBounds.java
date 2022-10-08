@@ -4,9 +4,11 @@ import com.engine.Component;
 
 public class BoxBounds extends Component {
 
-    public String name;
-    public BoxBounds(String name){
-        this.name = name;
+    public double width, height;
+
+    public BoxBounds(double width, double height) {
+        this.width = width;
+        this.height = height;
     }
     @Override
     public void update(double deltaTime){
