@@ -9,10 +9,12 @@ import java.awt.Graphics2D;
 
 public class Window extends JFrame implements Runnable {
 
-    private static Window window = null;
-    private boolean isRunning = true;
     public MouseListener mouseListener = null;
     public KeyListener keyListener = null;
+    public boolean isInEditor = true;
+
+    private static Window window = null;
+    private boolean isRunning = true;
     private Scene currentScene = null;
     private Image doubleBufferImage = null;
     private Graphics doubleBufferGraphics = null;
@@ -33,13 +35,22 @@ public class Window extends JFrame implements Runnable {
     }
 
     public void init(){
-        changeScene(0);
+        changeScene(1);
+    }
+
+    public Scene getCurrentScene(){
+        return currentScene;
     }
 
     public void changeScene(int scene){
         switch (scene){
             case 0:
-                this.currentScene = LevelEditorScene.getScene();
+                isInEditor = true;
+                this.currentScene = new LevelEditorScene("Level Editor");
+                break;
+            case 1:
+                isInEditor = false;
+                currentScene = new LevelScene("Level");
                 break;
             default:
                 System.err.println("Invalid scene");

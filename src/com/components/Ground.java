@@ -1,8 +1,6 @@
 package com.components;
 
-import com.engine.Component;
-import com.engine.GameObject;
-import com.engine.LevelEditorScene;
+import com.engine.*;
 import com.util.Constants;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -12,11 +10,21 @@ public class Ground extends Component {
 
     @Override
     public void update(double deltaTime) {
-        GameObject player = LevelEditorScene.getScene().player;
+        if(!Window.getWindow().isInEditor){
+            LevelScene scene = (LevelScene)  Window.getWindow().getCurrentScene();
+            GameObject player = scene.player;
 
-        if (player.transform.position.y + player.getComponent(BoxBounds.class).height > gameObject.transform.position.y) {
-            player.transform.position.y = gameObject.transform.position.y - player.getComponent(BoxBounds.class).height;
+            if (player.transform.position.y + player.getComponent(BoxBounds.class).height > gameObject.transform.position.y) {
+                player.transform.position.y = gameObject.transform.position.y - player.getComponent(BoxBounds.class).height;
+            }
+
+            gameObject.transform.position.x = scene.camera.position.x;
         }
+        else{
+            gameObject.transform.position.x = Window.getWindow().getCurrentScene().camera.position.x;
+        }
+
+
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class Scene {
     String name;
-    Camera camera;
+    public Camera camera;
     List<GameObject> gameObjects = null;
     Renderer renderer = null;
     public void Scene(String name) {
@@ -17,6 +17,11 @@ public abstract class Scene {
         this.gameObjects = new ArrayList<GameObject>();
         this.renderer = new Renderer(this.camera);
         this.init();
+    }
+
+    public void addGameObject(GameObject gameObject) {
+        gameObjects.add(gameObject);
+        renderer.submit(gameObject);
     }
     public abstract void init();
     public abstract void update(double deltaTime);
