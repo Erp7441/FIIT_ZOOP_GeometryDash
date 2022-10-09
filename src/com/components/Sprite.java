@@ -12,6 +12,13 @@ import java.awt.image.BufferedImage;
 
 import java.io.File;
 
+/**
+ * Sprite game object component that can be used to load and draw assets in
+ * the game world. When attached to a game object the draw method is drawing this
+ * sprite object which will be representing the game object inside the game world.
+ *
+ * @see Component Component – An add-on to the game object.
+ */
 public class Sprite extends Component {
     public String file;
     public int width, height;
@@ -19,6 +26,13 @@ public class Sprite extends Component {
     public boolean isSubsprite = false;
     public int row, column, index;
 
+    /**
+     * Loads the sprite image from the specified file to assets pool. If the sprite image
+     * already exists it throws an exception because we don't want to load the sprite image
+     * many times as that would result in a performance penalty or even a memory leak.
+     *
+     * @param file File path to a sprite texture file.
+     */
     public Sprite(String file) {
         this.file = file;
 
@@ -36,12 +50,20 @@ public class Sprite extends Component {
         }
     }
 
+    /**
+     * Constructor for whole spritesheet asset.
+     * @param image Sprite texture inside the game asset's folder.
+     */
     public Sprite(BufferedImage image){
         this.image = image;
         this.width = image.getWidth();
         this.height = image.getHeight();
     }
 
+    /**
+     * Constructor for single sprite from spritesheet.
+     * @param image Sprite texture inside the game asset's folder.
+     */
     public Sprite(BufferedImage image, int row, int column, int index){
         this.image = image;
         this.width = image.getWidth();
@@ -52,11 +74,18 @@ public class Sprite extends Component {
         this.isSubsprite = true;
     }
 
+    /**
+     * Draws the texture of this component on specified parent game object position.
+     * @param graphics2D - 2D graphics handler.
+     */
     @Override
     public void draw(Graphics2D graphics2D){
         graphics2D.drawImage(this.image, (int) gameObject.transform.position.x, (int) gameObject.transform.position.y, this.width, this.height, null);
     }
 
+    /**
+     * @return Returns a copy of the current sprite with the same parameters, distinguishing whether it is a full sprite or a subsprite.
+     */
     @Override
     public Component copy() {
         if(!isSubsprite){

@@ -12,9 +12,11 @@ import java.awt.event.MouseEvent;
 
 public class MenuItem extends Component {
 
-    int x, y, width, height;
-    Sprite buttonSprite, hoverSprite, imageAttached;
+    private int x, y, width, height;
+    private Sprite buttonSprite, hoverSprite, imageAttached;
     public boolean isSelected;
+
+    private int bufferX, bufferY;
 
     public MenuItem(int x, int y, int width, int height, Sprite buttonSprite, Sprite hoverSprite){
         this.x = x;
@@ -29,6 +31,8 @@ public class MenuItem extends Component {
     @Override
     public void start(){
         imageAttached = gameObject.getComponent(Sprite.class);
+        this.bufferX = (int)((this.width / 2.0) - (imageAttached.width/ 2.0));
+        this.bufferY = (int)((this.height / 2.0) - (imageAttached.height / 2.0));
     }
 
     @Override
@@ -59,7 +63,7 @@ public class MenuItem extends Component {
     @Override
     public void draw(Graphics2D graphics2D){
         graphics2D.drawImage(this.buttonSprite.image, this.x, this.y, this.width, this.height, null);
-        graphics2D.drawImage(this.imageAttached.image, this.x, this.y, imageAttached.width, imageAttached.height, null);
+        graphics2D.drawImage(this.imageAttached.image, this.x + bufferX, this.y + bufferY, imageAttached.width, imageAttached.height, null);
         if(isSelected){
             graphics2D.drawImage(hoverSprite.image, this.x, this.y, this.width, this.height, null);
         }
