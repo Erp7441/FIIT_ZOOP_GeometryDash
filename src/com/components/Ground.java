@@ -37,4 +37,9 @@ public class Ground extends Component {
         graphics2D.setColor(Color.BLACK);
         graphics2D.drawRect((int) gameObject.transform.position.x, (int) gameObject.transform.position.y, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
     }
+
+    @Override
+    public Component copy() {
+        return null; // Copy not needed for this component
+    }
 }

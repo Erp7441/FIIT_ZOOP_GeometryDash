@@ -13,7 +13,6 @@ import com.util.Vector2D;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-
 public class LevelScene extends Scene {
 
     public GameObject player = null;

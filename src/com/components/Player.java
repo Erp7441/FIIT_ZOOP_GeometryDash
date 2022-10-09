@@ -54,4 +54,9 @@ public class Player extends Component {
         graphics2D.drawImage(this.layerTwo.image, transform, null);
         graphics2D.drawImage(this.layerThree.image, transform, null);
     }
+
+    @Override
+    public Component copy() {
+        return null; // Copy not needed for this component
+    }
 }

@@ -14,4 +14,9 @@ public class BoxBounds extends Component {
     public void update(double deltaTime){
 
     }
+
+    @Override
+    public BoxBounds copy(){
+        return new BoxBounds(this.width, this.height);
+    }
 }

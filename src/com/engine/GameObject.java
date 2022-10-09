@@ -32,9 +32,29 @@ public class GameObject {
         return null;
     }
 
+    public <T extends Component> T removeComponent(Class<T> componentClass) {
+        for (Component component : components) {
+            if (componentClass.isAssignableFrom(component.getClass())) {
+                components.remove(component);
+                return null;
+            }
+        }
+        return null;
+    }
+
     public void addComponent(Component component) {
         components.add(component);
         component.gameObject = this;
+    }
+    public GameObject copy(){
+        GameObject newGameObject = new GameObject("Generated", transform.copy());
+        for (Component component : components) {
+            Component copy = component.copy();
+            if(copy != null){
+                newGameObject.addComponent(copy);
+            }
+        }
+        return newGameObject;
     }
 
     public void update(double deltaTime){

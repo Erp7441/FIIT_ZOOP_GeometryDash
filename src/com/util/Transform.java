@@ -11,6 +11,13 @@ public class Transform {
         this.scale = new Vector2D(1.0, 1.0);
     }
 
+    public Transform copy(){
+        Transform transform = new Transform(this.position.copy());
+        transform.scale = this.scale.copy();
+        transform.rotation = this.rotation;
+        return transform;
+    }
+
     @Override
     public String toString() {
         return "Position (" + position.x + ", " + position.y + ") Rotation (" + rotation + ") Scale (" + scale.x + ", " + scale.y +")";

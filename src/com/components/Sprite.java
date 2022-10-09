@@ -43,4 +43,9 @@ public class Sprite extends Component {
     public void draw(Graphics2D graphics2D){
         graphics2D.drawImage(this.image, (int) gameObject.transform.position.x, (int) gameObject.transform.position.y, this.width, this.height, null);
     }
+
+    @Override
+    public Component copy() {
+        return new Sprite(this.image);
+    }
 }
