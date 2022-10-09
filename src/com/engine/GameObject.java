@@ -42,6 +42,10 @@ public class GameObject {
         return null;
     }
 
+    public List<Component> getComponents(){
+        return this.components;
+    }
+
     public void addComponent(Component component) {
         components.add(component);
         component.gameObject = this;

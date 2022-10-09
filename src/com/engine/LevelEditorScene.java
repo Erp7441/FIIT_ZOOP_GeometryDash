@@ -2,6 +2,7 @@ package com.engine;
 
 import com.components.*;
 
+import com.ui.MainContainer;
 import com.util.Constants;
 import com.util.Transform;
 import com.util.Vector2D;
@@ -12,10 +13,11 @@ import java.awt.Graphics2D;
 public class LevelEditorScene extends Scene{
 
     public GameObject player = null;
-    GameObject ground = null;
-    Grid grid = null;
-    CameraControls cameraControls = null;
-    GameObject cursor = null;
+    private GameObject ground = null;
+    private Grid grid = null;
+    private CameraControls cameraControls = null;
+    public GameObject cursor = null;
+    private MainContainer editingButtons = new MainContainer();
 
     public LevelEditorScene(String name) {
         super.Scene(name);
@@ -27,12 +29,10 @@ public class LevelEditorScene extends Scene{
 
         grid = new Grid();
         cameraControls = new CameraControls();
+        editingButtons.start();
 
-        Spritesheet objects = new Spritesheet("assets/groundSprites.png", 42, 42, 2, 6, 12);
-        Sprite mouseSprite = objects.sprites.get(0);
         cursor = new GameObject("Mouse Cursor", new Transform(new Vector2D()));
         cursor.addComponent(new SnapToGrid(Constants.TILE_WIDTH, Constants.TILE_HEIGHT));
-        cursor.addComponent(mouseSprite);
 
         Spritesheet layerOne = new Spritesheet("assets/player/layerOne.png", 42, 42, 2, 13, 13 * 5);
         Spritesheet layerTwo = new Spritesheet("assets/player/layerTwo.png", 42, 42, 2, 13, 13 * 5);
@@ -67,6 +67,7 @@ public class LevelEditorScene extends Scene{
 
         cameraControls.update(deltaTime);
         grid.update(deltaTime);
+        editingButtons.update(deltaTime);
         cursor.update(deltaTime);
     }
 
@@ -77,6 +78,7 @@ public class LevelEditorScene extends Scene{
 
         renderer.render(graphics2D);
         grid.draw(graphics2D);
+        editingButtons.draw(graphics2D);
         cursor.draw(graphics2D);
     }
 }

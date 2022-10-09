@@ -22,6 +22,9 @@ public abstract class Scene {
     public void addGameObject(GameObject gameObject) {
         gameObjects.add(gameObject);
         renderer.submit(gameObject);
+        for (Component component : gameObject.getComponents()){
+            component.start();
+        }
     }
     public abstract void init();
     public abstract void update(double deltaTime);
