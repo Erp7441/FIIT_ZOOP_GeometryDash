@@ -73,7 +73,7 @@ public class SnapToGrid  extends Component {
      *  specified amout of alpha to indicate that it is not yet placed in the grid cell.
      *
      * @param graphics2D 2D graphics handler.
-     * @see Sprite Sprite – a piece of 2D texture
+     * @see Sprite Sprite – a piece of 2D texture.
      */
     @Override
     public void draw(Graphics2D graphics2D){

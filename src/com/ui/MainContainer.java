@@ -1,6 +1,5 @@
 package com.ui;
 
-
 import com.components.Sprite;
 import com.components.Spritesheet;
 import com.engine.Component;

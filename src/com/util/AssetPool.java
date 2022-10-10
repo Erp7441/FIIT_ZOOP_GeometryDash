@@ -7,13 +7,33 @@ import java.util.Map;
 
 import com.components.Sprite;
 
+/**
+ * Assets pool class that holds all assets that are loaded in the game.
+ * Takes care that all assets are loaded only once to prevent memory leaks.
+ *
+ * @see Sprite Sprite – a piece of 2D texture.
+ */
 public class AssetPool {
     static Map<String, Sprite> sprites = new HashMap<>();
 
+    /**
+     * Checks if asset is already loaded in the assets pool.
+     *
+     * @param file Path to asset file.
+     * @return Boolean true if asset is already loaded in the assets pool. Otherwise, it returns false.
+     */
     public static boolean hasSprite(String file) {
         return AssetPool.sprites.containsKey(file);
     }
 
+    /**
+     * Gets loaded asset if present in asset pool. If not then
+     * add it to the assets pool and return it.
+     *
+     * @param file Path to asset file.
+     * @return Sprite object containing asset.
+     * @see Sprite Sprite – a piece of 2D texture.
+     */
     public static Sprite getSprite(String file) {
         File fileObject = new File(file);
         if(AssetPool.hasSprite(file)){
@@ -27,9 +47,15 @@ public class AssetPool {
     }
 
     /**
+     * Checks if the sprite exists in the asset pool. If it does
+     * print out error message and exit the function to prevent
+     * the sprite from being added to the asset pool twice.
+     * If it does not find the sprite in the asset pool then it will
+     * be added to the asset pool.
      *
-     * @param file absolute path to the file
-     * @param sprite
+     * @param file Path to asset file.
+     * @param sprite Texture to be added to the asset pool.
+     * @see Sprite Sprite – a piece of 2D texture.
      */
     public static void addSprite(String file, Sprite sprite) {
         File fileObject = new File(file);

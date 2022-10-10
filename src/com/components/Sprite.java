@@ -84,7 +84,7 @@ public class Sprite extends Component {
     }
 
     /**
-     * @return Returns a copy of the current sprite with the same parameters, distinguishing whether it is a full sprite or a subsprite.
+     * @return Copy of the current sprite with the same parameters, distinguishing whether it is a full sprite or a subsprite.
      */
     @Override
     public Component copy() {
