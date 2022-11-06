@@ -13,6 +13,12 @@ import com.util.Vector2D;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+/**
+ * The scene that displays level. This scene is where the game happends. It is
+ * responsible for rendering all objects, calling apropriate methods on them.
+ *
+ * @see Scene Scene - abstract class for creating scene objects.
+ */
 public class LevelScene extends Scene {
 
     public GameObject player = null;
@@ -21,6 +27,10 @@ public class LevelScene extends Scene {
     }
     static LevelScene currentScene = null;
 
+    /**
+     * Initializes the scene with textures, renders ground, creates player object, and
+     * adds apropriate components on it.
+     */
     @Override
     public void init() {
 
@@ -49,6 +59,13 @@ public class LevelScene extends Scene {
         addGameObject(ground);
     }
 
+    /**
+     * Updates the all game objects in the scene, after that it updates player position.
+     *
+     * @param deltaTime Diffrence between last mouse update time and current mouse update time.
+     * @see GameObject GameObject – Base object from which everything is derived from.
+     * @see Constants Constants – Constants that manipulate the state calculation of the game.
+     */
     @Override
     public void update(double deltaTime) {
 
@@ -71,6 +88,14 @@ public class LevelScene extends Scene {
         player.transform.position.y += deltaTime * 30f;
     }
 
+    /**
+     * Draws the background of the game. Afterwards it renders all game objects.
+     *
+     * @param graphics2D 2D graphics handler instance.
+     * @see Graphics2D Graphics2D - Handler for 2D operations within a window.
+     * @see Constants Constants – Constants that manipulate the state calculation of the game.
+     * @see Color Color - object that represents the color of the player's textures.'
+     */
     @Override
     public void draw(Graphics2D graphics2D) {
         graphics2D.setColor(Color.DARK_GRAY);

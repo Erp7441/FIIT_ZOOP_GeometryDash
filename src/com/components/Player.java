@@ -35,6 +35,8 @@ public class Player extends Component {
      * @param colorOne First color for the player texture.
      * @param colorTwo Second color for the player texture.
      * @see Constants Constants – Constants that manipulate the state calculation of the game.
+     * @see Sprite Sprite – a piece of 2D texture.
+     * @see Color Color - object that represents the color of the player's textures.'
      */
     public Player(Sprite layerOne, Sprite layerTwo, Sprite layerThree, Color colorOne, Color colorTwo){
         int threshold = 200; // Color threshold for chaning the texture color values
@@ -71,7 +73,8 @@ public class Player extends Component {
      * coordinate system back to a point specified in the original coordinate system. Translations are way faster
      * than calculating the slopes of every bounding line on the object.
      *
-     * @param graphics2D 2D graphics handler.
+     * @param graphics2D 2D graphics handler instance.
+     * @see Graphics2D Graphics2D - Handler for 2D operations within a window.
      */
     @Override
     public void draw(Graphics2D graphics2D){

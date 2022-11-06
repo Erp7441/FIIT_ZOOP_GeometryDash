@@ -76,7 +76,8 @@ public class Sprite extends Component {
 
     /**
      * Draws the texture of this component on specified parent game object position.
-     * @param graphics2D - 2D graphics handler.
+     * @param graphics2D 2D graphics handler instance.
+     * @see Graphics2D Graphics2D - Handler for 2D operations within a window.
      */
     @Override
     public void draw(Graphics2D graphics2D){

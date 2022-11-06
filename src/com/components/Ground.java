@@ -56,7 +56,8 @@ public class Ground extends Component {
      * moving, the ground will be rendered in front of him giving the player
      * a sense of infinite ground.
      *
-     * @param graphics2D 2D graphics handler.
+     * @param graphics2D 2D graphics handler instance.
+     * @see Graphics2D Graphics2D - Handler for 2D operations within a window.
      * @see Constants Constants – Constants that manipulate the state calculation of the game.
      */
     @Override

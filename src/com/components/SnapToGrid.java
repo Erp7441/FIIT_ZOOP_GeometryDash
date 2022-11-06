@@ -72,7 +72,8 @@ public class SnapToGrid  extends Component {
      *  Draws the currently selected game object sprite on the screen grid cell with
      *  specified amout of alpha to indicate that it is not yet placed in the grid cell.
      *
-     * @param graphics2D 2D graphics handler.
+     * @param graphics2D 2D graphics handler instance.
+     * @see Graphics2D Graphics2D - Handler for 2D operations within a window.
      * @see Sprite Sprite – a piece of 2D texture.
      */
     @Override

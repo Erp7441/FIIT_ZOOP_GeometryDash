@@ -48,7 +48,8 @@ public class Grid extends Component {
      * draws the grid lines from camera position the highest point to the ground,
      * so it won't overlap with the ground line.
      *
-     * @param graphics2D 2D graphics handler.
+     * @param graphics2D 2D graphics handler instance.
+     * @see Graphics2D Graphics2D - Handler for 2D operations within a window.
      * @see Camera Camera - player viewport in the game window.
      * @see Constants Constants – Constants that manipulate the state calculation of the game.
      */
