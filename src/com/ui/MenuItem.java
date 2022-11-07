@@ -27,12 +27,12 @@ public class MenuItem extends Component {
     /**
      * Inicializes variables needed for positioning and drawing this object.
      *
-     * @param x - X coordinate of the item
-     * @param y - Y coordinate of the item
-     * @param width - width of the item texture
-     * @param height - height of the item texture
-     * @param buttonSprite - sprite used for the item
-     * @param hoverSprite - sprite used for the item while hovering over the item
+     * @param x X coordinate of the item
+     * @param y Y coordinate of the item
+     * @param width width of the item texture
+     * @param height height of the item texture
+     * @param buttonSprite sprite used for the item
+     * @param hoverSprite sprite used for the item while hovering over the item
      */
     public MenuItem(int x, int y, int width, int height, Sprite buttonSprite, Sprite hoverSprite){
         this.x = x;

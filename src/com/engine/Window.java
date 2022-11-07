@@ -9,6 +9,18 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
+/**
+ * This is the main window which displays the game. It manages flow of the game,
+ * user input, generating frames, switching scene, etc.
+ *
+ * @see JFrame JFrame - Main window where content can be displayed.
+ * @see Runnable Runnable - Interface that enables class to be run by a thread.
+ * @see MouseListener MouseListener - Responsible for handling player mouse movement.
+ * @see KeyListener KeyListener - Responsible for handling key events from the player.
+ * @see Scene Scene - Object where the game happends
+ * @see Image Image - Object that can hold image of texture.
+ * @see Graphics Graphics - Handler for graphics operations within a window.
+ */
 public class Window extends JFrame implements Runnable {
 
     public MouseListener mouseListener = null;
@@ -18,9 +30,23 @@ public class Window extends JFrame implements Runnable {
     private static Window window = null;
     private boolean isRunning = true;
     private Scene currentScene = null;
+
+    /**
+     * Doing drawing using double buffering prevents the texture from
+     * being half loaded when drawing to the screen. It is done by loading
+     * the texture first, then drawing them to object (doubleBufferGraphics) and
+     * finally drawing the whole object on to the screen.
+     */
     private Image doubleBufferImage = null;
     private Graphics doubleBufferGraphics = null;
 
+    /**
+     * Initializes the window with all paramters needed for creation (size, visibility, etc...).
+     *
+     * @see Constants Constants – Constants that manipulate the state calculation of the game.
+     * @see MouseListener MouseListener - Responsible for handling player mouse movement.
+     * @see KeyListener KeyListener - Responsible for handling key events from the player.
+     */
     public Window(){
         this.mouseListener = new MouseListener();
         this.keyListener = new KeyListener();
@@ -36,14 +62,27 @@ public class Window extends JFrame implements Runnable {
         this.setLocationRelativeTo(null);
     }
 
+    /**
+     * Initializes the default scene for window.
+     */
     public void init(){
         changeScene(0);
     }
 
+    /**
+     * Returns current scene object.
+     *
+     * @return current scene.
+     */
     public Scene getCurrentScene(){
         return currentScene;
     }
 
+    /**
+     * Switches the current scene based on scene identifier.
+     *
+     * @param scene scene identifier
+     */
     public void changeScene(int scene){
         switch (scene){
             case 0:
@@ -62,6 +101,11 @@ public class Window extends JFrame implements Runnable {
         }
     }
 
+    /**
+     * Tries to get window. If not found it will create it first.
+     *
+     * @return current window.
+     */
     public static Window getWindow(){
         if(Window.window == null){
             Window.window = new Window();
@@ -69,11 +113,22 @@ public class Window extends JFrame implements Runnable {
         return Window.window;
     }
 
+    /**
+     * Updates current scene and draws all objects in the scene.
+     *
+     * @param deltaTime  Diffrence between last mouse update time and current mouse update time.
+     */
     public void update(double deltaTime){
         currentScene.update(deltaTime);
         draw(getGraphics());
     }
 
+    /**
+     * Draws current scene.
+     *
+     * @param graphics Graphics handler instance.
+     * @see Graphics Graphics - Handler for graphics operations within a window.
+     */
     public void draw(Graphics graphics){
         if(doubleBufferImage == null){
             doubleBufferImage = createImage(getWidth(), getHeight());
@@ -84,11 +139,20 @@ public class Window extends JFrame implements Runnable {
         graphics.drawImage(doubleBufferImage, 0, 0, getWidth(), getHeight(), null);
     }
 
+    /**
+     * Renders the scene offscreen.
+     *
+     * @param graphics Graphics handler instance.
+     * @see Graphics Graphics - Handler for graphics operations within a window.
+     */
     public void renderOffscreen(Graphics graphics){
         Graphics2D graphics2D = (Graphics2D)graphics;
         currentScene.draw(graphics2D);
     }
 
+    /**
+     * Runs the main game loop.
+     */
     @Override
     public void run(){
         double lastFrameTime = 0.0;

@@ -22,7 +22,7 @@ public class GameObject {
      *
      * @param name name of the game object for debugging purposes.
      * @param transform Object that has two attributes. One vector for position and one vector for rotation.
-     * @see Transform Transform - Class containing one vector for postion.
+     * @see Transform Transform - Class containing one vector for position.
      */
     public GameObject(String name, Transform transform) {
         this.name = name;

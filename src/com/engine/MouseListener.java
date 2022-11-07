@@ -18,7 +18,7 @@ public class MouseListener extends MouseAdapter {
     /**
      * Sets mouse pressed state to true and sets button code pressed.
      *
-     * @param mouseEvent the player's mouse event to be processed
+     * @param mouseEvent the player's mouse event to be processed.
      */
     @Override
     public void mousePressed(MouseEvent mouseEvent){
@@ -43,7 +43,7 @@ public class MouseListener extends MouseAdapter {
     /**
      * Sets mouse position to new one.
      *
-     * @param mouseEvent the player's mouse event to be processed
+     * @param mouseEvent the player's mouse event to be processed.
      */
     @Override
     public void mouseMoved(MouseEvent mouseEvent){
@@ -52,8 +52,9 @@ public class MouseListener extends MouseAdapter {
     }
 
     /**
+     * Calculates the distance between where the mouse is pointing and where it was.
      *
-     * @param mouseEvent the player's mouse event to be processed
+     * @param mouseEvent the player's mouse event to be processed.
      */
     @Override
     public void mouseDragged(MouseEvent mouseEvent){
