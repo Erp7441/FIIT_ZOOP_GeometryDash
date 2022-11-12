@@ -37,9 +37,10 @@ public abstract class Scene {
     }
 
     /**
+     * Adds game object to the game object list of this scene.
      *
-     *
-     * @param gameObject
+     * @param gameObject - Game object to be added to game object list
+     * @see GameObject GameObject – Base object from which everything is derived from.
      */
     public void addGameObject(GameObject gameObject) {
         gameObjects.add(gameObject);
