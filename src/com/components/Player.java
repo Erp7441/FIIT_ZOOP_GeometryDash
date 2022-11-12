@@ -38,7 +38,7 @@ public class Player extends Component {
      * @see Sprite Sprite – a piece of 2D texture.
      * @see Color Color - object that represents the color of the player's textures.'
      */
-    public Player(Sprite layerOne, Sprite layerTwo, Sprite layerThree, Color colorOne, Color colorTwo){
+    public Player(Sprite layerOne, Sprite layerTwo, Sprite layerThree, Color colorOne, Color colorTwo) {
         int threshold = 200; // Color threshold for chaning the texture color values
         this.layerOne = layerOne; //! Agregation
         this.layerTwo = layerTwo; //! Agregation

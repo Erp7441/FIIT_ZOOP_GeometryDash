@@ -14,7 +14,7 @@ import java.awt.Graphics2D;
  * Scene that displays the level editor. This scene can edit the LevelScene objects
  * which means that player can model their own level.
  */
-public class LevelEditorScene extends Scene{
+public class LevelEditorScene extends Scene {
 
     public GameObject player = null;
     private GameObject ground = null;

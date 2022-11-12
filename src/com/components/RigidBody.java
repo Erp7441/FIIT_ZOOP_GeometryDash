@@ -12,7 +12,7 @@ import com.util.Vector2D;
  *
  * @see Component Component – An add-on to the game object.
  */
-public class RigidBody extends Component{
+public class RigidBody extends Component {
     public Vector2D velocity;
 
     /**

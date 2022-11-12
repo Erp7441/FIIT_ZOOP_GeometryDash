@@ -8,7 +8,7 @@ import java.awt.event.KeyEvent;
  */
 public class KeyListener extends KeyAdapter implements java.awt.event.KeyListener {
     // Array of boolean values. The index maches key code and value maches if pressed state.
-    private boolean keyPressed[] = new boolean[128]; // TODO change type to ArrayList here
+    private boolean keyPressed[] = new boolean[128];
 
     /**
      * Sets the corresponding key value to true if the key is pressed
