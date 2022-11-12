@@ -21,7 +21,7 @@ import java.awt.event.MouseEvent;
  * @see Component Component – An add-on to the game object.
  */
 public class SnapToGrid  extends Component {
-    public Sprite sprite = null;
+    public Sprite sprite = null; // TODO remove?
 
     private double debounceTime = 0.2;
     private double debounceLeft = 0.0;

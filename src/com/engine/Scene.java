@@ -31,9 +31,9 @@ public abstract class Scene {
      */
     public void Scene(String name) {
         this.name = name;
-        this.camera = new Camera(new Vector2D());
-        this.gameObjects = new ArrayList<GameObject>();
-        this.renderer = new Renderer(this.camera);
+        this.camera = new Camera(new Vector2D()); //! Composition
+        this.gameObjects = new ArrayList<GameObject>(); //! Composition
+        this.renderer = new Renderer(this.camera); //! Composition
     }
 
     /**

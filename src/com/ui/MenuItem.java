@@ -39,8 +39,8 @@ public class MenuItem extends Component {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.buttonSprite = buttonSprite;
-        this.hoverSprite = hoverSprite;
+        this.buttonSprite = buttonSprite; //! Agregation
+        this.hoverSprite = hoverSprite; //! Agregation
         this.isSelected = false;
     }
 

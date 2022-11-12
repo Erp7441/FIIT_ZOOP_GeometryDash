@@ -21,7 +21,7 @@ public class RigidBody extends Component{
      * @see Vector2D Vector2D – Vector that has lenght and a direction within the 2D space.
      */
     public RigidBody(Vector2D velocity) {
-        this.velocity = velocity;
+        this.velocity = velocity; //! Agregation
     }
 
     /**

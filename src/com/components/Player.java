@@ -40,16 +40,16 @@ public class Player extends Component {
      */
     public Player(Sprite layerOne, Sprite layerTwo, Sprite layerThree, Color colorOne, Color colorTwo){
         int threshold = 200; // Color threshold for chaning the texture color values
-        this.layerOne = layerOne;
-        this.layerTwo = layerTwo;
-        this.layerThree = layerThree;
+        this.layerOne = layerOne; //! Agregation
+        this.layerTwo = layerTwo; //! Agregation
+        this.layerThree = layerThree; //! Agregation
         this.width = Constants.PLAYER_WIDTH;
         this.height = Constants.PLAYER_HEIGHT;
 
         // Layer one color placement
         for (int y = 0; y < layerOne.image.getWidth(); y++){
             for (int x = 0; x < layerOne.image.getHeight(); x++){
-                Color color = new Color(layerOne.image.getRGB(x, y));
+                Color color = new Color(layerOne.image.getRGB(x, y)); //! Composition
                 if (color.getRed() > threshold && color.getGreen() > threshold && color.getBlue() > threshold){
                     layerOne.image.setRGB(x, y, colorOne.getRGB());
                 }
@@ -59,7 +59,7 @@ public class Player extends Component {
         // Layer two color placement
         for (int y = 0; y < layerTwo.image.getWidth(); y++){
             for (int x = 0; x < layerTwo.image.getHeight(); x++){
-                Color color = new Color(layerTwo.image.getRGB(x, y));
+                Color color = new Color(layerTwo.image.getRGB(x, y)); //! Composition
                 if (color.getRed() > threshold && color.getGreen() > threshold && color.getBlue() > threshold){
                     layerTwo.image.setRGB(x, y, colorTwo.getRGB());
                 }
@@ -78,7 +78,7 @@ public class Player extends Component {
      */
     @Override
     public void draw(Graphics2D graphics2D){
-        AffineTransform transform = new AffineTransform();
+        AffineTransform transform = new AffineTransform(); //! Composition
         transform.setToIdentity();
         transform.translate(gameObject.transform.position.x, gameObject.transform.position.y);
         transform.rotate(gameObject.transform.rotation, (this.width * gameObject.transform.scale.x) / 2.0, (this.height * gameObject.transform.scale.y) / 2.0);

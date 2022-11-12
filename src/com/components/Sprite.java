@@ -55,7 +55,7 @@ public class Sprite extends Component {
      * @param image Sprite texture inside the game asset's folder.
      */
     public Sprite(BufferedImage image){
-        this.image = image;
+        this.image = image; //! Agregation
         this.width = image.getWidth();
         this.height = image.getHeight();
     }
@@ -65,7 +65,7 @@ public class Sprite extends Component {
      * @param image Sprite texture inside the game asset's folder.
      */
     public Sprite(BufferedImage image, int row, int column, int index){
-        this.image = image;
+        this.image = image; //! Agregation
         this.width = image.getWidth();
         this.height = image.getHeight();
         this.row = row;

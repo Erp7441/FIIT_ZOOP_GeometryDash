@@ -1,0 +1,333 @@
+@startuml
+class com.engine.Camera {
++ Vector2D position
++ <<Create>> Camera(Vector2D)
+}
+abstract class com.engine.Component {
++ GameObject gameObject
++ void update(double)
++ void draw(Graphics2D)
++ {abstract}Component copy()
++ void start()
+}
+class com.util.AssetPool {
+~ {static} Map<String,Sprite> sprites
++ {static} boolean hasSprite(String)
++ {static} Sprite getSprite(String)
++ {static} void addSprite(String,Sprite)
+}
+class com.util.Vector2D {
++ double x
++ <<Create>> Vector2D(double,double)
++ <<Create>> Vector2D()
++ Vector2D copy()
+}
+abstract class com.engine.Scene {
+~ String name
++ Camera camera
+~ List<GameObject> gameObjects
+~ Renderer renderer
++ void Scene(String)
++ void addGameObject(GameObject)
++ {abstract}void init()
++ {abstract}void update(double)
++ {abstract}void draw(Graphics2D)
+}
+class com.util.Constants {
++ {static} int SCREEN_WIDTH
++ {static} int SCREEN_HEIGHT
++ {static} String SCREEN_TITLE
++ {static} int PLAYER_HEIGHT
++ {static} int PLAYER_WIDTH
++ {static} int GROUND_Y
++ {static} int CAMERA_OFFSET_X
++ {static} int CAMERA_OFFSET_Y
++ {static} int CAMERA_OFFSET_GROUND_Y
++ {static} double GRAVITY
++ {static} double TERMINAL_VELOCITY
++ {static} int TILE_HEIGHT
++ {static} int TILE_WIDTH
++ {static} int BUTTON_OFFSET_X
++ {static} int BUTTON_OFFSET_Y
++ {static} int BUTTON_SPACING_HZ
++ {static} int BUTTON_SPACING_VT
++ {static} int BUTTON_HEIGHT
++ {static} int BUTTON_WIDTH
+}
+class com.engine.LevelEditorScene {
++ GameObject player
+- GameObject ground
+- Grid grid
+- CameraControls cameraControls
++ GameObject cursor
+- MainContainer editingButtons
++ <<Create>> LevelEditorScene(String)
++ void init()
++ void update(double)
++ void draw(Graphics2D)
+}
+class com.components.RigidBody {
++ Vector2D velocity
++ <<Create>> RigidBody(Vector2D)
++ void update(double)
++ Component copy()
+}
+class com.engine.KeyListener {
+- boolean[] keyPressed
++ void keyPressed(KeyEvent)
++ void keyReleased(KeyEvent)
++ boolean isKeyPressed(int)
+}
+class com.components.CameraControls {
+- double prevMx
++ <<Create>> CameraControls()
++ void update(double)
++ CameraControls copy()
+}
+class com.util.Time {
++ {static} double timeStarted
++ {static} double getTime()
+}
+class com.engine.LevelScene {
++ GameObject player
+~ {static} LevelScene currentScene
++ <<Create>> LevelScene(String)
++ void init()
++ void update(double)
++ void draw(Graphics2D)
+}
+class com.components.Grid {
+~ Camera camera
++ int width
+- int numYLines
+- int numXLines
++ <<Create>> Grid()
++ void update(double)
++ void draw(Graphics2D)
++ Component copy()
+}
+class com.main.Main {
++ {static} void main(String[])
+}
+class com.ui.MainContainer {
++ List<GameObject> menuItems
++ <<Create>> MainContainer()
++ void init()
++ void start()
++ void update(double)
++ Component copy()
++ void draw(Graphics2D)
+}
+class com.components.Spritesheet {
++ List<Sprite> sprites
++ int tileWidth
++ int tileHeight
++ int spacing
++ <<Create>> Spritesheet(String,int,int,int,int,int)
+}
+class com.engine.GameObject {
+- List<Component> components
+- String name
++ Transform transform
++ <<Create>> GameObject(String,Transform)
++ T getComponent(Class<T>)
++ T removeComponent(Class<T>)
++ List<Component> getComponents()
++ void addComponent(Component)
++ GameObject copy()
++ void update(double)
++ void draw(Graphics2D)
+}
+class com.components.BoxBounds {
++ double width
++ <<Create>> BoxBounds(double,double)
++ void update(double)
++ BoxBounds copy()
+}
+class com.components.SnapToGrid {
++ Sprite sprite
+- double debounceTime
+- double debounceLeft
+- int width
+- int height
++ <<Create>> SnapToGrid(int,int)
++ void update(double)
++ void draw(Graphics2D)
++ Component copy()
+}
+class com.engine.Window {
++ MouseListener mouseListener
++ KeyListener keyListener
++ boolean isInEditor
+- {static} Window window
+- boolean isRunning
+- Scene currentScene
+- Image doubleBufferImage
+- Graphics doubleBufferGraphics
++ <<Create>> Window()
++ void init()
++ Scene getCurrentScene()
++ void changeScene(int)
++ {static} Window getWindow()
++ void update(double)
++ void draw(Graphics)
++ void renderOffscreen(Graphics)
++ void run()
+}
+class com.components.Sprite {
++ String file
++ int width
++ BufferedImage image
++ boolean isSubsprite
++ int row
++ <<Create>> Sprite(String)
++ <<Create>> Sprite(BufferedImage)
++ <<Create>> Sprite(BufferedImage,int,int,int)
++ void draw(Graphics2D)
++ Component copy()
+}
+class com.engine.MouseListener {
++ boolean mousePressed
++ boolean mouseDragged
++ float x
++ float dx
++ int mouseButton
++ void mousePressed(MouseEvent)
++ void mouseReleased(MouseEvent)
++ void mouseMoved(MouseEvent)
++ void mouseDragged(MouseEvent)
+}
+class com.components.Ground {
++ void update(double)
++ void draw(Graphics2D)
++ Component copy()
+}
+class com.ui.MenuItem {
+- int x
+- Sprite buttonSprite
++ boolean isSelected
+- int bufferX
++ <<Create>> MenuItem(int,int,int,int,Sprite,Sprite)
++ void start()
++ void update(double)
++ Component copy()
++ void draw(Graphics2D)
+}
+class com.components.Player {
+~ Sprite layerOne
+~ Sprite layerTwo
+~ Sprite layerThree
++ int width
++ <<Create>> Player(Sprite,Sprite,Sprite,Color,Color)
++ void draw(Graphics2D)
++ Component copy()
+}
+class com.engine.Renderer {
+~ List<GameObject> gameObjects
+~ Camera camera
++ <<Create>> Renderer(Camera)
++ void submit(GameObject)
++ void render(Graphics2D)
+}
+class com.util.Transform {
++ Vector2D position
++ double rotation
++ Vector2D scale
++ <<Create>> Transform(Vector2D)
++ Transform copy()
++ String toString()
+}
+
+'------------------------------------------------
+' Inheritance
+'------------------------------------------------
+
+com.engine.Scene <|-- com.engine.LevelEditorScene
+com.engine.Scene <|-- com.engine.LevelScene
+
+com.engine.KeyListener <|.. com.engine.KeyListener
+java.awt.event.KeyAdapter <|-- com.engine.KeyListener
+
+java.awt.event.MouseAdapter <|-- com.engine.MouseListener
+
+com.engine.Component <|-- com.components.CameraControls
+com.engine.Component <|-- com.components.RigidBody
+com.engine.Component <|-- com.components.Grid
+com.engine.Component <|-- com.ui.MainContainer
+com.engine.Component <|-- com.components.BoxBounds
+com.engine.Component <|-- com.components.SnapToGrid
+com.engine.Component <|-- com.components.Sprite
+com.engine.Component <|-- com.components.Ground
+com.engine.Component <|-- com.ui.MenuItem
+com.engine.Component <|-- com.components.Player
+
+com.engine.Runnable <|.. com.engine.Window
+
+javax.swing.JFrame <|-- com.engine.Window
+
+'------------------------------------------------
+' Agregation
+'------------------------------------------------
+
+com.components.Player o-- com.components.Sprite
+
+com.components.Grid o-- com.engine.Camera
+
+com.components.Ground o-- com.engine.LevelScene
+com.components.Ground o-- com.engine.GameObject
+
+com.components.RigidBody o-- com.util.Vector2D
+
+com.components.Sprite o-- java.awt.image.BufferedImage
+
+com.engine.Camera o-- com.util.Vector2D
+
+com.engine.GameObject o-- com.util.Transform
+
+com.ui.MenuItem o-- com.components.Sprite
+
+com.util.Transform o--  com.util.Vector2D
+
+'------------------------------------------------
+' Composition
+'------------------------------------------------
+
+com.components.Grid *-- java.awt.geom.AffineTransform
+
+com.components.Player *-- java.awt.paint.Color
+com.components.Player *-- java.awt.geom.AffineTransform
+
+com.components.Spritesheet *-- com.components.Sprite
+
+com.engine.LevelEditorScene *-- com.components.Grid
+com.engine.LevelEditorScene *-- com.components.CameraControls
+com.engine.LevelEditorScene *-- com.engine.GameObject
+com.engine.LevelEditorScene *-- com.components.Spritesheet
+com.engine.LevelEditorScene *-- com.components.Player
+com.engine.LevelEditorScene *-- com.ui.MainContainer
+
+com.engine.LevelScene *-- com.components.Spritesheet
+com.engine.LevelScene *-- com.engine.GameObject
+com.engine.LevelScene *-- com.components.Player
+
+com.engine.Scene *-- com.engine.Camera
+com.engine.Scene *-- java.util.ArrayList
+com.engine.Scene *-- com.engine.Renderer
+
+com.engine.Window *-- com.engine.MouseListener
+com.engine.Window *-- com.engine.KeyListener
+com.engine.Window *-- com.engine.LevelEditorScene
+com.engine.Window *-- com.engine.LevelScene
+
+com.ui.MainContainer *-- java.util.ArrayList
+com.ui.MainContainer *-- com.components.Spritesheet
+com.ui.MainContainer *-- com.engine.GameObject
+com.ui.MainContainer *-- com.ui.MenuItem
+
+com.util.AssetPool *-- java.io.File
+com.util.AssetPool *-- com.components.Sprite
+com.util.AssetPool *-- java.util.HashMap
+
+com.util.Transform *-- com.util.Vector2D
+
+@enduml

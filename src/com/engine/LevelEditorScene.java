@@ -21,7 +21,7 @@ public class LevelEditorScene extends Scene{
     private Grid grid = null;
     private CameraControls cameraControls = null;
     public GameObject cursor = null;
-    private MainContainer editingButtons = new MainContainer();
+    private MainContainer editingButtons = new MainContainer(); //! Composition
 
     /**
      * Initializes the scene with name.
@@ -46,19 +46,19 @@ public class LevelEditorScene extends Scene{
     @Override
     public void init() {
 
-        grid = new Grid();
-        cameraControls = new CameraControls();
+        grid = new Grid(); //! Composition
+        cameraControls = new CameraControls(); //! Composition
         editingButtons.start();
 
-        cursor = new GameObject("Mouse Cursor", new Transform(new Vector2D()));
+        cursor = new GameObject("Mouse Cursor", new Transform(new Vector2D())); //! Composition
         cursor.addComponent(new SnapToGrid(Constants.TILE_WIDTH, Constants.TILE_HEIGHT));
 
-        Spritesheet layerOne = new Spritesheet("assets/player/layerOne.png", 42, 42, 2, 13, 13 * 5);
-        Spritesheet layerTwo = new Spritesheet("assets/player/layerTwo.png", 42, 42, 2, 13, 13 * 5);
-        Spritesheet layerThree = new Spritesheet("assets/player/layerThree.png", 42, 42, 2, 13, 13 * 5);
+        Spritesheet layerOne = new Spritesheet("assets/player/layerOne.png", 42, 42, 2, 13, 13 * 5); //! Composition
+        Spritesheet layerTwo = new Spritesheet("assets/player/layerTwo.png", 42, 42, 2, 13, 13 * 5); //! Composition
+        Spritesheet layerThree = new Spritesheet("assets/player/layerThree.png", 42, 42, 2, 13, 13 * 5); //! Composition
 
-        player = new GameObject("Some game object", new Transform(new Vector2D(300.0,300.0)));
-        Player playerComp = new Player(
+        player = new GameObject("Some game object", new Transform(new Vector2D(300.0,300.0))); //! Composition
+        Player playerComp = new Player( //! Composition
                 layerOne.sprites.get(0),
                 layerTwo.sprites.get(0),
                 layerThree.sprites.get(0),
@@ -68,7 +68,7 @@ public class LevelEditorScene extends Scene{
         player.addComponent(playerComp);
         addGameObject(player);
 
-        ground = new GameObject("Ground", new Transform(new Vector2D(0, Constants.GROUND_Y)));
+        ground = new GameObject("Ground", new Transform(new Vector2D(0, Constants.GROUND_Y))); //! Composition
         ground.addComponent(new Ground());
         addGameObject(ground);
     }

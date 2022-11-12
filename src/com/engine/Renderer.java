@@ -28,7 +28,7 @@ public class Renderer {
      */
     public Renderer(Camera camera) {
         this.camera = camera;
-        this.gameObjects = new ArrayList<GameObject>();
+        this.gameObjects = new ArrayList<GameObject>(); //! Kompozcicia
     }
 
     /**

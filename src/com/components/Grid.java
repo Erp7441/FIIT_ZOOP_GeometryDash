@@ -34,7 +34,7 @@ public class Grid extends Component {
      * @see Window Window – Window where the game is being rendered.
      */
     public Grid(){
-        this.camera = Window.getWindow().getCurrentScene().camera;
+        this.camera = Window.getWindow().getCurrentScene().camera; //! Agregation
         this.width = Constants.TILE_WIDTH;
         this.height = Constants.TILE_HEIGHT;
     }

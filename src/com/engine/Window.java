@@ -48,8 +48,8 @@ public class Window extends JFrame implements Runnable {
      * @see KeyListener KeyListener - Responsible for handling key events from the player.
      */
     public Window(){
-        this.mouseListener = new MouseListener();
-        this.keyListener = new KeyListener();
+        this.mouseListener = new MouseListener(); //! Composition
+        this.keyListener = new KeyListener(); //! Composition
         
         this.setSize(Constants.SCREEN_WIDTH,Constants.SCREEN_HEIGHT);
         this.setTitle(Constants.SCREEN_TITLE);
@@ -87,12 +87,12 @@ public class Window extends JFrame implements Runnable {
         switch (scene){
             case 0:
                 isInEditor = true;
-                this.currentScene = new LevelEditorScene("Level Editor");
+                this.currentScene = new LevelEditorScene("Level Editor"); //! Composition
                 this.currentScene.init();
                 break;
             case 1:
                 isInEditor = false;
-                this.currentScene = new LevelScene("Level");
+                this.currentScene = new LevelScene("Level"); //! Composition
                 this.currentScene.init();
                 break;
             default:

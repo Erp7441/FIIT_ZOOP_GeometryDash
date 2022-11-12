@@ -17,6 +17,6 @@ public class Camera {
      * @see Vector2D Vector2D – Vector that has lenght and a direction within the 2D space.
      */
     public Camera(Vector2D position){
-        this.position = position;
+        this.position = position; //! Agregation
     }
 }

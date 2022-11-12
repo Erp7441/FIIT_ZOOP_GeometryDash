@@ -14,7 +14,7 @@ import com.components.Sprite;
  * @see Sprite Sprite – a piece of 2D texture.
  */
 public class AssetPool {
-    static Map<String, Sprite> sprites = new HashMap<>();
+    static Map<String, Sprite> sprites = new HashMap<>(); //! Composition
 
     /**
      * Checks if asset is already loaded in the assets pool.
@@ -35,12 +35,12 @@ public class AssetPool {
      * @see Sprite Sprite – a piece of 2D texture.
      */
     public static Sprite getSprite(String file) {
-        File fileObject = new File(file);
+        File fileObject = new File(file); //! Composition
         if(AssetPool.hasSprite(file)){
             return AssetPool.sprites.get(fileObject.getAbsolutePath().toString());
         }
         else{
-            Sprite sprite = new Sprite(file);
+            Sprite sprite = new Sprite(file); //! Composition
             AssetPool.addSprite(file, sprite);
             return AssetPool.sprites.get(fileObject.getAbsolutePath());
         }
@@ -58,7 +58,7 @@ public class AssetPool {
      * @see Sprite Sprite – a piece of 2D texture.
      */
     public static void addSprite(String file, Sprite sprite) {
-        File fileObject = new File(file);
+        File fileObject = new File(file); //! Composition
         if(!AssetPool.hasSprite(fileObject.getAbsolutePath())){
             AssetPool.sprites.put(fileObject.getAbsolutePath(), sprite);
         }
