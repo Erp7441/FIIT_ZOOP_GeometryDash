@@ -22,7 +22,6 @@ import java.awt.Graphics2D;
 public class LevelScene extends Scene {
 
     private GameObject player = null;
-    private static LevelScene currentScene = null;
 
     /**
      * Initializes the scene with name.
