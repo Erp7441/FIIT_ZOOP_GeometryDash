@@ -1,37 +1,55 @@
 @startuml
 class com.engine.Camera {
-+ Vector2D position
+- Vector2D position
 + <<Create>> Camera(Vector2D)
++ Vector2D getPosition()
++ void setPosition(Vector2D)
 }
 abstract class com.engine.Component {
-+ GameObject gameObject
+- GameObject gameObject
 + void update(double)
 + void draw(Graphics2D)
 + {abstract}Component copy()
 + void start()
++ GameObject getGameObject()
++ void setGameObject(GameObject)
 }
 class com.util.AssetPool {
-~ {static} Map<String,Sprite> sprites
+- {static} Map<String,Sprite> sprites
+- <<Create>> AssetPool()
 + {static} boolean hasSprite(String)
 + {static} Sprite getSprite(String)
 + {static} void addSprite(String,Sprite)
 }
 class com.util.Vector2D {
-+ double x
+- double x
+- double y
 + <<Create>> Vector2D(double,double)
 + <<Create>> Vector2D()
 + Vector2D copy()
++ double getX()
++ void setX(double)
++ double getY()
++ void setY(double)
 }
 abstract class com.engine.Scene {
-~ String name
-+ Camera camera
-~ List<GameObject> gameObjects
-~ Renderer renderer
-+ void Scene(String)
+- String name
+- Camera camera
+- List<GameObject> gameObjects
+- Renderer renderer
+# <<Create>> Scene(String)
 + void addGameObject(GameObject)
 + {abstract}void init()
 + {abstract}void update(double)
 + {abstract}void draw(Graphics2D)
++ String getName()
++ void setName(String)
++ Camera getCamera()
++ void setCamera(Camera)
++ List<GameObject> getGameObjects()
++ void setGameObjects(List<GameObject>)
++ Renderer getRenderer()
++ void setRenderer(Renderer)
 }
 class com.util.Constants {
 + {static} int SCREEN_WIDTH
@@ -53,24 +71,31 @@ class com.util.Constants {
 + {static} int BUTTON_SPACING_VT
 + {static} int BUTTON_HEIGHT
 + {static} int BUTTON_WIDTH
+- <<Create>> Constants()
 }
 class com.engine.LevelEditorScene {
-+ GameObject player
+- GameObject player
 - GameObject ground
 - Grid grid
 - CameraControls cameraControls
-+ GameObject cursor
+- GameObject cursor
 - MainContainer editingButtons
 + <<Create>> LevelEditorScene(String)
 + void init()
 + void update(double)
 + void draw(Graphics2D)
++ GameObject getPlayer()
++ void setPlayer(GameObject)
++ GameObject getCursor()
++ void setCursor(GameObject)
 }
 class com.components.RigidBody {
-+ Vector2D velocity
+- Vector2D velocity
 + <<Create>> RigidBody(Vector2D)
 + void update(double)
 + Component copy()
++ Vector2D getVelocity()
++ void setVelocity(Vector2D)
 }
 class com.engine.KeyListener {
 - boolean[] keyPressed
@@ -80,37 +105,47 @@ class com.engine.KeyListener {
 }
 class com.components.CameraControls {
 - double prevMx
+- double prevMy
 + <<Create>> CameraControls()
 + void update(double)
 + CameraControls copy()
 }
 class com.util.Time {
-+ {static} double timeStarted
+- {static} double timeStarted
+- <<Create>> Time()
 + {static} double getTime()
++ {static} double getTimeStarted()
++ {static} void setTimeStarted(double)
 }
 class com.engine.LevelScene {
-+ GameObject player
-~ {static} LevelScene currentScene
+- GameObject player
 + <<Create>> LevelScene(String)
 + void init()
 + void update(double)
 + void draw(Graphics2D)
++ GameObject getPlayer()
++ void setPlayer(GameObject)
 }
 class com.components.Grid {
 ~ Camera camera
-+ int width
+- int width
+- int height
 - int numYLines
 - int numXLines
 + <<Create>> Grid()
 + void update(double)
 + void draw(Graphics2D)
 + Component copy()
++ int getWidth()
++ void setWidth(int)
++ int getHeight()
++ void setHeight(int)
 }
 class com.main.Main {
 + {static} void main(String[])
 }
 class com.ui.MainContainer {
-+ List<GameObject> menuItems
+- List<GameObject> menuItems
 + <<Create>> MainContainer()
 + void init()
 + void start()
@@ -119,16 +154,24 @@ class com.ui.MainContainer {
 + void draw(Graphics2D)
 }
 class com.components.Spritesheet {
-+ List<Sprite> sprites
-+ int tileWidth
-+ int tileHeight
-+ int spacing
+- List<Sprite> sprites
+- int tileWidth
+- int tileHeight
+- int spacing
 + <<Create>> Spritesheet(String,int,int,int,int,int)
++ List<Sprite> getSprites()
++ void setSprites(List<Sprite>)
++ int getTileWidth()
++ void setTileWidth(int)
++ int getTileHeight()
++ void setTileHeight(int)
++ int getSpacing()
++ void setSpacing(int)
 }
 class com.engine.GameObject {
 - List<Component> components
 - String name
-+ Transform transform
+- Transform transform
 + <<Create>> GameObject(String,Transform)
 + T getComponent(Class<T>)
 + T removeComponent(Class<T>)
@@ -137,15 +180,21 @@ class com.engine.GameObject {
 + GameObject copy()
 + void update(double)
 + void draw(Graphics2D)
++ Transform getTransform()
++ void setTransform(Transform)
 }
 class com.components.BoxBounds {
-+ double width
+- double width
+- double height
 + <<Create>> BoxBounds(double,double)
 + void update(double)
 + BoxBounds copy()
++ double getWidth()
++ void setWidth(double)
++ double getHeight()
++ void setHeight(double)
 }
 class com.components.SnapToGrid {
-+ Sprite sprite
 - double debounceTime
 - double debounceLeft
 - int width
@@ -154,11 +203,15 @@ class com.components.SnapToGrid {
 + void update(double)
 + void draw(Graphics2D)
 + Component copy()
++ int getWidth()
++ void setWidth(int)
++ int getHeight()
++ void setHeight(int)
 }
 class com.engine.Window {
-+ MouseListener mouseListener
-+ KeyListener keyListener
-+ boolean isInEditor
+- MouseListener mouseListener
+- KeyListener keyListener
+- boolean isInEditor
 - {static} Window window
 - boolean isRunning
 - Scene currentScene
@@ -173,29 +226,70 @@ class com.engine.Window {
 + void draw(Graphics)
 + void renderOffscreen(Graphics)
 + void run()
++ MouseListener getMouseListener()
++ void setMouseListener(MouseListener)
++ KeyListener getKeyListener()
++ void setKeyListener(KeyListener)
++ boolean isInEditor()
++ void setInEditor(boolean)
 }
 class com.components.Sprite {
-+ String file
-+ int width
-+ BufferedImage image
-+ boolean isSubsprite
-+ int row
+- String file
+- int width
+- int height
+- BufferedImage image
+- boolean isSubsprite
+- int row
+- int column
+- int index
 + <<Create>> Sprite(String)
 + <<Create>> Sprite(BufferedImage)
 + <<Create>> Sprite(BufferedImage,int,int,int)
 + void draw(Graphics2D)
 + Component copy()
++ String getFile()
++ void setFile(String)
++ int getWidth()
++ void setWidth(int)
++ int getHeight()
++ void setHeight(int)
++ BufferedImage getImage()
++ void setImage(BufferedImage)
++ boolean isSubsprite()
++ void setSubsprite(boolean)
++ int getRow()
++ void setRow(int)
++ int getColumn()
++ void setColumn(int)
++ int getIndex()
++ void setIndex(int)
 }
 class com.engine.MouseListener {
-+ boolean mousePressed
-+ boolean mouseDragged
-+ float x
-+ float dx
-+ int mouseButton
+- boolean mousePressed
+- boolean mouseDragged
+- float x
+- float y
+- float dx
+- float dy
+- int mouseButton
 + void mousePressed(MouseEvent)
 + void mouseReleased(MouseEvent)
 + void mouseMoved(MouseEvent)
 + void mouseDragged(MouseEvent)
++ boolean isMousePressed()
++ void setMousePressed(boolean)
++ boolean isMouseDragged()
++ void setMouseDragged(boolean)
++ float getX()
++ void setX(float)
++ float getY()
++ void setY(float)
++ float getDx()
++ void setDx(float)
++ float getDy()
++ void setDy(float)
++ int getMouseButton()
++ void setMouseButton(int)
 }
 class com.components.Ground {
 + void update(double)
@@ -204,9 +298,15 @@ class com.components.Ground {
 }
 class com.ui.MenuItem {
 - int x
+- int y
+- int width
+- int height
 - Sprite buttonSprite
-+ boolean isSelected
+- Sprite hoverSprite
+- Sprite imageAttached
+- boolean isSelected
 - int bufferX
+- int bufferY
 + <<Create>> MenuItem(int,int,int,int,Sprite,Sprite)
 + void start()
 + void update(double)
@@ -214,29 +314,52 @@ class com.ui.MenuItem {
 + void draw(Graphics2D)
 }
 class com.components.Player {
-~ Sprite layerOne
-~ Sprite layerTwo
-~ Sprite layerThree
-+ int width
+- Sprite layerOne
+- Sprite layerTwo
+- Sprite layerThree
+- int width
+- int height
 + <<Create>> Player(Sprite,Sprite,Sprite,Color,Color)
 + void draw(Graphics2D)
 + Component copy()
++ Sprite getLayerOne()
++ void setLayerOne(Sprite)
++ Sprite getLayerTwo()
++ void setLayerTwo(Sprite)
++ Sprite getLayerThree()
++ void setLayerThree(Sprite)
++ int getWidth()
++ void setWidth(int)
++ int getHeight()
++ void setHeight(int)
 }
 class com.engine.Renderer {
-~ List<GameObject> gameObjects
-~ Camera camera
+- List<GameObject> gameObjects
+- Camera camera
 + <<Create>> Renderer(Camera)
 + void submit(GameObject)
 + void render(Graphics2D)
++ List<GameObject> getGameObjects()
++ void setGameObjects(List<GameObject>)
++ Camera getCamera()
++ void setCamera(Camera)
 }
 class com.util.Transform {
-+ Vector2D position
-+ double rotation
-+ Vector2D scale
+- Vector2D position
+- double rotation
+- Vector2D scale
 + <<Create>> Transform(Vector2D)
 + Transform copy()
 + String toString()
++ Vector2D getPosition()
++ void setPosition(Vector2D)
++ double getRotation()
++ void setRotation(double)
++ Vector2D getScale()
++ void setScale(Vector2D)
 }
+
+
 
 '------------------------------------------------
 ' Inheritance
