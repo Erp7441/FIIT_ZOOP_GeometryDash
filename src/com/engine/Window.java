@@ -66,7 +66,7 @@ public class Window extends JFrame implements Runnable {
     /**
      * Initializes the default scene for window.
      */
-    public void init(){
+    public final void init(){
         changeScene(1);
     }
 
@@ -84,7 +84,7 @@ public class Window extends JFrame implements Runnable {
      *
      * @param scene scene identifier
      */
-    public void changeScene(int scene){
+    public final void changeScene(int scene){
         switch (scene){
             case 0:
                 isInEditor = true;
