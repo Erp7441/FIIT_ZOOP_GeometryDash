@@ -18,7 +18,4 @@ public class Time {
         return timeStarted;
     }
 
-    public static void setTimeStarted(double timeStarted){
-        Time.timeStarted = timeStarted;
-    }
 }
