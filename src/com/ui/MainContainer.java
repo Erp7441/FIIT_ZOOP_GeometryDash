@@ -19,19 +19,19 @@ import java.util.List;
  */
 public class MainContainer extends Component {
 
-    public List<GameObject> menuItems = null;
+    private List<GameObject> menuItems;
 
     /**
-     * Constructor that inicializes empty ArrayList of GameObject
+     * Constructor that initializes empty ArrayList of GameObject
      * to be displayed in the container.
      */
     public MainContainer() {
-        this.menuItems = new ArrayList<GameObject>(); //! Composition
+        this.menuItems = new ArrayList<>(); //! Composition // TODO make this a List or ArrayList?
         init();
     }
 
     /**
-     * Initializes the container items with textures and formates them in a table layout.
+     * Initializes the container items with textures and formats them in a table layout.
      *
      * @see GameObject GameObject – Base object from which everything is derived from.
      * @see MenuItem MenuItem – Object placed within the bounds of the container.
@@ -42,14 +42,14 @@ public class MainContainer extends Component {
         Spritesheet groundSprites = new Spritesheet("assets/groundSprites.png", 42, 42, 2, 6, 12); //! Composition
         Spritesheet buttonSprites = new Spritesheet("assets/buttonSprites.png", 60, 60, 2, 2, 2); //! Composition
 
-        for (int i = 0; i < groundSprites.sprites.size(); i++){
-            Sprite currentSprite = groundSprites.sprites.get(i);
-            int x = Constants.BUTTON_OFFSET_X + (currentSprite.column * Constants.BUTTON_WIDTH) + (currentSprite.column * Constants.BUTTON_SPACING_HZ);
-            int y = Constants.BUTTON_OFFSET_Y + (currentSprite.row * Constants.BUTTON_HEIGHT) + (currentSprite.row * Constants.BUTTON_SPACING_VT);
+        for (int i = 0; i < groundSprites.getSprites().size(); i++){
+            Sprite currentSprite = groundSprites.getSprites().get(i);
+            int x = Constants.BUTTON_OFFSET_X + (currentSprite.getColumn() * Constants.BUTTON_WIDTH) + (currentSprite.getColumn() * Constants.BUTTON_SPACING_HZ);
+            int y = Constants.BUTTON_OFFSET_Y + (currentSprite.getRow() * Constants.BUTTON_HEIGHT) + (currentSprite.getRow() * Constants.BUTTON_SPACING_VT);
 
             GameObject obj = new GameObject("Generated", new Transform(new Vector2D(x, y))); //! Composition
             obj.addComponent(currentSprite.copy());
-            MenuItem menuItem = new MenuItem(x, y, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, buttonSprites.sprites.get(0), buttonSprites.sprites.get(1)); //! Composition
+            MenuItem menuItem = new MenuItem(x, y, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, buttonSprites.getSprites().get(0), buttonSprites.getSprites().get(1)); //! Composition
             obj.addComponent(menuItem);
             menuItems.add(obj);
         }
@@ -73,7 +73,7 @@ public class MainContainer extends Component {
     /**
      * Updates game objects values.
      *
-     * @param deltaTime Diffrence between last mouse update time and current mouse update time.
+     * @param deltaTime Difference between last mouse update time and current mouse update time.
      */
     @Override
     public void update(double deltaTime){
@@ -94,7 +94,7 @@ public class MainContainer extends Component {
     }
 
     /**
-     * Draws all items in this container on the scrren.
+     * Draws all items in this container on the screen.
      *
      * @param graphics2D 2D graphics handler instance.
      * @see Graphics2D Graphics2D - Handler for 2D operations within a window.

@@ -1,23 +1,23 @@
 package com.util;
 
 /**
- * Transform class containing one vector for postion. One vector for scale and
- * one double value for the amout of rotation. This is used on objects so they can
+ * Transform class containing one vector for position. One vector for scale and
+ * one double value for the amount of rotation. This is used on objects, so they can
  * be placed in different places on the screen.
  */
 public class Transform {
-    public Vector2D position;
-    public double rotation;
-    public Vector2D scale;
+    private Vector2D position;
+    private double rotation;
+    private Vector2D scale;
 
     /**
      * Constructs a new Transform with the given position. Assumes that rotation is 0
      * at the creation of the transform and scale is 1 (no change in scale).
      *
-     * @param position 2D vector containing postion coordinates.
+     * @param position 2D vector containing position coordinates.
      */
     public Transform (Vector2D position) {
-        this.position = position; //! Agregation
+        this.position = position; //! Aggregation
         this.rotation = 0.0;
         this.scale = new Vector2D(1.0, 1.0); //! Composition
     }
@@ -38,6 +38,30 @@ public class Transform {
      */
     @Override
     public String toString() {
-        return "Position (" + position.x + ", " + position.y + ") Rotation (" + rotation + ") Scale (" + scale.x + ", " + scale.y +")";
+        return "Position (" + position.getX() + ", " + position.getY() + ") Rotation (" + rotation + ") Scale (" + scale.getX() + ", " + scale.getY() +")";
+    }
+
+    public Vector2D getPosition(){
+        return position;
+    }
+
+    public void setPosition(Vector2D position){
+        this.position = position;
+    }
+
+    public double getRotation(){
+        return rotation;
+    }
+
+    public void setRotation(double rotation){
+        this.rotation = rotation;
+    }
+
+    public Vector2D getScale(){
+        return scale;
+    }
+
+    public void setScale(Vector2D scale){
+        this.scale = scale;
     }
 }

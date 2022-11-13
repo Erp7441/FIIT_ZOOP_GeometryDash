@@ -8,15 +8,23 @@ import com.util.Vector2D;
  */
 public class Camera {
 
-    public Vector2D position;
+    private Vector2D position;
 
     /**
-     * Inicializes position of the player's camera.
+     * Initializes position of the player's camera.
      *
      * @param position - vector that holds the position of the players camera
      * @see Vector2D Vector2D – Vector that has lenght and a direction within the 2D space.
      */
     public Camera(Vector2D position){
-        this.position = position; //! Agregation
+        this.position = position; //! Aggregation
+    }
+
+    public Vector2D getPosition(){
+        return position;
+    }
+
+    public void setPosition(Vector2D position){
+        this.position = position;
     }
 }

@@ -14,7 +14,11 @@ import com.components.Sprite;
  * @see Sprite Sprite – a piece of 2D texture.
  */
 public class AssetPool {
-    static Map<String, Sprite> sprites = new HashMap<>(); //! Composition
+    private static Map<String, Sprite> sprites = new HashMap<>(); //! Composition
+
+    private AssetPool() {
+        // Private constructor used to hide public implicit constructor of this class.
+    }
 
     /**
      * Checks if asset is already loaded in the assets pool.
@@ -36,14 +40,11 @@ public class AssetPool {
      */
     public static Sprite getSprite(String file) {
         File fileObject = new File(file); //! Composition
-        if(AssetPool.hasSprite(file)){
-            return AssetPool.sprites.get(fileObject.getAbsolutePath().toString());
-        }
-        else{
+        if(!AssetPool.hasSprite(file)){
             Sprite sprite = new Sprite(file); //! Composition
             AssetPool.addSprite(file, sprite);
-            return AssetPool.sprites.get(fileObject.getAbsolutePath());
         }
+        return AssetPool.sprites.get(fileObject.getAbsolutePath());
     }
 
     /**

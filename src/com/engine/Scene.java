@@ -16,10 +16,10 @@ import java.util.List;
  * @see GameObject GameObject – Base object from which everything is derived from.
  */
 public abstract class Scene {
-    String name;
-    public Camera camera;
-    List<GameObject> gameObjects = null;
-    Renderer renderer = null;
+    private String name;
+    private Camera camera;
+    private List<GameObject> gameObjects;
+    private Renderer renderer;
 
     /**
      * Initializes a new scene. Creates a new camera and renderer.
@@ -29,10 +29,10 @@ public abstract class Scene {
      * @see Camera Camera - Player's point of view.
      * @see GameObject GameObject – Base object from which everything is derived from.
      */
-    public void Scene(String name) {
+    protected Scene(String name) {
         this.name = name;
         this.camera = new Camera(new Vector2D()); //! Composition
-        this.gameObjects = new ArrayList<GameObject>(); //! Composition
+        this.gameObjects = new ArrayList<>(); //! Composition // TODO change to List or ArrayList
         this.renderer = new Renderer(this.camera); //! Composition
     }
 
@@ -52,4 +52,36 @@ public abstract class Scene {
     public abstract void init();
     public abstract void update(double deltaTime);
     public abstract void draw(Graphics2D graphics2D);
+
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public Camera getCamera(){
+        return camera;
+    }
+
+    public void setCamera(Camera camera){
+        this.camera = camera;
+    }
+
+    public List<GameObject> getGameObjects(){
+        return gameObjects;
+    }
+
+    public void setGameObjects(List<GameObject> gameObjects){
+        this.gameObjects = gameObjects;
+    }
+
+    public Renderer getRenderer(){
+        return renderer;
+    }
+
+    public void setRenderer(Renderer renderer){
+        this.renderer = renderer;
+    }
 }

@@ -9,11 +9,13 @@ import java.awt.event.MouseEvent;
  * @see MouseAdapter MouseAdapter - Handler for mouse movement events.
  */
 public class MouseListener extends MouseAdapter {
-    public boolean mousePressed = false;
-    public boolean mouseDragged = false;
-    public float x = -1.0f, y = -1.0f;
-    public float dx = -1.0f, dy = -1.0f;
-    public int mouseButton = -1;
+    private boolean mousePressed = false;
+    private boolean mouseDragged = false;
+    private float x = -1.0f;
+    private float y = -1.0f;
+    private float dx = -1.0f;
+    private float dy = -1.0f;
+    private int mouseButton = -1;
 
     /**
      * Sets mouse pressed state to true and sets button code pressed.
@@ -28,7 +30,7 @@ public class MouseListener extends MouseAdapter {
 
     /**
      * Sets mouse pressed state to false, dragged state to false and resets
-     * differencials in position so the mouse won't move anymore.
+     * differentials in position so the mouse won't move anymore.
      *
      * @param mouseEvent the player's mouse event to be processed.
      */
@@ -63,4 +65,59 @@ public class MouseListener extends MouseAdapter {
         this.dy = mouseEvent.getY() - this.y;
     }
 
+    public boolean isMousePressed(){
+        return mousePressed;
+    }
+
+    public void setMousePressed(boolean mousePressed){
+        this.mousePressed = mousePressed;
+    }
+
+    public boolean isMouseDragged(){
+        return mouseDragged;
+    }
+
+    public void setMouseDragged(boolean mouseDragged){
+        this.mouseDragged = mouseDragged;
+    }
+
+    public float getX(){
+        return x;
+    }
+
+    public void setX(float x){
+        this.x = x;
+    }
+
+    public float getY(){
+        return y;
+    }
+
+    public void setY(float y){
+        this.y = y;
+    }
+
+    public float getDx(){
+        return dx;
+    }
+
+    public void setDx(float dx){
+        this.dx = dx;
+    }
+
+    public float getDy(){
+        return dy;
+    }
+
+    public void setDy(float dy){
+        this.dy = dy;
+    }
+
+    public int getMouseButton(){
+        return mouseButton;
+    }
+
+    public void setMouseButton(int mouseButton){
+        this.mouseButton = mouseButton;
+    }
 }

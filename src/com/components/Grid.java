@@ -22,9 +22,10 @@ import java.awt.geom.Line2D;
 public class Grid extends Component {
 
     Camera camera; // Reference to the camera in current scene
-    public int width, height;
-    private int numYLines = 31;
-    private int numXLines = 31;
+    private int width;
+    private int height;
+    private final int numYLines = 31;
+    private final int numXLines = 31;
 
     /**
      * Setting up tile dimensions and current window camera.
@@ -34,13 +35,15 @@ public class Grid extends Component {
      * @see Window Window – Window where the game is being rendered.
      */
     public Grid(){
-        this.camera = Window.getWindow().getCurrentScene().camera; //! Agregation
+        this.camera = Window.getWindow().getCurrentScene().getCamera(); //! Aggregation
         this.width = Constants.TILE_WIDTH;
         this.height = Constants.TILE_HEIGHT;
     }
 
     @Override
-    public void update(double deltaTime) {}
+    public void update(double deltaTime) {
+        // This class doesn't need update method
+    }
 
     /**
      * Draws the grid lines from camera position leftmost visible point to
@@ -59,11 +62,11 @@ public class Grid extends Component {
         graphics2D.setColor(new Color(0.2f, 0.2f, 0.2f, 0.8f));
 
         // Ground line to not overlap with.
-        double bottom = Math.min(Constants.GROUND_Y - camera.position.y, Constants.SCREEN_HEIGHT);
+        double bottom = Math.min(Constants.GROUND_Y - camera.getPosition().getY(), Constants.SCREEN_HEIGHT);
 
         // Starting points for drawing the lines
-        double startX = Math.floor(this.camera.position.x / this.width) * this.width - this.camera.position.x;
-        double startY = Math.floor(this.camera.position.y / this.height) * this.height - this.camera.position.y;
+        double startX = Math.floor(this.camera.getPosition().getX() / this.width) * this.width - this.camera.getPosition().getX();
+        double startY = Math.floor(this.camera.getPosition().getY() / this.height) * this.height - this.camera.getPosition().getY();
 
         for (int column = 0; column <= numYLines; column++){
             graphics2D.draw(new Line2D.Double(startX, 0, startX, bottom));
@@ -71,7 +74,7 @@ public class Grid extends Component {
         }
 
         for (int row = 0; row <= numXLines; row++){
-            if(camera.position.y + startY < Constants.GROUND_Y){
+            if(camera.getPosition().getY() + startY < Constants.GROUND_Y){
                 graphics2D.draw(new Line2D.Double(0, startY, Constants.SCREEN_WIDTH, startY));
                 startY += this.height;
             }
@@ -81,5 +84,21 @@ public class Grid extends Component {
     @Override
     public Component copy() {
         return null; // Copy not needed for this component
+    }
+
+    public int getWidth(){
+        return width;
+    }
+
+    public void setWidth(int width){
+        this.width = width;
+    }
+
+    public int getHeight(){
+        return height;
+    }
+
+    public void setHeight(int height){
+        this.height = height;
     }
 }

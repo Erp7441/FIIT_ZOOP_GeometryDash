@@ -24,27 +24,27 @@ public class Ground extends Component {
      * we will want to apply gravity to the game object by subtracting the position the parent game
      * object that this component is attached to from player height. Additionally, we want the camera
      * to follow the player position. If we are inside the editor then we just want to have the player
-     * at the camera position sitting stacionary in the editor.
+     * at the camera position sitting stationary in the editor.
      *
-     * @param deltaTime Diffrence between last mouse update time and current mouse update time.
+     * @param deltaTime Difference between last mouse update time and current mouse update time.
      * @see GameObject GameObject – Base object from which everything is derived from.
      * @see LevelScene LevelScene - Scene from which the player is playing the game.
      * @see Window Window – Window where the game is being rendered.
      */
     @Override
     public void update(double deltaTime) {
-        if(!Window.getWindow().isInEditor){
-            LevelScene scene = (LevelScene)  Window.getWindow().getCurrentScene(); //! Agregation
-            GameObject player = scene.player; //! Agregation
+        if(!Window.getWindow().isInEditor()){
+            LevelScene scene = (LevelScene)  Window.getWindow().getCurrentScene(); //! Aggregation
+            GameObject player = scene.getPlayer(); //! Aggregation
 
-            if (player.transform.position.y + player.getComponent(BoxBounds.class).height > gameObject.transform.position.y) {
-                player.transform.position.y = gameObject.transform.position.y - player.getComponent(BoxBounds.class).height;
+            if (player.getTransform().getPosition().getY() + player.getComponent(BoxBounds.class).getHeight() > getGameObject().getTransform().getPosition().getY()) {
+                player.getTransform().getPosition().setY(getGameObject().getTransform().getPosition().getY() - player.getComponent(BoxBounds.class).getHeight());
             }
 
-            gameObject.transform.position.x = scene.camera.position.x;
+            getGameObject().getTransform().getPosition().setX(scene.getCamera().getPosition().getX());
         }
         else{
-            gameObject.transform.position.x = Window.getWindow().getCurrentScene().camera.position.x;
+            getGameObject().getTransform().getPosition().setX(Window.getWindow().getCurrentScene().getCamera().getPosition().getX());
         }
 
 
@@ -63,7 +63,7 @@ public class Ground extends Component {
     @Override
     public void draw(Graphics2D graphics2D) {
         graphics2D.setColor(Color.BLACK);
-        graphics2D.drawRect((int) gameObject.transform.position.x, (int) gameObject.transform.position.y, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+        graphics2D.drawRect((int) getGameObject().getTransform().getPosition().getX(), (int) getGameObject().getTransform().getPosition().getY(), Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
     }
 
     @Override

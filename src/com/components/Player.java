@@ -9,7 +9,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.Graphics2D;
 
 /**
- * Player game object component that makes it controlable by the player.
+ * Player game object component that makes it controllable by the player.
  * It is used to generate square texture style, simulating physics and
  * drawing the square to the screen.
  *
@@ -17,10 +17,11 @@ import java.awt.Graphics2D;
  */
 public class Player extends Component {
 
-    Sprite layerOne = null;
-    Sprite layerTwo = null;
-    Sprite layerThree = null;
-    public int width = 0, height = 0;
+    private Sprite layerOne;
+    private Sprite layerTwo;
+    private Sprite layerThree;
+    private int width;
+    private int height;
 
     /**
      * Player constructor gets three texture layers and two colors for layer one and
@@ -36,32 +37,32 @@ public class Player extends Component {
      * @param colorTwo Second color for the player texture.
      * @see Constants Constants – Constants that manipulate the state calculation of the game.
      * @see Sprite Sprite – a piece of 2D texture.
-     * @see Color Color - object that represents the color of the player's textures.'
+     * @see Color Color - object that represents the color of the player's textures.
      */
     public Player(Sprite layerOne, Sprite layerTwo, Sprite layerThree, Color colorOne, Color colorTwo) {
-        int threshold = 200; // Color threshold for chaning the texture color values
-        this.layerOne = layerOne; //! Agregation
-        this.layerTwo = layerTwo; //! Agregation
-        this.layerThree = layerThree; //! Agregation
+        int threshold = 200; // Color threshold for changing the texture color values
+        this.layerOne = layerOne; //! Aggregation
+        this.layerTwo = layerTwo; //! Aggregation
+        this.layerThree = layerThree; //! Aggregation
         this.width = Constants.PLAYER_WIDTH;
         this.height = Constants.PLAYER_HEIGHT;
 
         // Layer one color placement
-        for (int y = 0; y < layerOne.image.getWidth(); y++){
-            for (int x = 0; x < layerOne.image.getHeight(); x++){
-                Color color = new Color(layerOne.image.getRGB(x, y)); //! Composition
+        for (int y = 0; y < layerOne.getImage().getWidth(); y++){
+            for (int x = 0; x < layerOne.getImage().getHeight(); x++){
+                Color color = new Color(layerOne.getImage().getRGB(x, y)); //! Composition
                 if (color.getRed() > threshold && color.getGreen() > threshold && color.getBlue() > threshold){
-                    layerOne.image.setRGB(x, y, colorOne.getRGB());
+                    layerOne.getImage().setRGB(x, y, colorOne.getRGB());
                 }
             }
         }
 
         // Layer two color placement
-        for (int y = 0; y < layerTwo.image.getWidth(); y++){
-            for (int x = 0; x < layerTwo.image.getHeight(); x++){
-                Color color = new Color(layerTwo.image.getRGB(x, y)); //! Composition
+        for (int y = 0; y < layerTwo.getImage().getWidth(); y++){
+            for (int x = 0; x < layerTwo.getImage().getHeight(); x++){
+                Color color = new Color(layerTwo.getImage().getRGB(x, y)); //! Composition
                 if (color.getRed() > threshold && color.getGreen() > threshold && color.getBlue() > threshold){
-                    layerTwo.image.setRGB(x, y, colorTwo.getRGB());
+                    layerTwo.getImage().setRGB(x, y, colorTwo.getRGB());
                 }
             }
         }
@@ -80,17 +81,57 @@ public class Player extends Component {
     public void draw(Graphics2D graphics2D){
         AffineTransform transform = new AffineTransform(); //! Composition
         transform.setToIdentity();
-        transform.translate(gameObject.transform.position.x, gameObject.transform.position.y);
-        transform.rotate(gameObject.transform.rotation, (this.width * gameObject.transform.scale.x) / 2.0, (this.height * gameObject.transform.scale.y) / 2.0);
-        transform.scale(gameObject.transform.scale.x, gameObject.transform.scale.y);
+        transform.translate(getGameObject().getTransform().getPosition().getX(), getGameObject().getTransform().getPosition().getY());
+        transform.rotate(getGameObject().getTransform().getRotation(), (this.width * getGameObject().getTransform().getScale().getX()) / 2.0, (this.height * getGameObject().getTransform().getScale().getY()) / 2.0);
+        transform.scale(getGameObject().getTransform().getScale().getX(), getGameObject().getTransform().getScale().getY());
 
-        graphics2D.drawImage(this.layerOne.image, transform, null);
-        graphics2D.drawImage(this.layerTwo.image, transform, null);
-        graphics2D.drawImage(this.layerThree.image, transform, null);
+        graphics2D.drawImage(this.layerOne.getImage(), transform, null);
+        graphics2D.drawImage(this.layerTwo.getImage(), transform, null);
+        graphics2D.drawImage(this.layerThree.getImage(), transform, null);
     }
 
     @Override
     public Component copy() {
         return null; // Copy not needed for this component
+    }
+
+    public Sprite getLayerOne(){
+        return layerOne;
+    }
+
+    public void setLayerOne(Sprite layerOne){
+        this.layerOne = layerOne;
+    }
+
+    public Sprite getLayerTwo(){
+        return layerTwo;
+    }
+
+    public void setLayerTwo(Sprite layerTwo){
+        this.layerTwo = layerTwo;
+    }
+
+    public Sprite getLayerThree(){
+        return layerThree;
+    }
+
+    public void setLayerThree(Sprite layerThree){
+        this.layerThree = layerThree;
+    }
+
+    public int getWidth(){
+        return width;
+    }
+
+    public void setWidth(int width){
+        this.width = width;
+    }
+
+    public int getHeight(){
+        return height;
+    }
+
+    public void setHeight(int height){
+        this.height = height;
     }
 }

@@ -4,6 +4,11 @@ package com.util;
  * Constants class that contains variables for modifying most aspects of the game.
  */
 public class Constants {
+
+    private Constants() {
+        // Private constructor used to hide public implicit constructor of this class.
+    }
+
     public static final int SCREEN_WIDTH = 1280;
     public static final int SCREEN_HEIGHT = 720;
     public static final String SCREEN_TITLE = "Geometry Dash";

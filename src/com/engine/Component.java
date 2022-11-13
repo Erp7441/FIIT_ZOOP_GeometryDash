@@ -9,13 +9,13 @@ import java.awt.Graphics2D;
  * @param <T> Indicates generic type of component. This means type can be closer specified at compile time.
  */
 public abstract class Component<T> {
-    public GameObject gameObject;
+    private GameObject gameObject;
 
     /**
      * Update function that will be called when the component
      * values need to be updated in the game.
      *
-     * @param deltaTime Diffrence between last mouse update time and current mouse update time.
+     * @param deltaTime Difference between last mouse update time and current mouse update time.
      */
     public void update(double deltaTime){}
 
@@ -28,4 +28,12 @@ public abstract class Component<T> {
     public void draw(Graphics2D graphics2D){}
     public abstract Component copy();
     public void start(){}
+
+    public GameObject getGameObject(){
+        return gameObject;
+    }
+
+    public void setGameObject(GameObject gameObject){
+        this.gameObject = gameObject;
+    }
 }

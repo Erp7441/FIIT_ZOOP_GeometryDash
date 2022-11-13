@@ -13,12 +13,12 @@ import java.awt.Graphics2D;
  * in the game.
  */
 public class GameObject {
-    private List<Component> components = null;
-    private String name = null;
-    public Transform transform = null;
+    private List<Component> components;
+    private String name;
+    private Transform transform;
 
     /**
-     * Inicializes the game object
+     * Initializes the game object
      *
      * @param name name of the game object for debugging purposes.
      * @param transform Object that has two attributes. One vector for position and one vector for rotation.
@@ -65,7 +65,7 @@ public class GameObject {
                 return null;
             }
         }
-        return null;
+        return null; // TODO refactor this method
     }
 
     /**
@@ -84,7 +84,7 @@ public class GameObject {
      */
     public void addComponent(Component component) {
         components.add(component);
-        component.gameObject = this;
+        component.setGameObject(this);
     }
 
     /**
@@ -108,7 +108,7 @@ public class GameObject {
     /**
      * Updates all components of the game object.
      *
-     * @param deltaTime Diffrence between last mouse update time and current mouse update time.
+     * @param deltaTime Difference between last mouse update time and current mouse update time.
      */
     public void update(double deltaTime){
         for (Component component : components) {
@@ -126,5 +126,13 @@ public class GameObject {
         for (Component component : components) {
             component.draw(graphics2D);
         }
+    }
+
+    public Transform getTransform(){
+        return transform;
+    }
+
+    public void setTransform(Transform transform){
+        this.transform = transform;
     }
 }

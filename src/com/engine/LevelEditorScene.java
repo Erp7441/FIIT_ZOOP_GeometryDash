@@ -16,11 +16,11 @@ import java.awt.Graphics2D;
  */
 public class LevelEditorScene extends Scene {
 
-    public GameObject player = null;
+    private GameObject player = null;
     private GameObject ground = null;
     private Grid grid = null;
     private CameraControls cameraControls = null;
-    public GameObject cursor = null;
+    private GameObject cursor = null;
     private MainContainer editingButtons = new MainContainer(); //! Composition
 
     /**
@@ -28,7 +28,7 @@ public class LevelEditorScene extends Scene {
      * @param name The name of the object. Only used for debugging purposes.
      */
     public LevelEditorScene(String name) {
-        super.Scene(name);
+        super(name);
 
     }
 
@@ -41,7 +41,7 @@ public class LevelEditorScene extends Scene {
      * @see Spritesheet Spritesheet - multiple pieces of 2D textures
      * @see Player Player - object that is controlled by the player.
      * @see Constants Constants – Constants that manipulate the state calculation of the game.
-     * @see Color Color - object that represents the color of the player's textures.'
+     * @see Color Color - object that represents the color of the player's textures.
      */
     @Override
     public void init() {
@@ -59,9 +59,9 @@ public class LevelEditorScene extends Scene {
 
         player = new GameObject("Some game object", new Transform(new Vector2D(300.0,300.0))); //! Composition
         Player playerComp = new Player( //! Composition
-                layerOne.sprites.get(0),
-                layerTwo.sprites.get(0),
-                layerThree.sprites.get(0),
+                layerOne.getSprites().get(0),
+                layerTwo.getSprites().get(0),
+                layerThree.getSprites().get(0),
                 Color.RED,
                 Color.GREEN
         );
@@ -77,18 +77,18 @@ public class LevelEditorScene extends Scene {
      * Updates the all game objects in the scene, after that it updates camera,
      * grid, editing buttons and cursor.
      *
-     * @param deltaTime Diffrence between last mouse update time and current mouse update time.
+     * @param deltaTime Difference between last mouse update time and current mouse update time.
      * @see GameObject GameObject – Base object from which everything is derived from.
      * @see Constants Constants – Constants that manipulate the state calculation of the game.
      */
     @Override
     public void update(double deltaTime) {
 
-        if (camera.position.y - ground.transform.position.y > Constants.CAMERA_OFFSET_GROUND_Y){
-            camera.position.y = Constants.CAMERA_OFFSET_GROUND_Y;
+        if (getCamera().getPosition().getY() - ground.getTransform().getPosition().getY() > Constants.CAMERA_OFFSET_GROUND_Y){
+            getCamera().getPosition().setY(Constants.CAMERA_OFFSET_GROUND_Y);
         }
 
-        for (GameObject gameObject : gameObjects){
+        for (GameObject gameObject : getGameObjects()){
             gameObject.update(deltaTime);
         }
 
@@ -105,16 +105,32 @@ public class LevelEditorScene extends Scene {
      * @param graphics2D 2D graphics handler instance.
      * @see Graphics2D Graphics2D - Handler for 2D operations within a window.
      * @see Constants Constants – Constants that manipulate the state calculation of the game.
-     * @see Color Color - object that represents the color of the player's textures.'
+     * @see Color Color - object that represents the color of the player's textures.
      */
     @Override
     public void draw(Graphics2D graphics2D) {
         graphics2D.setColor(Color.DARK_GRAY);
         graphics2D.fillRect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
-        renderer.render(graphics2D);
+        getRenderer().render(graphics2D);
         grid.draw(graphics2D);
         editingButtons.draw(graphics2D);
         cursor.draw(graphics2D);
+    }
+
+    public GameObject getPlayer(){
+        return player;
+    }
+
+    public void setPlayer(GameObject player){
+        this.player = player;
+    }
+
+    public GameObject getCursor(){
+        return cursor;
+    }
+
+    public void setCursor(GameObject cursor){
+        this.cursor = cursor;
     }
 }

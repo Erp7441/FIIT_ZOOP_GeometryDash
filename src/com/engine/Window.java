@@ -4,6 +4,7 @@ import com.util.Constants;
 import com.util.Time;
 
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -23,9 +24,9 @@ import java.awt.Image;
  */
 public class Window extends JFrame implements Runnable {
 
-    public MouseListener mouseListener = null;
-    public KeyListener keyListener = null;
-    public boolean isInEditor = true;
+    private MouseListener mouseListener;
+    private KeyListener keyListener;
+    private boolean isInEditor = true;
 
     private static Window window = null;
     private boolean isRunning = true;
@@ -41,7 +42,7 @@ public class Window extends JFrame implements Runnable {
     private Graphics doubleBufferGraphics = null;
 
     /**
-     * Initializes the window with all paramters needed for creation (size, visibility, etc...).
+     * Initializes the window with all parameters needed for creation (size, visibility, etc...).
      *
      * @see Constants Constants – Constants that manipulate the state calculation of the game.
      * @see MouseListener MouseListener - Responsible for handling player mouse movement.
@@ -55,7 +56,7 @@ public class Window extends JFrame implements Runnable {
         this.setTitle(Constants.SCREEN_TITLE);
         this.setResizable(false);
         this.setVisible(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.addKeyListener(keyListener);
         this.addMouseListener(mouseListener);
         this.addMouseMotionListener(mouseListener);
@@ -66,7 +67,7 @@ public class Window extends JFrame implements Runnable {
      * Initializes the default scene for window.
      */
     public void init(){
-        changeScene(0);
+        changeScene(1);
     }
 
     /**
@@ -116,7 +117,7 @@ public class Window extends JFrame implements Runnable {
     /**
      * Updates current scene and draws all objects in the scene.
      *
-     * @param deltaTime  Diffrence between last mouse update time and current mouse update time.
+     * @param deltaTime  Difference between last mouse update time and current mouse update time.
      */
     public void update(double deltaTime){
         currentScene.update(deltaTime);
@@ -157,7 +158,7 @@ public class Window extends JFrame implements Runnable {
     public void run(){
         double lastFrameTime = 0.0;
         try{
-            // Game loop;
+            // Game loop
             while(isRunning){
                 double time = Time.getTime();
                 double deltaTime = time - lastFrameTime;
@@ -168,5 +169,29 @@ public class Window extends JFrame implements Runnable {
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public MouseListener getMouseListener(){
+        return mouseListener;
+    }
+
+    public void setMouseListener(MouseListener mouseListener){
+        this.mouseListener = mouseListener;
+    }
+
+    public KeyListener getKeyListener(){
+        return keyListener;
+    }
+
+    public void setKeyListener(KeyListener keyListener){
+        this.keyListener = keyListener;
+    }
+
+    public boolean isInEditor(){
+        return isInEditor;
+    }
+
+    public void setInEditor(boolean inEditor){
+        isInEditor = inEditor;
     }
 }

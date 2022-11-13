@@ -14,22 +14,27 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 /**
- * The scene that displays level. This scene is where the game happends. It is
- * responsible for rendering all objects, calling apropriate methods on them.
+ * The scene that displays level. This scene is where the game happens. It is
+ * responsible for rendering all objects, calling appropriate methods on them.
  *
  * @see Scene Scene - abstract class for creating scene objects.
  */
 public class LevelScene extends Scene {
 
-    public GameObject player = null;
-    public LevelScene(String name) {
-        super.Scene(name);
-    }
+    private GameObject player = null;
     static LevelScene currentScene = null;
 
     /**
+     * Initializes the scene with name.
+     * @param name The name of the object. Only used for debugging purposes.
+     */
+    public LevelScene(String name) {
+        super(name);
+    }
+
+    /**
      * Initializes the scene with textures, renders ground, creates player object, and
-     * adds apropriate components on it.
+     * adds appropriate components on it.
      */
     @Override
     public void init() {
@@ -42,9 +47,9 @@ public class LevelScene extends Scene {
         // Creating player
         player = new GameObject("Some game object", new Transform(new Vector2D(300.0,300.0))); //! Composition
         Player playerComp = new Player( //! Composition
-                layerOne.sprites.get(0),
-                layerTwo.sprites.get(0),
-                layerThree.sprites.get(0),
+                layerOne.getSprites().get(0),
+                layerTwo.getSprites().get(0),
+                layerThree.getSprites().get(0),
                 Color.RED,
                 Color.GREEN
         );
@@ -62,30 +67,30 @@ public class LevelScene extends Scene {
     /**
      * Updates the all game objects in the scene, after that it updates player position.
      *
-     * @param deltaTime Diffrence between last mouse update time and current mouse update time.
+     * @param deltaTime Difference between last mouse update time and current mouse update time.
      * @see GameObject GameObject – Base object from which everything is derived from.
      * @see Constants Constants – Constants that manipulate the state calculation of the game.
      */
     @Override
     public void update(double deltaTime) {
 
-        if (player.transform.position.x - camera.position.x > Constants.CAMERA_OFFSET_X){
-            camera.position.x = player.transform.position.x - Constants.CAMERA_OFFSET_X;
+        if (player.getTransform().getPosition().getX() - getCamera().getPosition().getX() > Constants.CAMERA_OFFSET_X){
+            getCamera().getPosition().setX(player.getTransform().getPosition().getX() - Constants.CAMERA_OFFSET_X);
         }
 
-        if (player.transform.position.y - camera.position.y > Constants.CAMERA_OFFSET_Y){
-            camera.position.y = player.transform.position.y - Constants.CAMERA_OFFSET_Y;
+        if (player.getTransform().getPosition().getY() - getCamera().getPosition().getY() > Constants.CAMERA_OFFSET_Y){
+            getCamera().getPosition().setY(player.getTransform().getPosition().getY() - Constants.CAMERA_OFFSET_Y);
         }
 
-        if (camera.position.y > Constants.CAMERA_OFFSET_GROUND_Y){
-            camera.position.y = Constants.CAMERA_OFFSET_GROUND_Y;
+        if (getCamera().getPosition().getY() > Constants.CAMERA_OFFSET_GROUND_Y){
+            getCamera().getPosition().setY(Constants.CAMERA_OFFSET_GROUND_Y);
         }
 
-        for (GameObject gameObject : gameObjects){
+        for (GameObject gameObject : getGameObjects()){
             gameObject.update(deltaTime);
         }
-        //player.transform.rotation += deltaTime * 1f; // TODO remove this
-        player.transform.position.y += deltaTime * 30f;
+
+        player.getTransform().getPosition().setY(player.getTransform().getPosition().getY() + deltaTime * 30f);
     }
 
     /**
@@ -94,13 +99,21 @@ public class LevelScene extends Scene {
      * @param graphics2D 2D graphics handler instance.
      * @see Graphics2D Graphics2D - Handler for 2D operations within a window.
      * @see Constants Constants – Constants that manipulate the state calculation of the game.
-     * @see Color Color - object that represents the color of the player's textures.'
+     * @see Color Color - object that represents the color of the player's textures.
      */
     @Override
     public void draw(Graphics2D graphics2D) {
         graphics2D.setColor(Color.DARK_GRAY);
         graphics2D.fillRect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
-        renderer.render(graphics2D);
+        getRenderer().render(graphics2D);
+    }
+
+    public GameObject getPlayer(){
+        return player;
+    }
+
+    public void setPlayer(GameObject player){
+        this.player = player;
     }
 }

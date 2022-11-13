@@ -7,8 +7,8 @@ import java.awt.event.KeyEvent;
  * Responsible for handling key events from the player.
  */
 public class KeyListener extends KeyAdapter implements java.awt.event.KeyListener {
-    // Array of boolean values. The index maches key code and value maches if pressed state.
-    private boolean keyPressed[] = new boolean[128];
+    // Array of boolean values. The index matches key code and value matches if pressed state.
+    private boolean[] keyPressed = new boolean[128];
 
     /**
      * Sets the corresponding key value to true if the key is pressed

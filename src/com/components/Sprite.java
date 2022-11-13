@@ -11,6 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import java.io.File;
+import java.nio.file.FileAlreadyExistsException;
 
 /**
  * Sprite game object component that can be used to load and draw assets in
@@ -20,11 +21,14 @@ import java.io.File;
  * @see Component Component – An add-on to the game object.
  */
 public class Sprite extends Component {
-    public String file;
-    public int width, height;
-    public BufferedImage image;
-    public boolean isSubsprite = false;
-    public int row, column, index;
+    private String file;
+    private int width;
+    private int height;
+    private BufferedImage image;
+    private boolean isSubsprite = false;
+    private int row;
+    private int column;
+    private int index;
 
     /**
      * Loads the sprite image from the specified file to assets pool. If the sprite image
@@ -39,7 +43,7 @@ public class Sprite extends Component {
         try{
 
             if(AssetPool.hasSprite(this.file)){
-                throw new Exception("Asset already exists" + this.file);
+                throw new FileAlreadyExistsException("Asset already exists" + this.file);
             }
             this.image = ImageIO.read(new File(file));
             this.width = image.getWidth();
@@ -55,7 +59,7 @@ public class Sprite extends Component {
      * @param image Sprite texture inside the game asset's folder.
      */
     public Sprite(BufferedImage image){
-        this.image = image; //! Agregation
+        this.image = image; //! Aggregation
         this.width = image.getWidth();
         this.height = image.getHeight();
     }
@@ -65,7 +69,7 @@ public class Sprite extends Component {
      * @param image Sprite texture inside the game asset's folder.
      */
     public Sprite(BufferedImage image, int row, int column, int index){
-        this.image = image; //! Agregation
+        this.image = image; //! Aggregation
         this.width = image.getWidth();
         this.height = image.getHeight();
         this.row = row;
@@ -81,7 +85,7 @@ public class Sprite extends Component {
      */
     @Override
     public void draw(Graphics2D graphics2D){
-        graphics2D.drawImage(this.image, (int) gameObject.transform.position.x, (int) gameObject.transform.position.y, this.width, this.height, null);
+        graphics2D.drawImage(this.image, (int) getGameObject().getTransform().getPosition().getX(), (int) getGameObject().getTransform().getPosition().getY(), this.width, this.height, null);
     }
 
     /**
@@ -95,5 +99,69 @@ public class Sprite extends Component {
         else{
             return new Sprite(this.image, this.row, this.column, this.index);
         }
+    }
+
+    public String getFile(){
+        return file;
+    }
+
+    public void setFile(String file){
+        this.file = file;
+    }
+
+    public int getWidth(){
+        return width;
+    }
+
+    public void setWidth(int width){
+        this.width = width;
+    }
+
+    public int getHeight(){
+        return height;
+    }
+
+    public void setHeight(int height){
+        this.height = height;
+    }
+
+    public BufferedImage getImage(){
+        return image;
+    }
+
+    public void setImage(BufferedImage image){
+        this.image = image;
+    }
+
+    public boolean isSubsprite(){
+        return isSubsprite;
+    }
+
+    public void setSubsprite(boolean subsprite){
+        isSubsprite = subsprite;
+    }
+
+    public int getRow(){
+        return row;
+    }
+
+    public void setRow(int row){
+        this.row = row;
+    }
+
+    public int getColumn(){
+        return column;
+    }
+
+    public void setColumn(int column){
+        this.column = column;
+    }
+
+    public int getIndex(){
+        return index;
+    }
+
+    public void setIndex(int index){
+        this.index = index;
     }
 }

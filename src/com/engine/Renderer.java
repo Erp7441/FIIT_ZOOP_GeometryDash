@@ -16,8 +16,8 @@ import java.util.List;
  * @see GameObject GameObject – Base object from which everything is derived from.
  */
 public class Renderer {
-    List<GameObject> gameObjects = null;
-    Camera camera = null;
+    private List<GameObject> gameObjects;
+    private Camera camera;
 
     /**
      * Constructor for the Renderer. Sets the camera used for rendering.
@@ -28,7 +28,7 @@ public class Renderer {
      */
     public Renderer(Camera camera) {
         this.camera = camera;
-        this.gameObjects = new ArrayList<GameObject>(); //! Kompozcicia
+        this.gameObjects = new ArrayList<>(); //! Composition // TODO change to List or ArrayList?
     }
 
     /**
@@ -56,16 +56,32 @@ public class Renderer {
     public void render(Graphics2D graphics2D){
         for (GameObject gameObject : gameObjects){
             // Copies old transform of game object
-            Transform oldTransform = new Transform(gameObject.transform.position);
-            oldTransform.rotation = gameObject.transform.rotation;
-            oldTransform.scale = new Vector2D(gameObject.transform.scale.x, gameObject.transform.scale.y);
+            Transform oldTransform = new Transform(gameObject.getTransform().getPosition());
+            oldTransform.setRotation(gameObject.getTransform().getRotation());
+            oldTransform.setScale(new Vector2D(gameObject.getTransform().getScale().getX(), gameObject.getTransform().getScale().getY()));
 
             // Moves the object to a position relative to the camera position.
-            gameObject.transform.position = new Vector2D(gameObject.transform.position.x - camera.position.x, gameObject.transform.position.y - camera.position.y);
+            gameObject.getTransform().setPosition(new Vector2D(gameObject.getTransform().getPosition().getX() - camera.getPosition().getX(), gameObject.getTransform().getPosition().getY() - camera.getPosition().getY()));
             // Draws the object
             gameObject.draw(graphics2D);
             // Moves the game object back where it was before
-            gameObject.transform = oldTransform;
+            gameObject.setTransform(oldTransform);
         }
+    }
+
+    public List<GameObject> getGameObjects(){
+        return gameObjects;
+    }
+
+    public void setGameObjects(List<GameObject> gameObjects){
+        this.gameObjects = gameObjects;
+    }
+
+    public Camera getCamera(){
+        return camera;
+    }
+
+    public void setCamera(Camera camera){
+        this.camera = camera;
     }
 }

@@ -13,7 +13,7 @@ import com.util.Vector2D;
  * @see Component Component – An add-on to the game object.
  */
 public class RigidBody extends Component {
-    public Vector2D velocity;
+    private Vector2D velocity;
 
     /**
      * Set's the velocity of the rigid body's parent game object on component construction.
@@ -21,28 +21,36 @@ public class RigidBody extends Component {
      * @see Vector2D Vector2D – Vector that has lenght and a direction within the 2D space.
      */
     public RigidBody(Vector2D velocity) {
-        this.velocity = velocity; //! Agregation
+        this.velocity = velocity; //! Aggregation
     }
 
     /**
      * Applies the velocity to parent game object over time.
-     * @param deltaTime Diffrence between last mouse update time and current mouse update time.
+     * @param deltaTime Difference between last mouse update time and current mouse update time.
      * @see Constants Constants – Constants that manipulate the state calculation of the game.
      */
     @Override
     public void update(double deltaTime){
-        gameObject.transform.position.x += velocity.x * deltaTime;
-        gameObject.transform.position.y += velocity.y * deltaTime;
+        getGameObject().getTransform().getPosition().setX(getGameObject().getTransform().getPosition().getX() + velocity.getX() * deltaTime);
+        getGameObject().getTransform().getPosition().setY(getGameObject().getTransform().getPosition().getY() + velocity.getY() * deltaTime);
 
-        velocity.y += Constants.GRAVITY * deltaTime;
+        velocity.setY(velocity.getY() + Constants.GRAVITY * deltaTime);
 
-        if (Math.abs(velocity.y) > Constants.TERMINAL_VELOCITY){
-            velocity.y = Math.signum(velocity.y) * Constants.TERMINAL_VELOCITY;
+        if (Math.abs(velocity.getY()) > Constants.TERMINAL_VELOCITY){
+            velocity.setY(Math.signum(velocity.getY()) * Constants.TERMINAL_VELOCITY);
         }
     }
 
     @Override
     public Component copy() {
         return null; // Copy not needed for this component
+    }
+
+    public Vector2D getVelocity(){
+        return velocity;
+    }
+
+    public void setVelocity(Vector2D velocity){
+        this.velocity = velocity;
     }
 }

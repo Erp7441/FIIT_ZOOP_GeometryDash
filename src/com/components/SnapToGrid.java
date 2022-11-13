@@ -21,12 +21,10 @@ import java.awt.event.MouseEvent;
  * @see Component Component – An add-on to the game object.
  */
 public class SnapToGrid  extends Component {
-    public Sprite sprite = null; // TODO remove?
-
-    private double debounceTime = 0.2;
+    private final double debounceTime = 0.2;
     private double debounceLeft = 0.0;
-    private int width = 0;
-    private int height = 0;
+    private int width;
+    private int height;
 
     public SnapToGrid(int width, int height) {
         this.width = width;
@@ -44,7 +42,7 @@ public class SnapToGrid  extends Component {
      * setting its transform to the preview object transform. Lastly it will add the newly created object
      * to scene game objects list.
      *
-     * @param deltaTime Diffrence between last mouse update time and current mouse update time.
+     * @param deltaTime Difference between last mouse update time and current mouse update time.
      * @see Window Window – Window where the game is being rendered.
      * @see Constants Constants – Constants that manipulate the state calculation of the game.
      * @see Vector2D Vector2D – Vector that has lenght and a direction within the 2D space.
@@ -53,16 +51,16 @@ public class SnapToGrid  extends Component {
     public void update(double deltaTime){
         debounceLeft -= deltaTime;
 
-        if(this.gameObject.getComponent(Sprite.class) != null){
-            double x = Math.floor((Window.getWindow().mouseListener.x + Window.getWindow().getCurrentScene().camera.position.x + Window.getWindow().mouseListener.dx) / this.width);
-            double y = Math.floor((Window.getWindow().mouseListener.y + Window.getWindow().getCurrentScene().camera.position.y + Window.getWindow().mouseListener.dy) / this.height);
-            this.gameObject.transform.position.x = x * this.width - Window.getWindow().getCurrentScene().camera.position.x;
-            this.gameObject.transform.position.y = y * this.height - Window.getWindow().getCurrentScene().camera.position.y;
+        if(this.getGameObject().getComponent(Sprite.class) != null){
+            double x = Math.floor((Window.getWindow().getMouseListener().getX() + Window.getWindow().getCurrentScene().getCamera().getPosition().getX() + Window.getWindow().getMouseListener().getDx()) / this.width);
+            double y = Math.floor((Window.getWindow().getMouseListener().getY() + Window.getWindow().getCurrentScene().getCamera().getPosition().getY() + Window.getWindow().getMouseListener().getDy()) / this.height);
+            this.getGameObject().getTransform().getPosition().setX(x * this.width - Window.getWindow().getCurrentScene().getCamera().getPosition().getX());
+            this.getGameObject().getTransform().getPosition().setY(y * this.height - Window.getWindow().getCurrentScene().getCamera().getPosition().getY());
 
-            if(Window.getWindow().mouseListener.y < Constants.BUTTON_OFFSET_Y && Window.getWindow().mouseListener.mousePressed && Window.getWindow().mouseListener.mouseButton == MouseEvent.BUTTON1 && debounceLeft < 0) {
+            if(Window.getWindow().getMouseListener().getY() < Constants.BUTTON_OFFSET_Y && Window.getWindow().getMouseListener().isMousePressed() && Window.getWindow().getMouseListener().getMouseButton() == MouseEvent.BUTTON1 && debounceLeft < 0) {
                 debounceLeft = debounceTime;
-                GameObject object = gameObject.copy();
-                object.transform.position = new Vector2D(x * this.width, y * this.height);
+                GameObject object = getGameObject().copy();
+                object.getTransform().setPosition(new Vector2D(x * this.width, y * this.height));
                 Window.getWindow().getCurrentScene().addGameObject(object);
             }
         }
@@ -70,7 +68,7 @@ public class SnapToGrid  extends Component {
 
     /**
      *  Draws the currently selected game object sprite on the screen grid cell with
-     *  specified amout of alpha to indicate that it is not yet placed in the grid cell.
+     *  specified amount of alpha to indicate that it is not yet placed in the grid cell.
      *
      * @param graphics2D 2D graphics handler instance.
      * @see Graphics2D Graphics2D - Handler for 2D operations within a window.
@@ -78,11 +76,11 @@ public class SnapToGrid  extends Component {
      */
     @Override
     public void draw(Graphics2D graphics2D){
-        Sprite sprite = gameObject.getComponent(Sprite.class);
+        Sprite sprite = getGameObject().getComponent(Sprite.class);
         if(sprite != null){
             AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
             graphics2D.setComposite(alphaComposite);
-            graphics2D.drawImage(sprite.image, (int) gameObject.transform.position.x, (int) gameObject.transform.position.y, sprite.width, sprite.height, null);
+            graphics2D.drawImage(sprite.getImage(), (int) getGameObject().getTransform().getPosition().getX(), (int) getGameObject().getTransform().getPosition().getY(), sprite.getWidth(), sprite.getHeight(), null);
             alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.f);
             graphics2D.setComposite(alphaComposite);
 
@@ -92,5 +90,21 @@ public class SnapToGrid  extends Component {
     @Override
     public Component copy() {
         return null; // Copy not needed for this component
+    }
+
+    public int getWidth(){
+        return width;
+    }
+
+    public void setWidth(int width){
+        this.width = width;
+    }
+
+    public int getHeight(){
+        return height;
+    }
+
+    public void setHeight(int height){
+        this.height = height;
     }
 }

@@ -9,10 +9,10 @@ import java.util.List;
  * textures to the asset pool.
  */
 public class Spritesheet {
-    public List<Sprite> sprites = null;
-    public int tileWidth = 0;
-    public int tileHeight = 0;
-    public int spacing = 0;
+    private List<Sprite> sprites;
+    private int tileWidth;
+    private int tileHeight;
+    private int spacing;
 
     /**
      *  Loads spritesheet splitting it into a multiple textures and then adding them to the asset pool
@@ -43,7 +43,7 @@ public class Spritesheet {
             for (int column = 0; column < columns; column++) {
                 int imageX = (column * tileWidth) + (column * spacing);
                 int imageY = (row * tileHeight) + (row * spacing);
-                sprites.add(new Sprite(parent.image.getSubimage(imageX, imageY, tileWidth, tileHeight), row, column, count)); //! Composition
+                sprites.add(new Sprite(parent.getImage().getSubimage(imageX, imageY, tileWidth, tileHeight), row, column, count)); //! Composition
                 count++;
                 if (count > size - 1){
                     break;
@@ -52,5 +52,37 @@ public class Spritesheet {
             row++;
         }
 
+    }
+
+    public List<Sprite> getSprites(){
+        return sprites;
+    }
+
+    public void setSprites(List<Sprite> sprites){
+        this.sprites = sprites;
+    }
+
+    public int getTileWidth(){
+        return tileWidth;
+    }
+
+    public void setTileWidth(int tileWidth){
+        this.tileWidth = tileWidth;
+    }
+
+    public int getTileHeight(){
+        return tileHeight;
+    }
+
+    public void setTileHeight(int tileHeight){
+        this.tileHeight = tileHeight;
+    }
+
+    public int getSpacing(){
+        return spacing;
+    }
+
+    public void setSpacing(int spacing){
+        this.spacing = spacing;
     }
 }
