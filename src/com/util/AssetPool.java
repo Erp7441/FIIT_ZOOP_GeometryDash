@@ -39,9 +39,9 @@ public class AssetPool {
      * @see Sprite Sprite – a piece of 2D texture.
      */
     public static Sprite getSprite(String file) {
-        File fileObject = new File(file); //! Composition
+        File fileObject = new File(file);
         if(!AssetPool.hasSprite(file)){
-            Sprite sprite = new Sprite(file); //! Composition
+            Sprite sprite = new Sprite(file);
             AssetPool.addSprite(file, sprite);
         }
         return AssetPool.sprites.get(fileObject.getAbsolutePath());
@@ -59,7 +59,7 @@ public class AssetPool {
      * @see Sprite Sprite – a piece of 2D texture.
      */
     public static void addSprite(String file, Sprite sprite) {
-        File fileObject = new File(file); //! Composition
+        File fileObject = new File(file);
         if(!AssetPool.hasSprite(fileObject.getAbsolutePath())){
             AssetPool.sprites.put(fileObject.getAbsolutePath(), sprite);
         }

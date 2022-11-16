@@ -39,13 +39,13 @@ public class LevelScene extends Scene {
     public void init() {
 
         // Sprites
-        Spritesheet layerOne = new Spritesheet("assets/player/layerOne.png", 42, 42, 2, 13, 13 * 5); //! Composition
-        Spritesheet layerTwo = new Spritesheet("assets/player/layerTwo.png", 42, 42, 2, 13, 13 * 5); //! Composition
-        Spritesheet layerThree = new Spritesheet("assets/player/layerThree.png", 42, 42, 2, 13, 13 * 5); //! Composition
+        Spritesheet layerOne = new Spritesheet("assets/player/layerOne.png", 42, 42, 2, 13, 13 * 5);
+        Spritesheet layerTwo = new Spritesheet("assets/player/layerTwo.png", 42, 42, 2, 13, 13 * 5);
+        Spritesheet layerThree = new Spritesheet("assets/player/layerThree.png", 42, 42, 2, 13, 13 * 5);
 
         // Creating player
         player = new GameObject("Some game object", new Transform(new Vector2D(300.0,300.0))); //! Composition
-        Player playerComp = new Player( //! Composition
+        Player playerComp = new Player(
                 layerOne.getSprites().get(0),
                 layerTwo.getSprites().get(0),
                 layerThree.getSprites().get(0),
@@ -58,7 +58,7 @@ public class LevelScene extends Scene {
         addGameObject(player);
 
         // Creating ground
-        GameObject ground = new GameObject("Ground", new Transform(new Vector2D(0, Constants.GROUND_Y))); //! Composition
+        GameObject ground = new GameObject("Ground", new Transform(new Vector2D(0, Constants.GROUND_Y)));
         ground.addComponent(new Ground());
         addGameObject(ground);
     }

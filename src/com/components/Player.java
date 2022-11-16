@@ -50,7 +50,7 @@ public class Player extends Component {
         // Layer one color placement
         for (int y = 0; y < layerOne.getImage().getWidth(); y++){
             for (int x = 0; x < layerOne.getImage().getHeight(); x++){
-                Color color = new Color(layerOne.getImage().getRGB(x, y)); //! Composition
+                Color color = new Color(layerOne.getImage().getRGB(x, y));
                 if (color.getRed() > threshold && color.getGreen() > threshold && color.getBlue() > threshold){
                     layerOne.getImage().setRGB(x, y, colorOne.getRGB());
                 }
@@ -60,7 +60,7 @@ public class Player extends Component {
         // Layer two color placement
         for (int y = 0; y < layerTwo.getImage().getWidth(); y++){
             for (int x = 0; x < layerTwo.getImage().getHeight(); x++){
-                Color color = new Color(layerTwo.getImage().getRGB(x, y)); //! Composition
+                Color color = new Color(layerTwo.getImage().getRGB(x, y));
                 if (color.getRed() > threshold && color.getGreen() > threshold && color.getBlue() > threshold){
                     layerTwo.getImage().setRGB(x, y, colorTwo.getRGB());
                 }
@@ -79,7 +79,7 @@ public class Player extends Component {
      */
     @Override
     public void draw(Graphics2D graphics2D){
-        AffineTransform transform = new AffineTransform(); //! Composition
+        AffineTransform transform = new AffineTransform();
         transform.setToIdentity();
         transform.translate(getGameObject().getTransform().getPosition().getX(), getGameObject().getTransform().getPosition().getY());
         transform.rotate(getGameObject().getTransform().getRotation(), (this.width * getGameObject().getTransform().getScale().getX()) / 2.0, (this.height * getGameObject().getTransform().getScale().getY()) / 2.0);

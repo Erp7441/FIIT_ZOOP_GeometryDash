@@ -34,8 +34,8 @@ public class Ground extends Component {
     @Override
     public void update(double deltaTime) {
         if(!Window.getWindow().isInEditor()){
-            LevelScene scene = (LevelScene) Window.getWindow().getCurrentScene(); //! Aggregation
-            GameObject player = scene.getPlayer(); //! Aggregation
+            LevelScene scene = (LevelScene) Window.getWindow().getCurrentScene();
+            GameObject player = scene.getPlayer();
 
             if (player.getTransform().getPosition().getY() + player.getComponent(BoxBounds.class).getHeight() > getGameObject().getTransform().getPosition().getY()) {
                 player.getTransform().getPosition().setY(getGameObject().getTransform().getPosition().getY() - player.getComponent(BoxBounds.class).getHeight());

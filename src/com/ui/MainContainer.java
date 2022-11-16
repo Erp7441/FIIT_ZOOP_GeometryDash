@@ -39,15 +39,15 @@ public class MainContainer extends Component {
      * @see Sprite Sprite – a piece of 2D texture.
      */
     public void init() {
-        Spritesheet groundSprites = new Spritesheet("assets/groundSprites.png", 42, 42, 2, 6, 12); //! Composition
-        Spritesheet buttonSprites = new Spritesheet("assets/buttonSprites.png", 60, 60, 2, 2, 2); //! Composition
+        Spritesheet groundSprites = new Spritesheet("assets/groundSprites.png", 42, 42, 2, 6, 12);
+        Spritesheet buttonSprites = new Spritesheet("assets/buttonSprites.png", 60, 60, 2, 2, 2);
 
         for (int i = 0; i < groundSprites.getSprites().size(); i++){
             Sprite currentSprite = groundSprites.getSprites().get(i);
             int x = Constants.BUTTON_OFFSET_X + (currentSprite.getColumn() * Constants.BUTTON_WIDTH) + (currentSprite.getColumn() * Constants.BUTTON_SPACING_HZ);
             int y = Constants.BUTTON_OFFSET_Y + (currentSprite.getRow() * Constants.BUTTON_HEIGHT) + (currentSprite.getRow() * Constants.BUTTON_SPACING_VT);
 
-            GameObject obj = new GameObject("Generated", new Transform(new Vector2D(x, y))); //! Composition
+            GameObject obj = new GameObject("Generated", new Transform(new Vector2D(x, y)));
             obj.addComponent(currentSprite.copy());
             MenuItem menuItem = new MenuItem(x, y, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, buttonSprites.getSprites().get(0), buttonSprites.getSprites().get(1)); //! Composition
             obj.addComponent(menuItem);
