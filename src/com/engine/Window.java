@@ -48,7 +48,7 @@ public class Window extends JFrame implements Runnable {
      * @see MouseListener MouseListener - Responsible for handling player mouse movement.
      * @see KeyListener KeyListener - Responsible for handling key events from the player.
      */
-    public Window(){
+    private Window(){
         this.mouseListener = new MouseListener(); //! Composition
         this.keyListener = new KeyListener(); //! Composition
         
