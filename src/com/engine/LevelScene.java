@@ -57,7 +57,7 @@ public class LevelScene extends Scene {
         player.addComponent(new BoxBounds(Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT));
         playerBounds = new BoxBounds(Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
         player.addComponent(playerBounds);
-        addGameObject(player);
+        getRenderer().submit(player);
 
         // Creating ground
         GameObject ground = new GameObject("Ground", new Transform(new Vector2D(0, Constants.GROUND_Y)));
@@ -96,13 +96,15 @@ public class LevelScene extends Scene {
             getCamera().getPosition().setY(Constants.CAMERA_OFFSET_GROUND_Y);
         }
 
+        player.update(deltaTime);
+        player.getComponent(Player.class).setOnGround(false);
         for (GameObject gameObject : getGameObjects()) {
             gameObject.update(deltaTime);
 
             Bounds bounds = gameObject.getComponent(Bounds.class);
-            if (gameObject != player && bounds != null){
+            if (bounds != null){
                 if(Bounds.checkCollision(playerBounds, bounds)){
-                    System.out.println("Colliding with player!");
+                    Bounds.resolveCollision(bounds, player);
                 }
             }
         }

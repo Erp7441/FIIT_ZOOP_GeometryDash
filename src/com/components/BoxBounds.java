@@ -1,6 +1,7 @@
 package com.components;
 
 import com.engine.Component;
+import com.engine.GameObject;
 import com.file.Parser;
 import com.util.Vector2D;
 
@@ -54,7 +55,63 @@ public class BoxBounds extends Bounds {
 
         return false;
     }
+    public void resolveCollision(GameObject player){
+        BoxBounds playerBounds = player.getComponent(BoxBounds.class);
+        playerBounds.calculateCenter();
+        this.calculateCenter();
 
+        double dx = this.center.getX() - playerBounds.center.getX();
+        double dy = this.center.getY() - playerBounds.center.getY();
+        double combinedWidth = playerBounds.halftWidth + this.halftWidth;
+        double combinedHeight = playerBounds.halftHeight + this.halftHeight;
+
+        double overlapX = combinedWidth - Math.abs(dx);
+        double overlapY = combinedHeight - Math.abs(dy);
+
+        // TODO randomly dying (due to rotation issue)
+        if (overlapX >= overlapY){
+            if (dy > 0){
+                // Collision on top of the player
+                player.getTransform().getPosition().setY(getGameObject().getTransform().getPosition().getY() - playerBounds.getHeight());
+                player.getComponent(RigidBody.class).getVelocity().setY(0);
+                player.getComponent(Player.class).setOnGround(true);
+            }
+            else{
+                // Collision on bottom of the player
+                player.getComponent(Player.class).die();
+            }
+        }
+        else{
+            // Collision on left or right of the player
+            if (dx < 0 && dy <= 0.3){
+                player.getTransform().getPosition().setY(getGameObject().getTransform().getPosition().getY() - playerBounds.getHeight());
+                player.getComponent(RigidBody.class).getVelocity().setY(0);
+                player.getComponent(Player.class).setOnGround(true);
+            }
+            else{
+                player.getComponent(Player.class).die();
+            }
+        }
+    }
+    @Override
+    public String serialize(int tabSize){
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(beginObjectProperty("BoxBounds", tabSize));
+        builder.append(addDoubleProperty("Width", width, tabSize + 1, true, true));
+        builder.append(addDoubleProperty("Height", height, tabSize + 1, true, false));
+        builder.append(endObjectProperty(tabSize));
+
+        return builder.toString();
+    }
+
+    public static BoxBounds deserialize(){
+        double width = Parser.consumeDoubleProperty("Width");
+        Parser.consume(',');
+        double height = Parser.consumeDoubleProperty("Height");
+        Parser.consumeEndObjectProperty();
+        return new BoxBounds(width, height);
+    }
     @Override
     public void update(double deltaTime){
         // This class doesn't need update method
@@ -79,25 +136,5 @@ public class BoxBounds extends Bounds {
 
     public void setHeight(double height){
         this.height = height;
-    }
-
-    @Override
-    public String serialize(int tabSize){
-        StringBuilder builder = new StringBuilder();
-
-        builder.append(beginObjectProperty("BoxBounds", tabSize));
-        builder.append(addDoubleProperty("Width", width, tabSize + 1, true, true));
-        builder.append(addDoubleProperty("Height", height, tabSize + 1, true, false));
-        builder.append(endObjectProperty(tabSize));
-
-        return builder.toString();
-    }
-
-    public static BoxBounds deserialize(){
-        double width = Parser.consumeDoubleProperty("Width");
-        Parser.consume(',');
-        double height = Parser.consumeDoubleProperty("Height");
-        Parser.consumeEndObjectProperty();
-        return new BoxBounds(width, height);
     }
 }

@@ -11,10 +11,6 @@ F
 src/com/util/Time.java,c\7\c77279a94de56fddc8584ee3b65de5e0443566ac
 L
 src/com/components/Grid.java,e\5\e5755a3e79811171baf2a0d9a3e849b8dca35cf2
-N
-src/com/components/Ground.java,a\8\a8fb7fb0c0761830eb311b3f4a0ab28d2b66deba
-N
-src/com/components/Player.java,6\e\6ed9933dcfcd827bbbdd65dbe0df6b5311d5c8c1
 Q
 !src/com/components/RigidBody.java,c\d\cdcc3bb778392203ca6a8b8ad54dac16339769db
 R

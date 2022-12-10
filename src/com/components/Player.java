@@ -2,9 +2,11 @@ package com.components;
 
 import com.engine.Component;
 
+import com.engine.Window;
 import com.util.Constants;
 
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.Graphics2D;
 
@@ -22,6 +24,7 @@ public class Player extends Component {
     private Sprite layerThree;
     private int width;
     private int height;
+    private boolean onGround = true;
 
     /**
      * Player constructor gets three texture layers and two colors for layer one and
@@ -91,8 +94,43 @@ public class Player extends Component {
     }
 
     @Override
+    public void update(double deltaTime){
+        if(onGround && Window.getWindow().getKeyListener().isKeyPressed(KeyEvent.VK_SPACE)){
+            addJumpForce();
+            this.onGround = false;
+        }
+        if(!onGround){
+            getGameObject().getTransform().setRotation(getGameObject().getTransform().getRotation() + 10.0 * deltaTime);
+        }
+        else{
+            getGameObject().getTransform().setRotation(getGameObject().getTransform().getRotation() % 360);
+            if(getGameObject().getTransform().getRotation() > 180 && getGameObject().getTransform().getRotation() < 360){
+                getGameObject().getTransform().setRotation(0.0);
+            }
+            else if(getGameObject().getTransform().getRotation() > 0 && getGameObject().getTransform().getRotation() < 180){
+                getGameObject().getTransform().setRotation(0.0);
+            }
+        }
+    }
+
+    private void addJumpForce(){
+        getGameObject().getComponent(RigidBody.class).getVelocity().setY(Constants.JUMP_FORCE);
+    }
+
+    public void die(){
+        getGameObject().getTransform().getPosition().setX(0);
+        getGameObject().getTransform().getPosition().setY(30);
+        Window.getWindow().getCurrentScene().getCamera().getPosition().setX(0);
+    }
+
+    @Override
     public Component copy() {
         return null; // Copy not needed for this component
+    }
+
+    @Override
+    public String serialize(int tabSize) {
+        return ""; // Serialize not needed for this component
     }
 
     public Sprite getLayerOne(){
@@ -135,8 +173,11 @@ public class Player extends Component {
         this.height = height;
     }
 
-    @Override
-    public String serialize(int tabSize) {
-        return ""; // Serialize not needed for this component
+    public boolean isOnGround(){
+        return onGround;
+    }
+
+    public void setOnGround(boolean onGround){
+        this.onGround = onGround;
     }
 }

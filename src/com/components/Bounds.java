@@ -1,6 +1,7 @@
 package com.components;
 
 import com.engine.Component;
+import com.engine.GameObject;
 
 enum BoundsType {
     Box,
@@ -19,6 +20,13 @@ public abstract class Bounds extends Component{
         }
         else{
             return false;
+        }
+    }
+
+    public static void resolveCollision(Bounds b, GameObject player){
+        if(b.type == BoundsType.Box){
+            BoxBounds box = (BoxBounds)b;
+            box.resolveCollision(player);
         }
     }
 }

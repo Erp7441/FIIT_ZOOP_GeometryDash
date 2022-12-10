@@ -15,6 +15,7 @@ public class Constants {
 
     public static final int PLAYER_HEIGHT = 42;
     public static final int PLAYER_WIDTH = 42;
+    public static final double JUMP_FORCE = -650;
 
     public static final int GROUND_Y = 714;
 

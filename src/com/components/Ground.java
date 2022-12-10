@@ -39,6 +39,8 @@ public class Ground extends Component {
 
             if (player.getTransform().getPosition().getY() + player.getComponent(BoxBounds.class).getHeight() > getGameObject().getTransform().getPosition().getY()) {
                 player.getTransform().getPosition().setY(getGameObject().getTransform().getPosition().getY() - player.getComponent(BoxBounds.class).getHeight());
+
+                player.getComponent(Player.class).setOnGround(true);
             }
 
             getGameObject().getTransform().getPosition().setX(scene.getCamera().getPosition().getX());
