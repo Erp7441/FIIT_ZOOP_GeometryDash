@@ -3,6 +3,7 @@ package com.components;
 
 import com.engine.Component;
 
+import com.file.Parser;
 import com.util.AssetPool;
 
 import javax.imageio.ImageIO;
@@ -184,5 +185,35 @@ public class Sprite extends Component {
         builder.append(endObjectProperty(tabSize));
         return builder.toString();
 
+    }
+
+    public static Component deserialize(){
+        boolean isSubsprite = Parser.consumeBooleanProperty("isSubsprite");
+        Parser.consume(',');
+        String filePath = Parser.consumeStringProperty("FilePath");
+
+        if(isSubsprite){
+            Parser.consume(',');
+            Parser.consumeIntProperty("row");
+            Parser.consume(',');
+            Parser.consumeIntProperty("column");
+            Parser.consume(',');
+            int index = Parser.consumeIntProperty("index");
+
+            if(!AssetPool.hasSpritesheet(filePath)){
+                System.out.println("Spritesheet '" + filePath + "' not found!");
+                System.exit(-1);
+            }
+            Parser.consumeEndObjectProperty();
+            return AssetPool.getSpritesheet(filePath).getSprites().get(index).copy();
+        }
+
+        if(!AssetPool.hasSpritesheet(filePath)){
+            System.out.println("Spritesheet '" + filePath + "' not found!");
+            System.exit(-1);
+        }
+
+        Parser.consumeEndObjectProperty();
+        return AssetPool.getSprite(filePath).copy();
     }
 }

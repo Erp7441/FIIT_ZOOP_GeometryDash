@@ -28,12 +28,8 @@ public class AssetPool {
      * @param file Path to asset file.
      * @return Boolean true if asset is already loaded in the assets pool. Otherwise, it returns false.
      */
-    public static boolean hasSprite(String file) {
-        return AssetPool.sprites.containsKey(file);
-    }
-    public static boolean hasSpritesheet(String file) {
-        return AssetPool.spritesheets.containsKey(file);
-    }
+    public static boolean hasSprite(String file) { return AssetPool.sprites.containsKey(new File(file).getAbsolutePath()); }
+    public static boolean hasSpritesheet(String file) { return AssetPool.spritesheets.containsKey(new File(file).getAbsolutePath()); }
 
     /**
      * Gets loaded asset if present in asset pool. If not then

@@ -1,5 +1,6 @@
 package com.util;
 
+import com.file.Parser;
 import com.file.Serialization;
 
 /**
@@ -22,6 +23,12 @@ public class Transform extends Serialization{
         this.position = position; //! Aggregation
         this.rotation = 0.0;
         this.scale = new Vector2D(1.0, 1.0); //! Composition
+    }
+
+    public Transform (Vector2D position, double rotation, Vector2D scale) {
+        this.position = position; //! Aggregation
+        this.rotation = rotation;
+        this.scale = scale; //! Aggregation
     }
 
     /**
@@ -87,5 +94,23 @@ public class Transform extends Serialization{
         builder.append(endObjectProperty(tabSize));
 
         return builder.toString();
+    }
+
+    public static Transform deserialize(){
+        Parser.consumeBeginObjectProperty("Transform");
+        Parser.consumeBeginObjectProperty("Position");
+        Vector2D position = Vector2D.deserialize();
+        Parser.consumeEndObjectProperty();
+
+        Parser.consume(',');
+        Parser.consumeBeginObjectProperty("Scale");
+        Vector2D scale = Vector2D.deserialize();
+        Parser.consumeEndObjectProperty();
+
+        Parser.consume(',');
+        double rotation = Parser.consumeDoubleProperty("Rotation");
+        Parser.consumeEndObjectProperty();
+
+        return new Transform(position, rotation, scale);
     }
 }

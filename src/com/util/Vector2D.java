@@ -1,5 +1,6 @@
 package com.util;
 
+import com.file.Parser;
 import com.file.Serialization;
 
 /**
@@ -57,5 +58,12 @@ public class Vector2D extends Serialization{
         builder.append(addDoubleProperty("x", this.x, tabSize, true, true));
         builder.append(addDoubleProperty("y", this.y, tabSize, true, false));
         return builder.toString();
+    }
+
+    public static Vector2D deserialize(){
+        double x = Parser.consumeDoubleProperty("x");
+        Parser.consume(',');
+        double y = Parser.consumeDoubleProperty("y");
+        return new Vector2D(x, y);
     }
 }

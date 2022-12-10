@@ -1,6 +1,9 @@
 package com.file;
 
 public interface Serialize{
+
+    // TODO add deserialize function
+
     public abstract String serialize(int tabSize);
 
     public String addStringProperty(String name, String value, int tabSize, boolean newline, boolean comma);

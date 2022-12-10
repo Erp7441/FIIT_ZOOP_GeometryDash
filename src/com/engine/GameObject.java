@@ -1,5 +1,6 @@
 package com.engine;
 
+import com.file.Parser;
 import com.file.Serialization;
 import com.util.Transform;
 
@@ -162,6 +163,31 @@ public class GameObject extends Serialization{
         builder.append(addEnding(true, false));
         builder.append(endObjectProperty(tabSize));
         return builder.toString();
+    }
+
+    public static GameObject deserialize(){
+        Parser.consumeBeginObjectProperty("GameObject");
+
+        Transform transform = Transform.deserialize();
+        Parser.consume(',');
+        String name = Parser.consumeStringProperty("Name");
+
+        GameObject gameObject = new GameObject(name, transform);
+
+        if(Parser.peek() == ','){
+            Parser.consume(',');
+            Parser.consumeBeginObjectProperty("Components");
+            gameObject.addComponent(Parser.parseComponent());
+
+            while(Parser.peek() == ','){
+                Parser.consume(',');
+                gameObject.addComponent(Parser.parseComponent());
+            }
+
+            Parser.consumeEndObjectProperty();
+        }
+        Parser.consumeEndObjectProperty();
+        return gameObject;
     }
 
     public Transform getTransform(){

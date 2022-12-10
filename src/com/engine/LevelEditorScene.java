@@ -2,6 +2,7 @@ package com.engine;
 
 import com.components.*;
 
+import com.file.Parser;
 import com.ui.MainContainer;
 import com.util.AssetPool;
 import com.util.Constants;
@@ -13,6 +14,7 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -82,6 +84,7 @@ public class LevelEditorScene extends Scene {
 
         ground.setSerializable(false);
         player.setSerializable(false);
+
     }
 
     public void initAssetPool(){
@@ -117,15 +120,45 @@ public class LevelEditorScene extends Scene {
         cursor.update(deltaTime);
 
         if(Window.getWindow().getKeyListener().isKeyPressed(KeyEvent.VK_F1)){
-            export("Level1");
+            exportLevel("Level");
+        }
+        else if(Window.getWindow().getKeyListener().isKeyPressed(KeyEvent.VK_F2)){
+            importLevel("Level");
         }
     }
 
-    private void export(String filename) {
+    private boolean isCurrentLevel(String fileName){
+        exportLevel(".current");
+
+        Parser.openFile(fileName);
+        byte[] newLevel = Parser.getBytes();
+
+        Parser.openFile(".current");
+        byte[] currentLevel = Parser.getBytes();
+
+        return Arrays.equals(currentLevel, newLevel);
+    }
+
+    private void importLevel(String fileName){
+
+        if(isCurrentLevel(fileName)){ return; }
+
+        Parser.openFile(fileName);
+
+        Parser.consume('{');
+        GameObject gameObject = Parser.parseGameObject();
+        while(gameObject != null){
+            addGameObject(gameObject);
+            gameObject = Parser.parseGameObject();
+        }
+        Parser.consume('}');
+    }
+
+    private void exportLevel(String fileName) {
         try{
-            FileOutputStream fos = new FileOutputStream("levels/" + filename + ".zip");
+            FileOutputStream fos = new FileOutputStream("levels/" + fileName + ".zip");
             ZipOutputStream zos = new ZipOutputStream(fos);
-            zos.putNextEntry(new ZipEntry(filename + ".json"));
+            zos.putNextEntry(new ZipEntry(fileName + ".json"));
 
             int count = 0;
             zos.write("{\n".getBytes()); //? Begin JSON file
