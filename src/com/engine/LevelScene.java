@@ -1,10 +1,6 @@
 package com.engine;
 
-import com.components.BoxBounds;
-import com.components.Ground;
-import com.components.Player;
-import com.components.RigidBody;
-import com.components.Spritesheet;
+import com.components.*;
 
 import com.util.AssetPool;
 import com.util.Constants;
@@ -13,6 +9,7 @@ import com.util.Vector2D;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 
 /**
  * The scene that displays level. This scene is where the game happens. It is
@@ -23,6 +20,7 @@ import java.awt.Graphics2D;
 public class LevelScene extends Scene {
 
     private GameObject player = null;
+    private BoxBounds playerBounds;
 
     /**
      * Initializes the scene with name.
@@ -57,12 +55,16 @@ public class LevelScene extends Scene {
         player.addComponent(playerComp);
         player.addComponent(new RigidBody(new Vector2D(395, 0.0)));
         player.addComponent(new BoxBounds(Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT));
+        playerBounds = new BoxBounds(Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
+        player.addComponent(playerBounds);
         addGameObject(player);
 
         // Creating ground
         GameObject ground = new GameObject("Ground", new Transform(new Vector2D(0, Constants.GROUND_Y)));
         ground.addComponent(new Ground());
         addGameObject(ground);
+
+        importLevel("Level");
     }
 
     public void initAssetPool(){
@@ -80,7 +82,7 @@ public class LevelScene extends Scene {
      * @see Constants Constants – Constants that manipulate the state calculation of the game.
      */
     @Override
-    public void update(double deltaTime) {
+    public void update (double deltaTime) {
 
         if (player.getTransform().getPosition().getX() - getCamera().getPosition().getX() > Constants.CAMERA_OFFSET_X){
             getCamera().getPosition().setX(player.getTransform().getPosition().getX() - Constants.CAMERA_OFFSET_X);
@@ -94,8 +96,15 @@ public class LevelScene extends Scene {
             getCamera().getPosition().setY(Constants.CAMERA_OFFSET_GROUND_Y);
         }
 
-        for (GameObject gameObject : getGameObjects()){
+        for (GameObject gameObject : getGameObjects()) {
             gameObject.update(deltaTime);
+
+            Bounds bounds = gameObject.getComponent(Bounds.class);
+            if (gameObject != player && bounds != null){
+                if(Bounds.checkCollision(playerBounds, bounds)){
+                    System.out.println("Colliding with player!");
+                }
+            }
         }
 
         player.getTransform().getPosition().setY(player.getTransform().getPosition().getY() + deltaTime * 30f);

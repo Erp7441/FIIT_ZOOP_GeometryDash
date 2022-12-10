@@ -125,33 +125,29 @@ public class LevelEditorScene extends Scene {
         else if(Window.getWindow().getKeyListener().isKeyPressed(KeyEvent.VK_F2)){
             importLevel("Level");
         }
+        else if(Window.getWindow().getKeyListener().isKeyPressed(KeyEvent.VK_F3)){
+            Window.getWindow().changeScene(1);
+        }
     }
 
-    private boolean isCurrentLevel(String fileName){
-        exportLevel(".current");
 
-        Parser.openFile(fileName);
-        byte[] newLevel = Parser.getBytes();
+    private boolean isCurrentLevel(String fileName){
+
+        exportLevel(".current");
 
         Parser.openFile(".current");
         byte[] currentLevel = Parser.getBytes();
 
+        Parser.openFile(fileName);
+        byte[] newLevel = Parser.getBytes();
+
         return Arrays.equals(currentLevel, newLevel);
     }
 
-    private void importLevel(String fileName){
-
+    @Override
+    protected void importLevel(String fileName){
         if(isCurrentLevel(fileName)){ return; }
-
-        Parser.openFile(fileName);
-
-        Parser.consume('{');
-        GameObject gameObject = Parser.parseGameObject();
-        while(gameObject != null){
-            addGameObject(gameObject);
-            gameObject = Parser.parseGameObject();
-        }
-        Parser.consume('}');
+        super.importLevel(fileName);
     }
 
     private void exportLevel(String fileName) {

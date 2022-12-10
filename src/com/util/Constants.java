@@ -16,7 +16,7 @@ public class Constants {
     public static final int PLAYER_HEIGHT = 42;
     public static final int PLAYER_WIDTH = 42;
 
-    public static final int GROUND_Y = 700;
+    public static final int GROUND_Y = 714;
 
     public static final int CAMERA_OFFSET_X = 300;
     public static final int CAMERA_OFFSET_Y = 325;

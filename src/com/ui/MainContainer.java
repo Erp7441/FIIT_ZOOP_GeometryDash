@@ -1,5 +1,6 @@
 package com.ui;
 
+import com.components.BoxBounds;
 import com.components.Sprite;
 import com.components.Spritesheet;
 import com.engine.Component;
@@ -52,6 +53,7 @@ public class MainContainer extends Component {
             obj.addComponent(currentSprite.copy());
             MenuItem menuItem = new MenuItem(x, y, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, buttonSprites.getSprites().get(0), buttonSprites.getSprites().get(1)); //! Composition
             obj.addComponent(menuItem);
+            obj.addComponent(new BoxBounds(Constants.TILE_WIDTH, Constants.TILE_HEIGHT));
             menuItems.add(obj);
         }
     }

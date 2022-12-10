@@ -1,5 +1,6 @@
 package com.engine;
 
+import com.file.Parser;
 import com.util.Vector2D;
 
 import java.awt.Graphics2D;
@@ -83,5 +84,19 @@ public abstract class Scene{
 
     public void setRenderer(Renderer renderer){
         this.renderer = renderer;
+    }
+
+
+    protected void importLevel(String fileName){
+
+        Parser.openFile(fileName);
+
+        Parser.consume('{');
+        GameObject gameObject = Parser.parseGameObject();
+        while(gameObject != null){
+            addGameObject(gameObject);
+            gameObject = Parser.parseGameObject();
+        }
+        Parser.consume('}');
     }
 }
