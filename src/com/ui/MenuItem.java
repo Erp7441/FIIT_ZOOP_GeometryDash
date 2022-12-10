@@ -109,4 +109,9 @@ public class MenuItem extends Component {
             graphics2D.drawImage(hoverSprite.getImage(), this.x, this.y, this.width, this.height, null);
         }
     }
+
+    @Override
+    public String serialize(int tabSize) {
+        return ""; // Serialize not needed for this component
+    }
 }

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.components.Sprite;
+import com.components.Spritesheet;
 
 /**
  * Assets pool class that holds all assets that are loaded in the game.
@@ -15,6 +16,7 @@ import com.components.Sprite;
  */
 public class AssetPool {
     private static Map<String, Sprite> sprites = new HashMap<>(); //! Composition
+    private static Map<String, Spritesheet> spritesheets = new HashMap<>(); //! Composition
 
     private AssetPool() {
         // Private constructor used to hide public implicit constructor of this class.
@@ -29,6 +31,9 @@ public class AssetPool {
     public static boolean hasSprite(String file) {
         return AssetPool.sprites.containsKey(file);
     }
+    public static boolean hasSpritesheet(String file) {
+        return AssetPool.spritesheets.containsKey(file);
+    }
 
     /**
      * Gets loaded asset if present in asset pool. If not then
@@ -40,11 +45,19 @@ public class AssetPool {
      */
     public static Sprite getSprite(String file) {
         File fileObject = new File(file);
-        if(!AssetPool.hasSprite(file)){
+        if(!AssetPool.hasSprite(fileObject.getAbsolutePath())){
             Sprite sprite = new Sprite(file);
             AssetPool.addSprite(file, sprite);
         }
         return AssetPool.sprites.get(fileObject.getAbsolutePath());
+    }
+    public static Spritesheet getSpritesheet(String file){
+        File fileObject = new File(file);
+        if(!AssetPool.hasSpritesheet(fileObject.getAbsolutePath())){
+            System.out.println("Spritesheet '" + fileObject + "' doesn't exists.");
+            System.exit(-1);
+        }
+        return AssetPool.spritesheets.get(fileObject.getAbsolutePath());
     }
 
     /**
@@ -66,6 +79,13 @@ public class AssetPool {
         else{
             System.err.println("Asset pool already has asset: " + fileObject.getAbsolutePath());
         }
+    }
 
+    public static void addSpritesheet(String file, int tileWidth, int tileHeight, int spacing, int columns, int size){
+        File fileObject = new File(file);
+        if(!AssetPool.hasSprite(fileObject.getAbsolutePath())){
+            Spritesheet spritesheet = new Spritesheet(file, tileWidth, tileHeight, spacing, columns, size);
+            AssetPool.spritesheets.put(fileObject.getAbsolutePath(), spritesheet);
+        }
     }
 }

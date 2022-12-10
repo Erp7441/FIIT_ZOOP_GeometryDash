@@ -43,7 +43,7 @@ public class Spritesheet {
             for (int column = 0; column < columns; column++) {
                 int imageX = (column * tileWidth) + (column * spacing);
                 int imageY = (row * tileHeight) + (row * spacing);
-                sprites.add(new Sprite(parent.getImage().getSubimage(imageX, imageY, tileWidth, tileHeight), row, column, count)); //! Composition
+                sprites.add(new Sprite(parent.getImage().getSubimage(imageX, imageY, tileWidth, tileHeight), picture,row, column, count)); //! Composition
                 count++;
                 if (count > size - 1){
                     break;
@@ -85,4 +85,5 @@ public class Spritesheet {
     public void setSpacing(int spacing){
         this.spacing = spacing;
     }
+
 }

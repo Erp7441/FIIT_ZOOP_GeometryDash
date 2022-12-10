@@ -50,4 +50,9 @@ public class CameraControls extends Component {
     public CameraControls copy(){
         return null; // Copy not needed for this component
     }
+
+    @Override
+    public String serialize(int tabSize) {
+        return ""; // Serialize not needed for this component
+    }
 }

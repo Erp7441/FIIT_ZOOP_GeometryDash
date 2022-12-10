@@ -4,6 +4,7 @@ import com.components.Sprite;
 import com.components.Spritesheet;
 import com.engine.Component;
 import com.engine.GameObject;
+import com.util.AssetPool;
 import com.util.Constants;
 import com.util.Transform;
 import com.util.Vector2D;
@@ -39,8 +40,8 @@ public class MainContainer extends Component {
      * @see Sprite Sprite – a piece of 2D texture.
      */
     public void init() {
-        Spritesheet groundSprites = new Spritesheet("assets/groundSprites.png", 42, 42, 2, 6, 12);
-        Spritesheet buttonSprites = new Spritesheet("assets/buttonSprites.png", 60, 60, 2, 2, 2);
+        Spritesheet groundSprites = AssetPool.getSpritesheet("assets/groundSprites.png");
+        Spritesheet buttonSprites = AssetPool.getSpritesheet("assets/buttonSprites.png");
 
         for (int i = 0; i < groundSprites.getSprites().size(); i++){
             Sprite currentSprite = groundSprites.getSprites().get(i);
@@ -104,5 +105,10 @@ public class MainContainer extends Component {
         for(GameObject gameObject : this.menuItems){
             gameObject.draw(graphics2D);
         }
+    }
+
+    @Override
+    public String serialize(int tabSize) {
+        return ""; // Serialize not needed for this component
     }
 }

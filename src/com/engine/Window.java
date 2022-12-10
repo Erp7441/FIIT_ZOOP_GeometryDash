@@ -67,7 +67,7 @@ public class Window extends JFrame implements Runnable {
      * Initializes the default scene for window.
      */
     public final void init(){
-        changeScene(1);
+        changeScene(0);
     }
 
     /**

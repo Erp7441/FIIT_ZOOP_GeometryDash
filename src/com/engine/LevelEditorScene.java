@@ -3,12 +3,18 @@ package com.engine;
 import com.components.*;
 
 import com.ui.MainContainer;
+import com.util.AssetPool;
 import com.util.Constants;
 import com.util.Transform;
 import com.util.Vector2D;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * Scene that displays the level editor. This scene can edit the LevelScene objects
@@ -21,7 +27,7 @@ public class LevelEditorScene extends Scene {
     private Grid grid = null;
     private CameraControls cameraControls = null;
     private GameObject cursor = null;
-    private MainContainer editingButtons = new MainContainer(); //! Composition
+    private MainContainer editingButtons = null;
 
     /**
      * Initializes the scene with name.
@@ -45,7 +51,9 @@ public class LevelEditorScene extends Scene {
      */
     @Override
     public void init() {
+        initAssetPool();
 
+        editingButtons = new MainContainer(); //! Composition
         grid = new Grid(); //! Composition
         cameraControls = new CameraControls(); //! Composition
         editingButtons.start();
@@ -53,9 +61,9 @@ public class LevelEditorScene extends Scene {
         cursor = new GameObject("Mouse Cursor", new Transform(new Vector2D())); //! Composition
         cursor.addComponent(new SnapToGrid(Constants.TILE_WIDTH, Constants.TILE_HEIGHT));
 
-        Spritesheet layerOne = new Spritesheet("assets/player/layerOne.png", 42, 42, 2, 13, 13 * 5);
-        Spritesheet layerTwo = new Spritesheet("assets/player/layerTwo.png", 42, 42, 2, 13, 13 * 5);
-        Spritesheet layerThree = new Spritesheet("assets/player/layerThree.png", 42, 42, 2, 13, 13 * 5);
+        Spritesheet layerOne = AssetPool.getSpritesheet("assets/player/layerOne.png");
+        Spritesheet layerTwo = AssetPool.getSpritesheet("assets/player/layerTwo.png");
+        Spritesheet layerThree = AssetPool.getSpritesheet("assets/player/layerThree.png");
 
         player = new GameObject("Some game object", new Transform(new Vector2D(300.0,300.0))); //! Composition
         Player playerComp = new Player(
@@ -71,6 +79,17 @@ public class LevelEditorScene extends Scene {
         ground = new GameObject("Ground", new Transform(new Vector2D(0, Constants.GROUND_Y))); //! Composition
         ground.addComponent(new Ground());
         addGameObject(ground);
+
+        ground.setSerializable(false);
+        player.setSerializable(false);
+    }
+
+    public void initAssetPool(){
+        AssetPool.addSpritesheet("assets/player/layerOne.png", 42, 42, 2, 13, 13 * 5);
+        AssetPool.addSpritesheet("assets/player/layerTwo.png", 42, 42, 2, 13, 13 * 5);
+        AssetPool.addSpritesheet("assets/player/layerThree.png", 42, 42, 2, 13, 13 * 5);
+        AssetPool.addSpritesheet("assets/groundSprites.png", 42, 42, 2, 6, 12);
+        AssetPool.addSpritesheet("assets/buttonSprites.png", 60, 60, 2, 2, 2);
     }
 
     /**
@@ -96,6 +115,40 @@ public class LevelEditorScene extends Scene {
         grid.update(deltaTime);
         editingButtons.update(deltaTime);
         cursor.update(deltaTime);
+
+        if(Window.getWindow().getKeyListener().isKeyPressed(KeyEvent.VK_F1)){
+            export("Level1");
+        }
+    }
+
+    private void export(String filename) {
+        try{
+            FileOutputStream fos = new FileOutputStream("levels/" + filename + ".zip");
+            ZipOutputStream zos = new ZipOutputStream(fos);
+            zos.putNextEntry(new ZipEntry(filename + ".json"));
+
+            int count = 0;
+            zos.write("{\n".getBytes()); //? Begin JSON file
+            for (GameObject gameObject : this.getGameObjects()){
+                String str = gameObject.serialize(1);
+                if (str.compareTo("") != 0){
+                    zos.write(str.getBytes());
+                    if(count != getGameObjects().size()-1){
+                        zos.write(",\n".getBytes());
+                    }
+                }
+                count++;
+            }
+            zos.write("\n}".getBytes()); //? End JSON file
+
+            zos.closeEntry();
+            zos.close();
+            fos.close();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            System.exit(-1);
+        }
     }
 
     /**

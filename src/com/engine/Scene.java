@@ -15,7 +15,7 @@ import java.util.List;
  * @see Camera Camera - Player's point of view.
  * @see GameObject GameObject – Base object from which everything is derived from.
  */
-public abstract class Scene {
+public abstract class Scene{
     private String name;
     private Camera camera;
     private List<GameObject> gameObjects;

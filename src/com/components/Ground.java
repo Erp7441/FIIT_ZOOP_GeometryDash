@@ -70,4 +70,9 @@ public class Ground extends Component {
     public Component copy() {
         return null; // Copy not needed for this component
     }
+
+    @Override
+    public String serialize(int tabSize) {
+        return ""; // Serialize not needed for this component
+    }
 }

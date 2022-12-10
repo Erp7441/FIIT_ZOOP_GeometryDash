@@ -1,5 +1,6 @@
 package com.engine;
 
+import com.file.Serialization;
 import com.util.Transform;
 
 import java.util.ArrayList;
@@ -12,10 +13,11 @@ import java.awt.Graphics2D;
  * This class has all the necessary methods and attributes that will be needed
  * in the game.
  */
-public class GameObject {
+public class GameObject extends Serialization{
     private List<Component> components;
     private String name;
     private Transform transform;
+    private boolean serializable = true;
 
     /**
      * Initializes the game object
@@ -95,8 +97,8 @@ public class GameObject {
      * @return new game object instance with same attributes as this one
      */
     public GameObject copy(){
-        GameObject newGameObject = new GameObject("Generated", transform.copy());
-        for (Component component : components) {
+        GameObject newGameObject = new GameObject("Generated", this.transform.copy());
+        for (Component component : this.components) {
             Component copy = component.copy();
             if(copy != null){
                 newGameObject.addComponent(copy);
@@ -111,7 +113,7 @@ public class GameObject {
      * @param deltaTime Difference between last mouse update time and current mouse update time.
      */
     public void update(double deltaTime){
-        for (Component component : components) {
+        for (Component component : this.components) {
             component.update(deltaTime);
         }
     }
@@ -123,9 +125,43 @@ public class GameObject {
      * @see Graphics2D Graphics2D - Handler for 2D operations within a window.
      */
     public void draw(Graphics2D graphics2D){
-        for (Component component : components) {
+        for (Component component : this.components) {
             component.draw(graphics2D);
         }
+    }
+
+    @Override
+    public String serialize(int tabSize) {
+        if(!serializable) { return ""; }
+
+        StringBuilder builder = new StringBuilder();
+
+        // Game Object
+        builder.append(beginObjectProperty("GameObject", tabSize));
+        builder.append(this.transform.serialize(tabSize + 1));
+        builder.append(addEnding(true, true));
+
+        builder.append(addStringProperty("Name", this.name, tabSize + 1, true, !this.getComponents().isEmpty()));
+        if(!this.getComponents().isEmpty()){
+            builder.append(beginObjectProperty("Components", tabSize + 1));
+        }
+
+        int count = 0;
+        for(Component component : this.components){
+            String str = component.serialize(tabSize + 2);
+            if(str.compareTo("") != 0){
+                builder.append(str);
+                builder.append(addEnding(true, count != components.size() - 1));
+            }
+            count++;
+        }
+
+        if(!this.getComponents().isEmpty()){
+            builder.append(endObjectProperty(tabSize + 1));
+        }
+        builder.append(addEnding(true, false));
+        builder.append(endObjectProperty(tabSize));
+        return builder.toString();
     }
 
     public Transform getTransform(){
@@ -134,5 +170,9 @@ public class GameObject {
 
     public void setTransform(Transform transform){
         this.transform = transform;
+    }
+
+    public void setSerializable(boolean value){
+        this.serializable = value;
     }
 }

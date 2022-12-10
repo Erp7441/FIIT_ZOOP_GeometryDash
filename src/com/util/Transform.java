@@ -1,11 +1,13 @@
 package com.util;
 
+import com.file.Serialization;
+
 /**
  * Transform class containing one vector for position. One vector for scale and
  * one double value for the amount of rotation. This is used on objects, so they can
  * be placed in different places on the screen.
  */
-public class Transform {
+public class Transform extends Serialization{
     private Vector2D position;
     private double rotation;
     private Vector2D scale;
@@ -63,5 +65,27 @@ public class Transform {
 
     public void setScale(Vector2D scale){
         this.scale = scale;
+    }
+
+    @Override
+    public String serialize(int tabSize){
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(beginObjectProperty("Transform", tabSize));
+
+        builder.append(beginObjectProperty("Position", tabSize + 1));
+        builder.append(this.position.serialize(tabSize + 2));
+        builder.append(endObjectProperty(tabSize + 1));
+        builder.append(addEnding(true, true));
+
+        builder.append(beginObjectProperty("Scale", tabSize + 1));
+        builder.append(this.scale.serialize(tabSize + 2));
+        builder.append(endObjectProperty(tabSize + 1));
+        builder.append(addEnding(true, true));
+
+        builder.append(addDoubleProperty("Rotation", this.rotation, tabSize + 1, true, false));
+        builder.append(endObjectProperty(tabSize));
+
+        return builder.toString();
     }
 }

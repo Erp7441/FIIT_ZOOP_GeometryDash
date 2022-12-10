@@ -58,17 +58,18 @@ public class Sprite extends Component {
      * Constructor for whole spritesheet asset.
      * @param image Sprite texture inside the game asset's folder.
      */
-    public Sprite(BufferedImage image){
+    public Sprite(BufferedImage image, String file){
         this.image = image; //! Aggregation
         this.width = image.getWidth();
         this.height = image.getHeight();
+        this.file = file;
     }
 
     /**
      * Constructor for single sprite from spritesheet.
      * @param image Sprite texture inside the game asset's folder.
      */
-    public Sprite(BufferedImage image, int row, int column, int index){
+    public Sprite(BufferedImage image, String file, int row, int column, int index){
         this.image = image; //! Aggregation
         this.width = image.getWidth();
         this.height = image.getHeight();
@@ -76,6 +77,7 @@ public class Sprite extends Component {
         this.column = column;
         this.index = index;
         this.isSubsprite = true;
+        this.file = file;
     }
 
     /**
@@ -94,10 +96,10 @@ public class Sprite extends Component {
     @Override
     public Component copy() {
         if(!isSubsprite){
-            return new Sprite(this.image);
+            return new Sprite(this.image, this.file);
         }
         else{
-            return new Sprite(this.image, this.row, this.column, this.index);
+            return new Sprite(this.image, this.file, this.row, this.column, this.index);
         }
     }
 
@@ -163,5 +165,24 @@ public class Sprite extends Component {
 
     public void setIndex(int index){
         this.index = index;
+    }
+
+    @Override
+    public String serialize(int tabSize) {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(beginObjectProperty("Sprite", tabSize));
+        builder.append(addBooleanProperty("isSubsprite", isSubsprite, tabSize + 1, true, true));
+        builder.append(addStringProperty("FilePath", file, tabSize + 1, true, isSubsprite));
+
+        if(isSubsprite){
+            builder.append(addIntProperty("row", row, tabSize + 1, true, true));
+            builder.append(addIntProperty("column", column, tabSize + 1, true, true));
+            builder.append(addIntProperty("index", index, tabSize + 1, true, false));
+        }
+
+        builder.append(endObjectProperty(tabSize));
+        return builder.toString();
+
     }
 }

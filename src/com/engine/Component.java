@@ -1,5 +1,7 @@
 package com.engine;
 
+import com.file.Serialization;
+
 import java.awt.Graphics2D;
 
 /**
@@ -8,7 +10,7 @@ import java.awt.Graphics2D;
  *
  * @param <T> Indicates generic type of component. This means type can be closer specified at compile time.
  */
-public abstract class Component<T> {
+public abstract class Component<T> extends Serialization{
     private GameObject gameObject;
 
     /**
@@ -36,4 +38,5 @@ public abstract class Component<T> {
     public void setGameObject(GameObject gameObject){
         this.gameObject = gameObject;
     }
+
 }

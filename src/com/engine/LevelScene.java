@@ -6,6 +6,7 @@ import com.components.Player;
 import com.components.RigidBody;
 import com.components.Spritesheet;
 
+import com.util.AssetPool;
 import com.util.Constants;
 import com.util.Transform;
 import com.util.Vector2D;
@@ -39,9 +40,10 @@ public class LevelScene extends Scene {
     public void init() {
 
         // Sprites
-        Spritesheet layerOne = new Spritesheet("assets/player/layerOne.png", 42, 42, 2, 13, 13 * 5);
-        Spritesheet layerTwo = new Spritesheet("assets/player/layerTwo.png", 42, 42, 2, 13, 13 * 5);
-        Spritesheet layerThree = new Spritesheet("assets/player/layerThree.png", 42, 42, 2, 13, 13 * 5);
+        initAssetPool();
+        Spritesheet layerOne = AssetPool.getSpritesheet("assets/player/layerOne.png");
+        Spritesheet layerTwo = AssetPool.getSpritesheet("assets/player/layerTwo.png");
+        Spritesheet layerThree = AssetPool.getSpritesheet("assets/player/layerThree.png");
 
         // Creating player
         player = new GameObject("Some game object", new Transform(new Vector2D(300.0,300.0))); //! Composition
@@ -61,6 +63,13 @@ public class LevelScene extends Scene {
         GameObject ground = new GameObject("Ground", new Transform(new Vector2D(0, Constants.GROUND_Y)));
         ground.addComponent(new Ground());
         addGameObject(ground);
+    }
+
+    public void initAssetPool(){
+        AssetPool.addSpritesheet("assets/player/layerOne.png", 42, 42, 2, 13, 13 * 5);
+        AssetPool.addSpritesheet("assets/player/layerTwo.png", 42, 42, 2, 13, 13 * 5);
+        AssetPool.addSpritesheet("assets/player/layerThree.png", 42, 42, 2, 13, 13 * 5);
+        AssetPool.addSpritesheet("assets/groundSprites.png", 42, 42, 2, 6, 12);
     }
 
     /**

@@ -1,9 +1,11 @@
 package com.util;
 
+import com.file.Serialization;
+
 /**
  * Vector class representing 2 dimensional vector from physics with X and Y coordinates.
  */
-public class Vector2D {
+public class Vector2D extends Serialization{
     private double x;
     private double y;
 
@@ -46,5 +48,14 @@ public class Vector2D {
 
     public void setY(double y){
         this.y = y;
+    }
+
+    @Override
+    public String serialize(int tabSize){
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(addDoubleProperty("x", this.x, tabSize, true, true));
+        builder.append(addDoubleProperty("y", this.y, tabSize, true, false));
+        return builder.toString();
     }
 }

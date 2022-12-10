@@ -8,6 +8,7 @@ import com.engine.Window;
 // TODO change primitive types to objects (should i?)
 // TODO serialize and deserialize
 // TODO bind player input
+// TODO remove unessasary "this."
 
 public class Main {
 

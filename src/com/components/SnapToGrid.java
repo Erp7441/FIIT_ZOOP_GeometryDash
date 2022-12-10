@@ -107,4 +107,9 @@ public class SnapToGrid  extends Component {
     public void setHeight(int height){
         this.height = height;
     }
+
+    @Override
+    public String serialize(int tabSize) {
+        return ""; // Serialize not needed for this component
+    }
 }

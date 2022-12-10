@@ -53,4 +53,9 @@ public class RigidBody extends Component {
     public void setVelocity(Vector2D velocity){
         this.velocity = velocity;
     }
+
+    @Override
+    public String serialize(int tabSize) {
+        return ""; // Serialize not needed for this component
+    }
 }
