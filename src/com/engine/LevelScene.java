@@ -9,7 +9,7 @@ import com.util.Vector2D;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 /**
  * The scene that displays level. This scene is where the game happens. It is
@@ -44,7 +44,7 @@ public class LevelScene extends Scene {
         Spritesheet layerThree = AssetPool.getSpritesheet("assets/player/layerThree.png");
 
         // Creating player
-        player = new GameObject("Some game object", new Transform(new Vector2D(300.0,300.0))); //! Composition
+        player = new GameObject("Some game object", new Transform(new Vector2D(300.0,300.0)), 0); //! Composition
         Player playerComp = new Player(
                 layerOne.getSprites().get(0),
                 layerTwo.getSprites().get(0),
@@ -53,18 +53,52 @@ public class LevelScene extends Scene {
                 Color.GREEN
         );
         player.addComponent(playerComp);
-        player.addComponent(new RigidBody(new Vector2D(395, 0.0)));
+        player.addComponent(new RigidBody(new Vector2D(Constants.PLAYER_SPEED, 0.0)));
         player.addComponent(new BoxBounds(Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT));
         playerBounds = new BoxBounds(Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
         player.addComponent(playerBounds);
         getRenderer().submit(player);
 
         // Creating ground
-        GameObject ground = new GameObject("Ground", new Transform(new Vector2D(0, Constants.GROUND_Y)));
+
+
+        initBackgrounds();
+
+        importLevel("Level");
+    }
+
+    private void initBackgrounds(){
+        GameObject ground = new GameObject("Ground", new Transform(new Vector2D(0, Constants.GROUND_Y)), 1);
         ground.addComponent(new Ground());
         addGameObject(ground);
 
-        importLevel("Level");
+        int numberOfBackgrounds = 7;
+        ArrayList<GameObject> backgrounds = new ArrayList<>(numberOfBackgrounds);
+        ArrayList<GameObject> groundBackgrounds = new ArrayList<>(numberOfBackgrounds);
+
+        for (int i = 0; i < numberOfBackgrounds; i++){
+
+            ParallaxBackground background = new ParallaxBackground("assets/backgrounds/bg01.png", backgrounds, ground.getComponent(Ground.class), false);
+            int x = i * background.getSprite().getWidth();
+            int y = 0;
+
+            GameObject backgroundGameObject = new GameObject("Background", new Transform(new Vector2D(x, y)), -10);
+            backgroundGameObject.setUi(true);
+            backgroundGameObject.addComponent(background);
+            backgrounds.add(backgroundGameObject);
+
+            ParallaxBackground groundBackground = new ParallaxBackground("assets/grounds/ground01.png", groundBackgrounds, ground.getComponent(Ground.class), true);
+            x = i * groundBackground.getSprite().getWidth();
+            y = background.getSprite().getHeight();
+
+            GameObject groundGameObject = new GameObject("GroundBackground", new Transform(new Vector2D(x, y)), -9);
+            groundGameObject.addComponent(groundBackground);
+            groundGameObject.setUi(true);
+            groundBackgrounds.add(groundGameObject);
+
+            addGameObject(backgroundGameObject);
+            addGameObject(groundGameObject);
+        }
     }
 
     public void initAssetPool(){
@@ -84,12 +118,12 @@ public class LevelScene extends Scene {
     @Override
     public void update (double deltaTime) {
 
-        if (player.getTransform().getPosition().getX() - getCamera().getPosition().getX() > Constants.CAMERA_OFFSET_X){
-            getCamera().getPosition().setX(player.getTransform().getPosition().getX() - Constants.CAMERA_OFFSET_X);
+        if (player.getX() - getCamera().getPosition().getX() > Constants.CAMERA_OFFSET_X){
+            getCamera().getPosition().setX(player.getX() - Constants.CAMERA_OFFSET_X);
         }
 
-        if (player.getTransform().getPosition().getY() - getCamera().getPosition().getY() > Constants.CAMERA_OFFSET_Y){
-            getCamera().getPosition().setY(player.getTransform().getPosition().getY() - Constants.CAMERA_OFFSET_Y);
+        if (player.getY() - getCamera().getPosition().getY() > Constants.CAMERA_OFFSET_Y){
+            getCamera().getPosition().setY(player.getY() - Constants.CAMERA_OFFSET_Y);
         }
 
         if (getCamera().getPosition().getY() > Constants.CAMERA_OFFSET_GROUND_Y){
@@ -109,7 +143,7 @@ public class LevelScene extends Scene {
             }
         }
 
-        player.getTransform().getPosition().setY(player.getTransform().getPosition().getY() + deltaTime * 30f);
+        player.setY(player.getY() + deltaTime * 30f);
     }
 
     /**
@@ -122,7 +156,7 @@ public class LevelScene extends Scene {
      */
     @Override
     public void draw(Graphics2D graphics2D) {
-        graphics2D.setColor(Color.DARK_GRAY);
+        graphics2D.setColor(Constants.BG_COLOR);
         graphics2D.fillRect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
         getRenderer().render(graphics2D);

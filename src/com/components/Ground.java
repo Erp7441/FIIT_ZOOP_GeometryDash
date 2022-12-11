@@ -37,16 +37,16 @@ public class Ground extends Component {
             LevelScene scene = (LevelScene) Window.getWindow().getCurrentScene();
             GameObject player = scene.getPlayer();
 
-            if (player.getTransform().getPosition().getY() + player.getComponent(BoxBounds.class).getHeight() > getGameObject().getTransform().getPosition().getY()) {
-                player.getTransform().getPosition().setY(getGameObject().getTransform().getPosition().getY() - player.getComponent(BoxBounds.class).getHeight());
+            if (player.getY() + player.getComponent(BoxBounds.class).getHeight() > getGameObject().getY()) {
+                player.setY(getGameObject().getY() - player.getComponent(BoxBounds.class).getHeight());
 
                 player.getComponent(Player.class).setOnGround(true);
             }
 
-            getGameObject().getTransform().getPosition().setX(scene.getCamera().getPosition().getX());
+            getGameObject().setX(scene.getCamera().getPosition().getX());
         }
         else{
-            getGameObject().getTransform().getPosition().setX(Window.getWindow().getCurrentScene().getCamera().getPosition().getX());
+            getGameObject().setX(Window.getCamera().getX());
         }
 
 
@@ -65,7 +65,7 @@ public class Ground extends Component {
     @Override
     public void draw(Graphics2D graphics2D) {
         graphics2D.setColor(Color.BLACK);
-        graphics2D.drawRect((int) getGameObject().getTransform().getPosition().getX(), (int) getGameObject().getTransform().getPosition().getY(), Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+        graphics2D.drawRect((int) getGameObject().getX(), (int) getGameObject().getY(), Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
     }
 
     @Override

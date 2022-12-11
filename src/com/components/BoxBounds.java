@@ -36,8 +36,8 @@ public class BoxBounds extends Bounds {
     }
 
     public void calculateCenter(){
-        this.center.setX(this.getGameObject().getTransform().getPosition().getX() + halftWidth);
-        this.center.setY(this.getGameObject().getTransform().getPosition().getY() + halftHeight);
+        this.center.setX(this.getGameObject().getX() + halftWidth);
+        this.center.setY(this.getGameObject().getY() + halftHeight);
     }
 
     public static boolean checkCollision(BoxBounds a, BoxBounds b){
@@ -72,7 +72,7 @@ public class BoxBounds extends Bounds {
         if (overlapX >= overlapY){
             if (dy > 0){
                 // Collision on top of the player
-                player.getTransform().getPosition().setY(getGameObject().getTransform().getPosition().getY() - playerBounds.getHeight());
+                player.setY(getGameObject().getY() - playerBounds.getHeight());
                 player.getComponent(RigidBody.class).getVelocity().setY(0);
                 player.getComponent(Player.class).setOnGround(true);
             }
@@ -84,7 +84,7 @@ public class BoxBounds extends Bounds {
         else{
             // Collision on left or right of the player
             if (dx < 0 && dy <= 0.3){
-                player.getTransform().getPosition().setY(getGameObject().getTransform().getPosition().getY() - playerBounds.getHeight());
+                player.setY(getGameObject().getY() - playerBounds.getHeight());
                 player.getComponent(RigidBody.class).getVelocity().setY(0);
                 player.getComponent(Player.class).setOnGround(true);
             }

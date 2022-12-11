@@ -38,8 +38,8 @@ public class CameraControls extends Component {
             double dx = (Window.getWindow().getMouseListener().getX() + Window.getWindow().getMouseListener().getDx() - prevMx);
             double dy = (Window.getWindow().getMouseListener().getY() + Window.getWindow().getMouseListener().getDy() - prevMy);
 
-            Window.getWindow().getCurrentScene().getCamera().getPosition().setX(Window.getWindow().getCurrentScene().getCamera().getPosition().getX() - dx);
-            Window.getWindow().getCurrentScene().getCamera().getPosition().setY(Window.getWindow().getCurrentScene().getCamera().getPosition().getY() - dy);
+            Window.getCamera().setX(Window.getCamera().getX() - dx);
+            Window.getCamera().setY(Window.getCamera().getY() - dy);
         }
 
         prevMx = Window.getWindow().getMouseListener().getX() + Window.getWindow().getMouseListener().getDx();

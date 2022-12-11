@@ -84,7 +84,7 @@ public class Player extends Component {
     public void draw(Graphics2D graphics2D){
         AffineTransform transform = new AffineTransform();
         transform.setToIdentity();
-        transform.translate(getGameObject().getTransform().getPosition().getX(), getGameObject().getTransform().getPosition().getY());
+        transform.translate(getGameObject().getX(), getGameObject().getY());
         transform.rotate(getGameObject().getTransform().getRotation(), (this.width * getGameObject().getTransform().getScale().getX()) / 2.0, (this.height * getGameObject().getTransform().getScale().getY()) / 2.0);
         transform.scale(getGameObject().getTransform().getScale().getX(), getGameObject().getTransform().getScale().getY());
 
@@ -118,9 +118,9 @@ public class Player extends Component {
     }
 
     public void die(){
-        getGameObject().getTransform().getPosition().setX(0);
-        getGameObject().getTransform().getPosition().setY(30);
-        Window.getWindow().getCurrentScene().getCamera().getPosition().setX(0);
+        getGameObject().setX(0);
+        getGameObject().setY(30);
+        Window.getCamera().setX(0);
     }
 
     @Override

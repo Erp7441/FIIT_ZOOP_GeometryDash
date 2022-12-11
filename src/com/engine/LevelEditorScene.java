@@ -60,14 +60,14 @@ public class LevelEditorScene extends Scene {
         cameraControls = new CameraControls(); //! Composition
         editingButtons.start();
 
-        cursor = new GameObject("Mouse Cursor", new Transform(new Vector2D())); //! Composition
+        cursor = new GameObject("Mouse Cursor", new Transform(new Vector2D()), 10); //! Composition
         cursor.addComponent(new SnapToGrid(Constants.TILE_WIDTH, Constants.TILE_HEIGHT));
 
         Spritesheet layerOne = AssetPool.getSpritesheet("assets/player/layerOne.png");
         Spritesheet layerTwo = AssetPool.getSpritesheet("assets/player/layerTwo.png");
         Spritesheet layerThree = AssetPool.getSpritesheet("assets/player/layerThree.png");
 
-        player = new GameObject("Some game object", new Transform(new Vector2D(300.0,300.0))); //! Composition
+        player = new GameObject("Some game object", new Transform(new Vector2D(300.0,300.0)), 0); //! Composition
         Player playerComp = new Player(
                 layerOne.getSprites().get(0),
                 layerTwo.getSprites().get(0),
@@ -78,7 +78,7 @@ public class LevelEditorScene extends Scene {
         player.addComponent(playerComp);
         addGameObject(player);
 
-        ground = new GameObject("Ground", new Transform(new Vector2D(0, Constants.GROUND_Y))); //! Composition
+        ground = new GameObject("Ground", new Transform(new Vector2D(0, Constants.GROUND_Y)), 1); //! Composition
         ground.addComponent(new Ground());
         addGameObject(ground);
 
@@ -106,7 +106,7 @@ public class LevelEditorScene extends Scene {
     @Override
     public void update(double deltaTime) {
 
-        if (getCamera().getPosition().getY() - ground.getTransform().getPosition().getY() > Constants.CAMERA_OFFSET_GROUND_Y){
+        if (getCamera().getPosition().getY() - ground.getY() > Constants.CAMERA_OFFSET_GROUND_Y){
             getCamera().getPosition().setY(Constants.CAMERA_OFFSET_GROUND_Y);
         }
 

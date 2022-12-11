@@ -1,5 +1,7 @@
 package com.util;
 
+import java.awt.Color;
+
 /**
  * Constants class that contains variables for modifying most aspects of the game.
  */
@@ -16,6 +18,7 @@ public class Constants {
     public static final int PLAYER_HEIGHT = 42;
     public static final int PLAYER_WIDTH = 42;
     public static final double JUMP_FORCE = -650;
+    public static final double PLAYER_SPEED = 395;
 
     public static final int GROUND_Y = 714;
 
@@ -35,4 +38,7 @@ public class Constants {
     public static final int BUTTON_SPACING_VT = 5;
     public static final int BUTTON_HEIGHT = 60;
     public static final int BUTTON_WIDTH = 60;
+
+    public static final Color BG_COLOR = new Color(15.f / 255.f, 98.f / 255.f, 212.f / 255.f, 1.f);
+    public static final Color GROUND_COLOR = new Color(28.f / 255.f, 70.f / 255.f, 148.f / 255.f, 1.f);
 }

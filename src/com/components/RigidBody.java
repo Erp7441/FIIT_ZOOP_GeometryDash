@@ -31,8 +31,8 @@ public class RigidBody extends Component {
      */
     @Override
     public void update(double deltaTime){
-        getGameObject().getTransform().getPosition().setX(getGameObject().getTransform().getPosition().getX() + velocity.getX() * deltaTime);
-        getGameObject().getTransform().getPosition().setY(getGameObject().getTransform().getPosition().getY() + velocity.getY() * deltaTime);
+        getGameObject().setX(getGameObject().getX() + velocity.getX() * deltaTime);
+        getGameObject().setY(getGameObject().getY() + velocity.getY() * deltaTime);
 
         velocity.setY(velocity.getY() + Constants.GRAVITY * deltaTime);
 

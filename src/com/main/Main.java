@@ -10,6 +10,7 @@ import com.engine.Window;
 // TODO bind player input
 // TODO remove unessasary "this."
 // TODO remove "levels/.current.zip" file on program exit
+// TODO nested getters and setters for long lines
 
 public class Main {
 

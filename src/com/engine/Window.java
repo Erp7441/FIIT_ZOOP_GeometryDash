@@ -63,6 +63,10 @@ public class Window extends JFrame implements Runnable {
         this.setLocationRelativeTo(null);
     }
 
+    public static Camera getCamera(){
+        return getWindow().getCurrentScene().getCamera();
+    }
+
     /**
      * Initializes the default scene for window.
      */

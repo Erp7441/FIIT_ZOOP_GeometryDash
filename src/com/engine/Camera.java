@@ -27,4 +27,20 @@ public class Camera {
     public void setPosition(Vector2D position){
         this.position = position;
     }
+
+    public double getX(){
+        return getPosition().getX();
+    }
+
+    public double getY(){
+        return getPosition().getY();
+    }
+
+    public void setX(double value){
+        getPosition().setX(value);
+    }
+
+    public void setY(double value){
+        getPosition().setY(value);
+    }
 }

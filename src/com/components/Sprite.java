@@ -88,7 +88,7 @@ public class Sprite extends Component {
      */
     @Override
     public void draw(Graphics2D graphics2D){
-        graphics2D.drawImage(this.image, (int) getGameObject().getTransform().getPosition().getX(), (int) getGameObject().getTransform().getPosition().getY(), this.width, this.height, null);
+        graphics2D.drawImage(this.image, (int) getGameObject().getX(), (int) getGameObject().getY(), this.width, this.height, null);
     }
 
     /**

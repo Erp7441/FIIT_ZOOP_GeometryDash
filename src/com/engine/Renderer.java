@@ -6,7 +6,9 @@ import com.util.Vector2D;
 import java.awt.Graphics2D;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Responsible for rendering game objects on screen.
@@ -16,7 +18,7 @@ import java.util.List;
  * @see GameObject GameObject – Base object from which everything is derived from.
  */
 public class Renderer {
-    private List<GameObject> gameObjects;
+    private Map<Integer, List<GameObject>> gameObjects;
     private Camera camera;
 
     /**
@@ -28,7 +30,7 @@ public class Renderer {
      */
     public Renderer(Camera camera) {
         this.camera = camera;
-        this.gameObjects = new ArrayList<>(); //! Composition // TODO change to List or ArrayList?
+        this.gameObjects = new HashMap<>(); //! Composition // TODO change to List or ArrayList?
     }
 
     /**
@@ -38,7 +40,8 @@ public class Renderer {
      * @see GameObject GameObject – Base object from which everything is derived from.
      */
     public void submit(GameObject gameObject){
-        this.gameObjects.add(gameObject);
+        gameObjects.computeIfAbsent(gameObject.getzIndex(), k -> new ArrayList<>());
+        gameObjects.get(gameObject.getzIndex()).add(gameObject);
     }
 
     /**
@@ -54,26 +57,51 @@ public class Renderer {
      * @see GameObject GameObject – Base object from which everything is derived from.
      */
     public void render(Graphics2D graphics2D){
-        for (GameObject gameObject : gameObjects){
-            // Copies old transform of game object
-            Transform oldTransform = new Transform(gameObject.getTransform().getPosition());
-            oldTransform.setRotation(gameObject.getTransform().getRotation());
-            oldTransform.setScale(new Vector2D(gameObject.getTransform().getScale().getX(), gameObject.getTransform().getScale().getY()));
+        int lowestZIndex = Integer.MAX_VALUE;
+        int highestZIndex = Integer.MIN_VALUE;
 
-            // Moves the object to a position relative to the camera position.
-            gameObject.getTransform().setPosition(new Vector2D(gameObject.getTransform().getPosition().getX() - camera.getPosition().getX(), gameObject.getTransform().getPosition().getY() - camera.getPosition().getY()));
-            // Draws the object
-            gameObject.draw(graphics2D);
-            // Moves the game object back where it was before
-            gameObject.setTransform(oldTransform);
+        for(Integer i : gameObjects.keySet()){
+            if(i < lowestZIndex) { lowestZIndex = i; }
+            if(i > highestZIndex) { highestZIndex = i; }
         }
+        
+        int currentZIndex = lowestZIndex;
+        while(currentZIndex <= highestZIndex){
+            if(gameObjects.get(currentZIndex) == null){
+                currentZIndex++;
+                continue;
+            }
+
+            for (GameObject gameObject : gameObjects.get(currentZIndex)){
+
+                if (gameObject.isUi()){
+                    gameObject.draw(graphics2D);
+                    continue;
+                }
+
+                // Copies old transform of game object
+                Transform oldTransform = new Transform(gameObject.getTransform().getPosition());
+                oldTransform.setRotation(gameObject.getTransform().getRotation());
+                oldTransform.setScale(new Vector2D(gameObject.getTransform().getScale().getX(), gameObject.getTransform().getScale().getY()));
+
+                // Moves the object to a position relative to the camera position.
+                gameObject.getTransform().setPosition(new Vector2D(gameObject.getX() - camera.getPosition().getX(), gameObject.getY() - camera.getPosition().getY()));
+                // Draws the object
+                gameObject.draw(graphics2D);
+                // Moves the game object back where it was before
+                gameObject.setTransform(oldTransform);
+            }
+            currentZIndex++;
+        }
+
+
     }
 
-    public List<GameObject> getGameObjects(){
+    public Map<Integer, List<GameObject>> getGameObjects(){
         return gameObjects;
     }
 
-    public void setGameObjects(List<GameObject> gameObjects){
+    public void setGameObjects(Map<Integer, List<GameObject>> gameObjects){
         this.gameObjects = gameObjects;
     }
 

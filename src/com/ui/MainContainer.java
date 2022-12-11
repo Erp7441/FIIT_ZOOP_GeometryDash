@@ -49,7 +49,7 @@ public class MainContainer extends Component {
             int x = Constants.BUTTON_OFFSET_X + (currentSprite.getColumn() * Constants.BUTTON_WIDTH) + (currentSprite.getColumn() * Constants.BUTTON_SPACING_HZ);
             int y = Constants.BUTTON_OFFSET_Y + (currentSprite.getRow() * Constants.BUTTON_HEIGHT) + (currentSprite.getRow() * Constants.BUTTON_SPACING_VT);
 
-            GameObject obj = new GameObject("Generated", new Transform(new Vector2D(x, y)));
+            GameObject obj = new GameObject("Generated", new Transform(new Vector2D(x, y)), 10);
             obj.addComponent(currentSprite.copy());
             MenuItem menuItem = new MenuItem(x, y, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, buttonSprites.getSprites().get(0), buttonSprites.getSprites().get(1)); //! Composition
             obj.addComponent(menuItem);

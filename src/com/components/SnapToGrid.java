@@ -52,10 +52,10 @@ public class SnapToGrid  extends Component {
         debounceLeft -= deltaTime;
 
         if(this.getGameObject().getComponent(Sprite.class) != null){
-            double x = Math.floor((Window.getWindow().getMouseListener().getX() + Window.getWindow().getCurrentScene().getCamera().getPosition().getX() + Window.getWindow().getMouseListener().getDx()) / this.width);
-            double y = Math.floor((Window.getWindow().getMouseListener().getY() + Window.getWindow().getCurrentScene().getCamera().getPosition().getY() + Window.getWindow().getMouseListener().getDy()) / this.height);
-            this.getGameObject().getTransform().getPosition().setX(x * this.width - Window.getWindow().getCurrentScene().getCamera().getPosition().getX());
-            this.getGameObject().getTransform().getPosition().setY(y * this.height - Window.getWindow().getCurrentScene().getCamera().getPosition().getY());
+            double x = Math.floor((Window.getWindow().getMouseListener().getX() + Window.getCamera().getX() + Window.getWindow().getMouseListener().getDx()) / this.width);
+            double y = Math.floor((Window.getWindow().getMouseListener().getY() + Window.getCamera().getY() + Window.getWindow().getMouseListener().getDy()) / this.height);
+            this.getGameObject().setX(x * this.width - Window.getCamera().getX());
+            this.getGameObject().setY(y * this.height - Window.getCamera().getY());
 
             if(Window.getWindow().getMouseListener().getY() < Constants.BUTTON_OFFSET_Y && Window.getWindow().getMouseListener().isMousePressed() && Window.getWindow().getMouseListener().getMouseButton() == MouseEvent.BUTTON1 && debounceLeft < 0) {
                 debounceLeft = debounceTime;
@@ -80,7 +80,7 @@ public class SnapToGrid  extends Component {
         if(sprite != null){
             AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
             graphics2D.setComposite(alphaComposite);
-            graphics2D.drawImage(sprite.getImage(), (int) getGameObject().getTransform().getPosition().getX(), (int) getGameObject().getTransform().getPosition().getY(), sprite.getWidth(), sprite.getHeight(), null);
+            graphics2D.drawImage(sprite.getImage(), (int) getGameObject().getX(), (int) getGameObject().getY(), sprite.getWidth(), sprite.getHeight(), null);
             alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.f);
             graphics2D.setComposite(alphaComposite);
 

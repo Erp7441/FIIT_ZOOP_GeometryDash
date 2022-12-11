@@ -19,6 +19,8 @@ public class GameObject extends Serialization{
     private String name;
     private Transform transform;
     private boolean serializable = true;
+    private boolean ui = false;
+    private int zIndex;
 
     /**
      * Initializes the game object
@@ -27,10 +29,11 @@ public class GameObject extends Serialization{
      * @param transform Object that has two attributes. One vector for position and one vector for rotation.
      * @see Transform Transform - Class containing one vector for position.
      */
-    public GameObject(String name, Transform transform) {
+    public GameObject(String name, Transform transform, int zIndex) {
         this.name = name;
         this.transform = transform;
         this.components = new ArrayList<>();
+        this.zIndex = zIndex;
     }
 
     /**
@@ -98,7 +101,7 @@ public class GameObject extends Serialization{
      * @return new game object instance with same attributes as this one
      */
     public GameObject copy(){
-        GameObject newGameObject = new GameObject("Generated", this.transform.copy());
+        GameObject newGameObject = new GameObject("Generated", this.transform.copy(), this.zIndex);
         for (Component component : this.components) {
             Component copy = component.copy();
             if(copy != null){
@@ -139,10 +142,14 @@ public class GameObject extends Serialization{
 
         // Game Object
         builder.append(beginObjectProperty("GameObject", tabSize));
+        
+        // Transform
         builder.append(this.transform.serialize(tabSize + 1));
         builder.append(addEnding(true, true));
 
-        builder.append(addStringProperty("Name", this.name, tabSize + 1, true, !this.getComponents().isEmpty()));
+        // Name
+        builder.append(addStringProperty("Name", this.name, tabSize + 1, true, true));
+        builder.append(addIntProperty("ZIndex", this.zIndex, tabSize + 1, true, !this.getComponents().isEmpty()));
         if(!this.getComponents().isEmpty()){
             builder.append(beginObjectProperty("Components", tabSize + 1));
         }
@@ -171,8 +178,10 @@ public class GameObject extends Serialization{
         Transform transform = Transform.deserialize();
         Parser.consume(',');
         String name = Parser.consumeStringProperty("Name");
+        Parser.consume(',');
+        int zIndex = Parser.consumeIntProperty("ZIndex");
 
-        GameObject gameObject = new GameObject(name, transform);
+        GameObject gameObject = new GameObject(name, transform, zIndex);
 
         if(Parser.peek() == ','){
             Parser.consume(',');
@@ -194,11 +203,39 @@ public class GameObject extends Serialization{
         return transform;
     }
 
+    public boolean isUi(){
+        return ui;
+    }
+
     public void setTransform(Transform transform){
         this.transform = transform;
     }
 
     public void setSerializable(boolean value){
         this.serializable = value;
+    }
+
+    public void setUi(boolean ui){
+        this.ui = ui;
+    }
+
+    public double getX(){
+        return getTransform().getPosition().getX();
+    }
+
+    public double getY(){
+        return getTransform().getPosition().getY();
+    }
+    
+    public void setX(double value){
+        getTransform().getPosition().setX(value);
+    }
+
+    public void setY(double value){
+        getTransform().getPosition().setY(value);
+    }
+
+    public int getzIndex(){
+        return zIndex;
     }
 }
