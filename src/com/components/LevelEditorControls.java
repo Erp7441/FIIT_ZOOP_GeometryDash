@@ -61,8 +61,14 @@ public class LevelEditorControls extends Component {
         for(GameObject gameObject : Window.getScene().getAllGameObjects()){
             Bounds bounds = gameObject.getComponent(Bounds.class);
             if(bounds != null && bounds.raycast(mouse)){
-                selectedObjects.add(gameObject);
-                bounds.setSelected(true);
+                if(selectedObjects.contains(gameObject)){
+                    selectedObjects.remove(gameObject);
+                    bounds.setSelected(false);
+                }
+                else{
+                    selectedObjects.add(gameObject);
+                    bounds.setSelected(true);
+                }
                 break;
             }
         }
