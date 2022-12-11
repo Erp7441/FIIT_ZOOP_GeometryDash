@@ -9,6 +9,7 @@ import com.util.AssetPool;
 import javax.imageio.ImageIO;
 
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import java.io.File;
@@ -88,7 +89,13 @@ public class Sprite extends Component {
      */
     @Override
     public void draw(Graphics2D graphics2D){
-        graphics2D.drawImage(this.image, (int) getGameObject().getX(), (int) getGameObject().getY(), this.width, this.height, null);
+        AffineTransform transform = new AffineTransform();
+        transform.setToIdentity();
+        transform.translate(getGameObject().getX(), getGameObject().getY());
+        transform.rotate(Math.toRadians(getGameObject().getTransform().getRotation()), (this.width * getGameObject().getTransform().getScale().getX()) / 2.0, (this.height * getGameObject().getTransform().getScale().getY()) / 2.0);
+        transform.scale(getGameObject().getTransform().getScale().getX(), getGameObject().getTransform().getScale().getY());
+
+        graphics2D.drawImage(this.image, transform, null);
     }
 
     /**

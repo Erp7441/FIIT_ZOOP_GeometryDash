@@ -24,7 +24,8 @@ import java.util.List;
 public abstract class Scene{
     private String name;
     private Camera camera;
-    private List<GameObject> gameObjects;
+    private ArrayList<GameObject> gameObjects;
+    private ArrayList<GameObject> gameObjectsToRemove;
     private Renderer renderer;
     private GameObject ground;
 
@@ -39,7 +40,8 @@ public abstract class Scene{
     protected Scene(String name) {
         this.name = name;
         this.camera = new Camera(new Vector2D()); //! Composition
-        this.gameObjects = new ArrayList<>(); //! Composition // TODO change to List or ArrayList
+        this.gameObjects = new ArrayList<>(); //! Composition
+        this.gameObjectsToRemove = new ArrayList<>(); //! Composition
         this.renderer = new Renderer(this.camera); //! Composition
     }
 
@@ -60,41 +62,6 @@ public abstract class Scene{
     public abstract void init();
     public abstract void update(double deltaTime);
     public abstract void draw(Graphics2D graphics2D);
-
-    public List<GameObject> getAllGameObjects() {
-        return gameObjects;
-    }
-    public String getName(){
-        return name;
-    }
-
-    public void setName(String name){
-        this.name = name;
-    }
-
-    public Camera getCamera(){
-        return camera;
-    }
-
-    public void setCamera(Camera camera){
-        this.camera = camera;
-    }
-
-    public List<GameObject> getGameObjects(){
-        return gameObjects;
-    }
-
-    public void setGameObjects(List<GameObject> gameObjects){
-        this.gameObjects = gameObjects;
-    }
-
-    public Renderer getRenderer(){
-        return renderer;
-    }
-
-    public void setRenderer(Renderer renderer){
-        this.renderer = renderer;
-    }
 
     public void initAssetPool(){
         AssetPool.addSpritesheet("assets/player/layerOne.png", 42, 42, 2, 13, 13 * 5);
@@ -149,7 +116,47 @@ public abstract class Scene{
         this.ground = ground; // Keeping reference to the ground because of LevelEditorScene
     }
 
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public Camera getCamera(){
+        return camera;
+    }
+
+    public void setCamera(Camera camera){
+        this.camera = camera;
+    }
+
+    public ArrayList<GameObject> getGameObjects(){
+        return gameObjects;
+    }
+
+    public void setGameObjects(ArrayList<GameObject> gameObjects){
+        this.gameObjects = gameObjects;
+    }
+
+    public Renderer getRenderer(){
+        return renderer;
+    }
+
+    public void setRenderer(Renderer renderer){
+        this.renderer = renderer;
+    }
+
     public GameObject getGround(){
         return ground;
+    }
+
+    public void removeGameObject(GameObject gameObject){
+        gameObjectsToRemove.add(gameObject);
+    }
+
+    public ArrayList<GameObject> getGameObjectsToRemove(){
+        return gameObjectsToRemove;
     }
 }

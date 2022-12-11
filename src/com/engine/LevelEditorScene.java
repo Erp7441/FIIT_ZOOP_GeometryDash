@@ -128,6 +128,14 @@ public class LevelEditorScene extends Scene {
         else if(Window.getWindow().getKeyListener().isKeyPressed(KeyEvent.VK_F3)){
             Window.getWindow().changeScene(1);
         }
+
+        if(!getGameObjectsToRemove().isEmpty()){
+            for (GameObject gameObject : getGameObjectsToRemove()){
+                getGameObjects().remove(gameObject);
+                getRenderer().getGameObjects().get(gameObject.getzIndex()).remove(gameObject);
+            }
+            getGameObjectsToRemove().clear();
+        }
     }
 
     private boolean isCurrentLevel(String fileName){

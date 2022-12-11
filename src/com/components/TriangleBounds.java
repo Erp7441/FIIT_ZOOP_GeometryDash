@@ -45,7 +45,6 @@ public class TriangleBounds extends Bounds {
 
     public static boolean checkCollision(BoxBounds a, TriangleBounds b){
         if(b.broadPhase(a)){
-            System.out.println("Broad phase!");
             return b.narrowPhase(a);
         }
         return false;
@@ -185,7 +184,7 @@ public class TriangleBounds extends Bounds {
         return new Vector2D(newX + origin.getX(), newY + origin.getY());
     }
 
-    private void calculateTransformation(){
+    public void calculateTransformation(){
         double radiansAngle = Math.toRadians(getGameObject().getTransform().getRotation());
         point1 = new Vector2D(getGameObject().getX(), getGameObject().getY() + height);
         point2 = new Vector2D(getGameObject().getX() + halfWidth, getGameObject().getY());
@@ -210,11 +209,12 @@ public class TriangleBounds extends Bounds {
     @Override
     public void draw(Graphics2D graphics2D){
 
-        Vector2D worldPoint1 = transformToWorld(point1);
-        Vector2D worldPoint2 = transformToWorld(point2);
-        Vector2D worldPoint3 = transformToWorld(point3);
-
         if(isSelected()){
+
+            Vector2D worldPoint1 = transformToWorld(point1);
+            Vector2D worldPoint2 = transformToWorld(point2);
+            Vector2D worldPoint3 = transformToWorld(point3);
+
             graphics2D.setStroke(Constants.THICK_LINE);
             graphics2D.setColor(Color.GREEN);
             graphics2D.draw(new Line2D.Double(worldPoint1.getX(), worldPoint1.getY(), worldPoint2.getX(), worldPoint2.getY()));

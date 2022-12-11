@@ -23,16 +23,12 @@ M
 src/com/engine/Component.java,9\2\9207f6cf68f34a0a6e5b7143df8ba50e5a7006f3
 F
 src/com/main/Main.java,f\6\f634ff89640a7c76e6fbd9adec23fc0c6fedeee6
-N
-src/com/components/Sprite.java,3\d\3dd676ee896d94b6c82015deac5d406b9ffd5797
 J
 src/com/engine/Camera.java,5\1\51e3b2564e8b8a9c85c33e6c24c5d3ce5851bbb3
 N
 src/com/components/Ground.java,a\8\a8fb7fb0c0761830eb311b3f4a0ab28d2b66deba
 V
 &src/com/components/CameraControls.java,e\3\e3ae8e73d83563ae5e2499f7796039b1dd70d60e
-L
-src/com/engine/Renderer.java,0\d\0d68d99d056cbe8b8ffbbb2393baf532b67aa3f2
 K
 src/com/file/Serialize.java,b\e\be59c87cd36d747aa03d06b9df5c21b924a87e74
 O

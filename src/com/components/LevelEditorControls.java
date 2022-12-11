@@ -9,10 +9,12 @@ import com.util.Constants;
 import com.util.Vector2D;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 enum Direction {
     UP,
@@ -46,6 +48,11 @@ public class LevelEditorControls extends Component {
     private double worldX;
     private double worldY;
     private boolean isEditing;
+    private boolean wasDragged = false;
+    private double dragX;
+    private double dragY;
+    private double dragWidth;
+    private double dragHeight;
 
     public LevelEditorControls(int width, int height) {
         this.width = width;
@@ -70,7 +77,7 @@ public class LevelEditorControls extends Component {
         mouse.setX(mouse.getX() + Window.getCamera().getX());
         mouse.setY(mouse.getY() + Window.getCamera().getY());
 
-        for(GameObject gameObject : Window.getScene().getAllGameObjects()){
+        for(GameObject gameObject : Window.getScene().getGameObjects()){
             Bounds bounds = gameObject.getComponent(Bounds.class);
             if(bounds != null && bounds.raycast(mouse)){
                 if(selectedObjects.contains(gameObject)){
@@ -84,6 +91,24 @@ public class LevelEditorControls extends Component {
                 break;
             }
         }
+    }
+
+    public ArrayList<GameObject> boxCast (double x, double y, double width, double height){
+
+        double x0 = x + Window.getCamera().getX();
+        double y0 = y + Window.getCamera().getY();
+
+        ArrayList<GameObject> objects = new ArrayList<>();
+        for(GameObject gameObject : Window.getScene().getGameObjects()){
+            Bounds bounds = gameObject.getComponent(Bounds.class);
+            if(bounds != null){
+                if (gameObject.getX() + bounds.getWidth() <= x0 + width && gameObject.getY() + bounds.getHeight() <= y0 + height &&
+                    gameObject.getX() >= x0 && gameObject.getY() >= y0){
+                    objects.add(gameObject);
+                }
+            }
+        }
+        return objects;
     }
 
     /**
@@ -143,7 +168,13 @@ public class LevelEditorControls extends Component {
             updateSpritePosition();
         }
 
-        if (Window.getWindow().getMouseListener().getY() < Constants.TAB_OFFSET_Y && Window.getWindow().getMouseListener().isMousePressed() && Window.getWindow().getMouseListener().getMouseButton() == MouseEvent.BUTTON1 && debounceLeft < 0) {
+        if (
+            Window.getWindow().getMouseListener().getY() < Constants.TAB_OFFSET_Y &&
+            Window.getWindow().getMouseListener().isMousePressed() &&
+            Window.getWindow().getMouseListener().getMouseButton() == MouseEvent.BUTTON1 &&
+            debounceLeft < 0 &&
+            !wasDragged
+        ){
             debounceLeft = debounceTime; // Mouse clicked
 
             if (isEditing){
@@ -156,6 +187,18 @@ public class LevelEditorControls extends Component {
                 clearSelected(new Vector2D(Window.getMouseListener().getX(), Window.getMouseListener().getY()), true);
             }
         }
+        else if (!Window.getMouseListener().isMousePressed() && wasDragged){
+            wasDragged = false;
+            clearSelected(new Vector2D(Window.getMouseListener().getX(), Window.getMouseListener().getY()), true);
+            ArrayList<GameObject> objects = boxCast(dragX, dragY, dragWidth, dragHeight);
+            for (GameObject gameObject : objects){
+                selectedObjects.add(gameObject);
+                Bounds bounds = gameObject.getComponent(Bounds.class);
+                if (bounds != null){
+                    bounds.setSelected(true);
+                }
+            }
+        }
 
         if (Window.getKeyListener().isKeyPressed(KeyEvent.VK_ESCAPE)){
             escape();
@@ -163,6 +206,7 @@ public class LevelEditorControls extends Component {
 
         shiftKeyPressed = Window.getKeyListener().isKeyPressed(KeyEvent.VK_SHIFT);
 
+        // TODO:: Extract into separate function
         if (debounceKeyLeft <= 0 && Window.getKeyListener().isKeyPressed(KeyEvent.VK_LEFT)){
             move(Direction.LEFT);
             debounceKeyLeft = debounceKey;
@@ -184,9 +228,25 @@ public class LevelEditorControls extends Component {
             duplicate();
             debounceKeyLeft = debounceKey;
         }
+
+        if (debounceKeyLeft <= 0 && (Window.getKeyListener().isKeyPressed(KeyEvent.VK_Q))){
+            rotate(90);
+            debounceKeyLeft = debounceKey;
+        }
+        else if(debounceKeyLeft <= 0 && (Window.getKeyListener().isKeyPressed(KeyEvent.VK_E))){
+            rotate(-90);
+            debounceKeyLeft = debounceKey;
+        }
+
+        if (debounceKeyLeft <= 0 && (Window.getKeyListener().isKeyPressed(KeyEvent.VK_DELETE))){
+            for (GameObject gameObject : selectedObjects){
+                Window.getScene().removeGameObject(gameObject);
+            }
+            selectedObjects.clear();
+        }
     }
 
-    public void move(Direction direction){
+    private void move(Direction direction){
 
         Vector2D distance = new Vector2D(0.0, 0.0);
         double scale = 1.0;
@@ -231,10 +291,24 @@ public class LevelEditorControls extends Component {
             if (gameObject.getY() < gridY + 1.0 && gameObject.getY() > gridY - 1.0){
                 gameObject.setY(gridY);
             }
+            TriangleBounds bounds = gameObject.getComponent(TriangleBounds.class);
+            if (bounds != null){
+                bounds.calculateTransformation();
+            }
         }
     }
 
-    public void duplicate(){
+    private void rotate(double degrees){
+        for (GameObject gameObject : selectedObjects){
+            gameObject.getTransform().setRotation(gameObject.getTransform().getRotation() + degrees);
+            TriangleBounds bounds = gameObject.getComponent(TriangleBounds.class);
+            if (bounds != null){
+                bounds.calculateTransformation();
+            }
+        }
+    }
+
+    private void duplicate(){
         for (GameObject gameObject : selectedObjects){
             Window.getScene().addGameObject(gameObject.copy());
         }
@@ -250,14 +324,33 @@ public class LevelEditorControls extends Component {
      */
     @Override
     public void draw(Graphics2D graphics2D){
-        Sprite sprite = getGameObject().getComponent(Sprite.class);
-        if(sprite != null){
-            AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
-            graphics2D.setComposite(alphaComposite);
-            graphics2D.drawImage(sprite.getImage(), (int) getGameObject().getX(), (int) getGameObject().getY(), sprite.getWidth(), sprite.getHeight(), null);
-            alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.f);
-            graphics2D.setComposite(alphaComposite);
+        if(isEditing){
+            Sprite sprite = getGameObject().getComponent(Sprite.class);
+            if(sprite != null){
+                AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
+                graphics2D.setComposite(alphaComposite);
+                graphics2D.drawImage(sprite.getImage(), (int) getGameObject().getX(), (int) getGameObject().getY(), sprite.getWidth(), sprite.getHeight(), null);
+                alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.f);
+                graphics2D.setComposite(alphaComposite);
 
+            }
+        }
+        else if (Window.getMouseListener().isMouseDragged() && Window.getMouseListener().getMouseButton() == MouseEvent.BUTTON1){
+            wasDragged = true;
+            graphics2D.setColor(new Color(1, 1, 1, 0.3f));
+            dragX = Window.getMouseListener().getX();
+            dragY = Window.getMouseListener().getY();
+            dragWidth = Window.getMouseListener().getDx();
+            dragHeight = Window.getMouseListener().getDy();
+            if (dragWidth < 0) {
+                dragWidth *= -1;
+                dragX -= dragWidth;
+            }
+            if (dragHeight < 0) {
+                dragHeight *= -1;
+                dragY -= dragHeight;
+            }
+            graphics2D.fillRect((int) dragX, (int) dragY, (int) dragWidth, (int) dragHeight);
         }
     }
 
