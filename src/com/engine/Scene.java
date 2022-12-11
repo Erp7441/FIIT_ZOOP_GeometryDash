@@ -104,6 +104,8 @@ public abstract class Scene{
     }
     protected void importLevel(String fileName){
 
+        // TODO:: Clear level before importing
+
         Parser.openFile(fileName);
 
         Parser.consume('{');

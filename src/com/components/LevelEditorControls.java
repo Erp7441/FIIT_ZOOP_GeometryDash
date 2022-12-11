@@ -14,6 +14,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+enum Direction {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
+}
+
 /**
  * Snapping game object component that is used to snap selected game objects to the screen grid
  * inside the editor. It is responsible for copying selected object to grid, adding the object to
@@ -26,6 +33,11 @@ import java.util.ArrayList;
 public class LevelEditorControls extends Component {
     private final double debounceTime = 0.2;
     private double debounceLeft = 0.0;
+
+    private double debounceKey = 0.2;
+    private double debounceKeyLeft = 0.0;
+
+    private boolean shiftKeyPressed = false;
 
     private ArrayList<GameObject> selectedObjects;
     private int width;
@@ -118,6 +130,7 @@ public class LevelEditorControls extends Component {
     @Override
     public void update(double deltaTime){
         debounceLeft -= deltaTime;
+        debounceKeyLeft -= deltaTime;
 
         if (!isEditing && this.getGameObject().getComponent(Sprite.class) != null){
             this.isEditing = true;
@@ -146,6 +159,84 @@ public class LevelEditorControls extends Component {
 
         if (Window.getKeyListener().isKeyPressed(KeyEvent.VK_ESCAPE)){
             escape();
+        }
+
+        shiftKeyPressed = Window.getKeyListener().isKeyPressed(KeyEvent.VK_SHIFT);
+
+        if (debounceKeyLeft <= 0 && Window.getKeyListener().isKeyPressed(KeyEvent.VK_LEFT)){
+            move(Direction.LEFT);
+            debounceKeyLeft = debounceKey;
+        }
+        else if (debounceKeyLeft <= 0 && Window.getKeyListener().isKeyPressed(KeyEvent.VK_RIGHT)){
+            move(Direction.RIGHT);
+            debounceKeyLeft = debounceKey;
+        }
+        else if (debounceKeyLeft <= 0 && Window.getKeyListener().isKeyPressed(KeyEvent.VK_UP)){
+            move(Direction.UP);
+            debounceKeyLeft = debounceKey;
+        }
+        else if (debounceKeyLeft <= 0 && Window.getKeyListener().isKeyPressed(KeyEvent.VK_DOWN)){
+            move(Direction.DOWN);
+            debounceKeyLeft = debounceKey;
+        }
+
+        if (debounceKeyLeft <= 0 && (Window.getKeyListener().isKeyPressed(KeyEvent.VK_D) && Window.getKeyListener().isKeyPressed(KeyEvent.VK_CONTROL))){
+            duplicate();
+            debounceKeyLeft = debounceKey;
+        }
+    }
+
+    public void move(Direction direction){
+
+        Vector2D distance = new Vector2D(0.0, 0.0);
+        double scale = 1.0;
+
+        if(shiftKeyPressed){
+            scale = 0.1;
+        }
+
+        switch(direction){
+            case UP:{
+                distance.setY(-Constants.TILE_HEIGHT * scale);
+                break;
+            }
+            case DOWN:{
+                distance.setY(Constants.TILE_HEIGHT * scale);
+                break;
+            }
+            case LEFT:{
+                distance.setX(-Constants.TILE_WIDTH * scale);
+                break;
+            }
+            case RIGHT:{
+                distance.setX(Constants.TILE_WIDTH * scale);
+                break;
+            }
+            default:{
+                System.out.println("Error: Direction has no enum value '" + direction + "'");
+                System.exit(-1);
+                break;
+            }
+        }
+        for(GameObject gameObject : selectedObjects){
+            gameObject.setX(gameObject.getX() + distance.getX());
+            gameObject.setY(gameObject.getY() + distance.getY());
+
+            double gridX = (Math.floor(gameObject.getX() / Constants.TILE_WIDTH) + 1.0) * Constants.TILE_WIDTH;
+            double gridY = Math.floor(gameObject.getY() / Constants.TILE_HEIGHT) * Constants.TILE_HEIGHT;
+
+            if (gameObject.getX() < gridX + 1.0 && gameObject.getX() > gridX -1.0){
+                gameObject.setX(gridX);
+            }
+            if (gameObject.getY() < gridY + 1.0 && gameObject.getY() > gridY - 1.0){
+                gameObject.setY(gridY);
+            }
+        }
+    }
+
+    public void duplicate(){
+        for (GameObject gameObject : selectedObjects){
+            Window.getScene().addGameObject(gameObject.copy());
         }
     }
 
