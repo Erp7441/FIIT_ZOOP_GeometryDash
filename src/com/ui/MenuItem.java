@@ -1,6 +1,6 @@
 package com.ui;
 
-import com.components.SnapToGrid;
+import com.components.LevelEditorControls;
 import com.components.Sprite;
 import com.engine.Component;
 import com.engine.GameObject;
@@ -8,6 +8,7 @@ import com.engine.LevelEditorScene;
 import com.engine.Window;
 
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 /**
@@ -78,12 +79,16 @@ public class MenuItem extends Component {
             // Clicked inside the button
             GameObject obj = getGameObject().copy();
             obj.removeComponent(MenuItem.class);
-            LevelEditorScene scene = (LevelEditorScene) Window.getWindow().getCurrentScene();
-            SnapToGrid snapToGrid = scene.getCursor().getComponent(SnapToGrid.class);
-            obj.addComponent(snapToGrid);
+            LevelEditorScene scene = (LevelEditorScene) Window.getScene();
+            LevelEditorControls levelEditorControls = scene.getCursor().getComponent(LevelEditorControls.class);
+            obj.addComponent(levelEditorControls);
             scene.setCursor(obj);
             this.isSelected = true;
             this.parent.setCurrentButton(getGameObject());
+        }
+
+        if (Window.getKeyListener().isKeyPressed(KeyEvent.VK_ESCAPE)){
+            isSelected = false;
         }
     }
 

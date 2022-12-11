@@ -60,7 +60,7 @@ public class LevelEditorScene extends Scene {
         editingButtons.start();
 
         cursor = new GameObject("Mouse Cursor", new Transform(new Vector2D()), 10); //! Composition
-        cursor.addComponent(new SnapToGrid(Constants.TILE_WIDTH, Constants.TILE_HEIGHT));
+        cursor.addComponent(new LevelEditorControls(Constants.TILE_WIDTH, Constants.TILE_HEIGHT));
 
         Spritesheet layerOne = AssetPool.getSpritesheet("assets/player/layerOne.png");
         Spritesheet layerTwo = AssetPool.getSpritesheet("assets/player/layerTwo.png");

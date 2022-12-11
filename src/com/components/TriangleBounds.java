@@ -1,13 +1,14 @@
 package com.components;
 
 import com.engine.Component;
+import com.engine.Window;
 import com.file.Parser;
 import com.util.Constants;
 import com.util.Vector2D;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.Line2D; // For visual debugging
-import java.util.Vector;
+import java.awt.geom.Line2D;
 
 public class TriangleBounds extends Bounds {
     private double enclosingRadius;
@@ -29,7 +30,7 @@ public class TriangleBounds extends Bounds {
 
 
     public TriangleBounds(double base, double height){
-        this.type = BoundsType.TRIANGLE;
+        this.setType(BoundsType.TRIANGLE);
         this.base = base;
         this.height = height;
         this.halfWidth = base / 2.0;
@@ -206,12 +207,26 @@ public class TriangleBounds extends Bounds {
         return this.height;
     }
 
-    // Visual debugging
     @Override
     public void draw(Graphics2D graphics2D){
-        //graphics2D.draw(new Line2D.Double(point1.getX(), point1.getY(), point2.getX(), point2.getY()));
-        //graphics2D.draw(new Line2D.Double(point1.getX(), point1.getY(), point3.getX(), point3.getY()));
-        //graphics2D.draw(new Line2D.Double(point3.getX(), point3.getY(), point2.getX(), point2.getY()));
+
+        Vector2D worldPoint1 = transformToWorld(point1);
+        Vector2D worldPoint2 = transformToWorld(point2);
+        Vector2D worldPoint3 = transformToWorld(point3);
+
+        if(isSelected()){
+            graphics2D.setStroke(Constants.THICK_LINE);
+            graphics2D.setColor(Color.GREEN);
+            graphics2D.draw(new Line2D.Double(worldPoint1.getX(), worldPoint1.getY(), worldPoint2.getX(), worldPoint2.getY()));
+            graphics2D.draw(new Line2D.Double(worldPoint1.getX(), worldPoint1.getY(), worldPoint3.getX(), worldPoint3.getY()));
+            graphics2D.draw(new Line2D.Double(worldPoint3.getX(), worldPoint3.getY(), worldPoint2.getX(), worldPoint2.getY()));
+            graphics2D.setStroke(Constants.LINE);
+        }
+    }
+
+    // TODO:: Extract to utils?
+    private Vector2D transformToWorld(Vector2D vector){
+        return new Vector2D(vector.getX() - Window.getCamera().getX(), vector.getY() - Window.getCamera().getY());
     }
 
     @Override
@@ -239,4 +254,31 @@ public class TriangleBounds extends Bounds {
         return new TriangleBounds(base, height);
     }
 
+    public double dot(Vector2D a, Vector2D b){
+        return a.getX() * b.getX() + a.getY() * b.getY();
+    }
+
+    @Override
+    public boolean raycast(Vector2D position){
+        // Compute vectors of position and triangle coordinates
+        Vector2D vector0 = new Vector2D(point3.getX() - point1.getX(), point3.getY() - point1.getY());
+        Vector2D vector1 = new Vector2D(point2.getX() - point1.getX(), point2.getY() - point1.getY());
+        Vector2D vector2 = new Vector2D(position.getX() - point1.getX(), position.getY() - point1.getY());
+
+
+        // Computes dot product of all points on triangle
+        double dot00 = dot(vector0, vector0);
+        double dot01 = dot(vector0, vector1);
+        double dot02 = dot(vector0, vector2);
+        double dot11 = dot(vector1, vector1);
+        double dot12 = dot(vector1, vector2);
+
+        // Compute barycentric coordinates
+        double invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
+        double u = (dot11 * dot02 - dot01 * dot12) * invDenom;
+        double v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+
+        // Checks if point is inside the triangle
+        return (u >= 0.0) && (v >= 0.0) && (u + v < 1.0);
+    }
 }

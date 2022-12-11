@@ -13,8 +13,6 @@ Q
 !src/com/components/RigidBody.java,c\d\cdcc3bb778392203ca6a8b8ad54dac16339769db
 S
 #src/com/components/Spritesheet.java,3\9\39e05257df2777e0c387ba01aa079948dd4515cb
-J
-src/com/util/Vector2D.java,c\7\c71b8cf8dd2bf80bd1aa11ebb41b762f6475dd73
 K
 src/com/util/AssetPool.java,b\9\b9d6a8696f614ca29f298c56e9fd0d6e12ca77fc
 K

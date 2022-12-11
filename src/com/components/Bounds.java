@@ -2,12 +2,16 @@ package com.components;
 
 import com.engine.Component;
 import com.engine.GameObject;
+import com.util.Vector2D;
 
 public abstract class Bounds extends Component{
-    public BoundsType type;
+    private BoundsType type;
+    private boolean selected;
+
 
     abstract public double getWidth();
     abstract public double getHeight();
+    abstract public boolean raycast(Vector2D position);
 
     public static boolean checkCollision(Bounds a, Bounds b) {
         // One bound will always be a box
@@ -32,5 +36,21 @@ public abstract class Bounds extends Component{
         } else if (b.type == BoundsType.TRIANGLE){
             player.getComponent(Player.class).die();
         }
+    }
+
+    public BoundsType getType(){
+        return type;
+    }
+
+    public void setType(BoundsType type){
+        this.type = type;
+    }
+
+    public boolean isSelected(){
+        return selected;
+    }
+
+    public void setSelected(boolean selected){
+        this.selected = selected;
     }
 }

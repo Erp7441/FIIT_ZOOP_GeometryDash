@@ -1,6 +1,8 @@
 package com.util;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Stroke;
 
 /**
  * Constants class that contains variables for modifying most aspects of the game.
@@ -48,4 +50,7 @@ public class Constants {
     public static final int TAB_OFFSET_X = 380;
     public static final int TAB_OFFSET_Y = 497;
     public static final int TAB_HORIZONTAL_SPACING = 10;
+
+    public static final Stroke LINE = new BasicStroke(1.0f);
+    public static final Stroke THICK_LINE = new BasicStroke(2.0f);
 }

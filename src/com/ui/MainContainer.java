@@ -66,7 +66,7 @@ public class MainContainer extends Component {
 
             this.tabs.add(tab);
             this.tabMaps.put(tab, new ArrayList<>());
-            Window.getWindow().getCurrentScene().addGameObject(tab);
+            Window.getScene().addGameObject(tab);
         }
         this.currentTab = this.tabs.get(0);
         this.currentTab.getComponent(TabItem.class).setSelected(true);

@@ -56,10 +56,14 @@ public abstract class Scene{
             component.start();
         }
     }
+
     public abstract void init();
     public abstract void update(double deltaTime);
     public abstract void draw(Graphics2D graphics2D);
 
+    public List<GameObject> getAllGameObjects() {
+        return gameObjects;
+    }
     public String getName(){
         return name;
     }

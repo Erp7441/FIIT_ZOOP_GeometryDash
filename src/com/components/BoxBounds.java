@@ -2,10 +2,15 @@ package com.components;
 
 import com.engine.Component;
 import com.engine.GameObject;
+import com.engine.Window;
 import com.file.Parser;
+import com.util.Constants;
 import com.util.Vector2D;
 
 import javax.swing.Box;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  * Boundaries game object component is for objects that
@@ -29,7 +34,7 @@ public class BoxBounds extends Bounds {
         this.halftWidth = width / 2.0;
         this.halftHeight = height / 2.0;
         this.enclosingRadius = Math.sqrt((this.halftWidth * halftWidth) + (this.halftHeight * halftHeight));
-        this.type = BoundsType.BOX;
+        this.setType(BoundsType.BOX);
     }
 
     @Override
@@ -152,5 +157,29 @@ public class BoxBounds extends Bounds {
 
     public double getEnclosingRadius(){
         return enclosingRadius;
+    }
+
+    @Override
+    public boolean raycast(Vector2D position){
+        return (
+            position.getX() > this.getGameObject().getX() &&
+            position.getX() < this.getGameObject().getX() + this.width &&
+            position.getY() > this.getGameObject().getY() &&
+            position.getY() < this.getGameObject().getY() + this.height
+        );
+    }
+
+    @Override
+    public void draw(Graphics2D graphics2D){
+        if (isSelected()){
+            graphics2D.setColor(Color.GREEN);
+            graphics2D.setStroke(Constants.THICK_LINE);
+            graphics2D.draw(new Rectangle2D.Double(
+                this.getGameObject().getX(),
+                this.getGameObject().getY(),
+                this.width, this.height
+            ));
+            graphics2D.setStroke(Constants.LINE);
+        }
     }
 }

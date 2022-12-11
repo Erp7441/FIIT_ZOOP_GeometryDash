@@ -64,7 +64,7 @@ public class Window extends JFrame implements Runnable {
     }
 
     public static Camera getCamera(){
-        return getWindow().getCurrentScene().getCamera();
+        return getScene().getCamera();
     }
 
     /**
@@ -175,27 +175,20 @@ public class Window extends JFrame implements Runnable {
         }
     }
 
-    public MouseListener getMouseListener(){
-        return mouseListener;
+    public static MouseListener getMouseListener(){
+        return getWindow().mouseListener;
     }
 
-    public void setMouseListener(MouseListener mouseListener){
-        this.mouseListener = mouseListener;
+    public static KeyListener getKeyListener(){
+        return getWindow().keyListener;
     }
 
-    public KeyListener getKeyListener(){
-        return keyListener;
+    public static boolean isInEditor(){
+        return getWindow().isInEditor;
     }
 
-    public void setKeyListener(KeyListener keyListener){
-        this.keyListener = keyListener;
+    public static Scene getScene(){
+        return getWindow().getCurrentScene();
     }
 
-    public boolean isInEditor(){
-        return isInEditor;
-    }
-
-    public void setInEditor(boolean inEditor){
-        isInEditor = inEditor;
-    }
 }

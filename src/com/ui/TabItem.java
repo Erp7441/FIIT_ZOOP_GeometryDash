@@ -1,10 +1,7 @@
 package com.ui;
 
-import com.components.SnapToGrid;
 import com.components.Sprite;
 import com.engine.Component;
-import com.engine.GameObject;
-import com.engine.LevelEditorScene;
 import com.engine.Window;
 
 import java.awt.AlphaComposite;
