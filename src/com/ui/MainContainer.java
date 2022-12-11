@@ -26,7 +26,8 @@ public class MainContainer extends Component {
     private Sprite containerBackground;
     private ArrayList<GameObject> tabs;
     private HashMap<GameObject, List<GameObject>> tabMaps;
-    private GameObject currentTab;
+    private GameObject currentTab = null;
+    private GameObject currentButton = null;
 
     /**
      * Constructor that initializes empty ArrayList of GameObject
@@ -62,13 +63,15 @@ public class MainContainer extends Component {
             int y = Constants.TAB_OFFSET_Y;
 
             GameObject tab = new GameObject("Tab", new Transform(new Vector2D(x,y)), 10, true);
-            tab.addComponent(currentTabSprite);
+            TabItem tabItem = new TabItem(x, y, Constants.TAB_WIDTH, Constants.TAB_HEIGHT,  currentTabSprite, this);
+            tab.addComponent(tabItem);
 
             this.tabs.add(tab);
             this.tabMaps.put(tab, new ArrayList<>());
             Window.getWindow().getCurrentScene().addGameObject(tab);
         }
-        this.currentTab = this.tabs.get(5);
+        this.currentTab = this.tabs.get(0);
+        this.currentTab.getComponent(TabItem.class).setSelected(true);
     }
 
     private void addTabObjects() {
@@ -99,7 +102,7 @@ public class MainContainer extends Component {
             // Adding game objects for first tab section in the editor container
             GameObject gameObject = new GameObject((index+1)+" TabObject", new Transform(new Vector2D(x, y)), 10, true, false);
             gameObject.addComponent(currentSprite.copy());
-            MenuItem menuItem = new MenuItem(x, y, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, buttonSprites.getSprites().get(0), buttonSprites.getSprites().get(1)); //! Composition
+            MenuItem menuItem = new MenuItem(x, y, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, buttonSprites.getSprites().get(0), buttonSprites.getSprites().get(1), this); //! Composition
             gameObject.addComponent(menuItem);
             gameObject.addComponent(new BoxBounds(width, height));
             this.tabMaps.get(this.tabs.get(index)).add(gameObject); // Get fist tab and add gameObject to it
@@ -132,6 +135,18 @@ public class MainContainer extends Component {
     public void update(double deltaTime){
         for(GameObject gameObject : this.tabMaps.get(currentTab)){
             gameObject.update(deltaTime);
+
+            MenuItem menuItem = gameObject.getComponent(MenuItem.class);
+            if (gameObject != currentButton && menuItem.isSelected()){
+                menuItem.setSelected(false);
+            }
+        }
+
+        for (GameObject gameObject : this.tabs){
+            TabItem tabItem = gameObject.getComponent(TabItem.class);
+            if (gameObject != currentTab && tabItem.isSelected()){
+                tabItem.setSelected(false);
+            }
         }
     }
 
@@ -164,5 +179,21 @@ public class MainContainer extends Component {
     @Override
     public String serialize(int tabSize) {
         return ""; // Serialize not needed for this component
+    }
+
+    public GameObject getCurrentTab(){
+        return currentTab;
+    }
+
+    public void setCurrentTab(GameObject currentTab){
+        this.currentTab = currentTab;
+    }
+
+    public GameObject getCurrentButton(){
+        return currentButton;
+    }
+
+    public void setCurrentButton(GameObject currentButton){
+        this.currentButton = currentButton;
     }
 }

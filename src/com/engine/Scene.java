@@ -1,7 +1,11 @@
 package com.engine;
 
+import com.components.Ground;
+import com.components.ParallaxBackground;
 import com.file.Parser;
 import com.util.AssetPool;
+import com.util.Constants;
+import com.util.Transform;
 import com.util.Vector2D;
 
 import java.awt.Graphics2D;
@@ -22,6 +26,7 @@ public abstract class Scene{
     private Camera camera;
     private List<GameObject> gameObjects;
     private Renderer renderer;
+    private GameObject ground;
 
     /**
      * Initializes a new scene. Creates a new camera and renderer.
@@ -104,5 +109,41 @@ public abstract class Scene{
             gameObject = Parser.parseGameObject();
         }
         Parser.consume('}');
+    }
+
+    protected void initBackgrounds(int numberOfBackgrounds, boolean staticBackground){
+        GameObject ground = new GameObject("Ground", new Transform(new Vector2D(0, Constants.GROUND_Y)), 1);
+        ground.addComponent(new Ground());
+        addGameObject(ground);
+
+        ArrayList<GameObject> backgrounds = new ArrayList<>(numberOfBackgrounds);
+        ArrayList<GameObject> groundBackgrounds = new ArrayList<>(numberOfBackgrounds);
+
+        for (int i = 0; i < numberOfBackgrounds; i++){
+
+            ParallaxBackground background = new ParallaxBackground("assets/backgrounds/bg01.png", backgrounds, ground.getComponent(Ground.class), false, staticBackground);
+            int x = i * background.getSprite().getWidth();
+            int y = 0;
+
+            GameObject backgroundGameObject = new GameObject("Background", new Transform(new Vector2D(x, y)), -10, true);
+            backgroundGameObject.addComponent(background);
+            backgrounds.add(backgroundGameObject);
+
+            ParallaxBackground groundBackground = new ParallaxBackground("assets/grounds/ground01.png", groundBackgrounds, ground.getComponent(Ground.class), true, staticBackground);
+            x = i * groundBackground.getSprite().getWidth();
+            y = (int)ground.getY();
+
+            GameObject groundGameObject = new GameObject("GroundBackground", new Transform(new Vector2D(x, y)), -9, true);
+            groundGameObject.addComponent(groundBackground);
+            groundBackgrounds.add(groundGameObject);
+
+            addGameObject(backgroundGameObject);
+            addGameObject(groundGameObject);
+        }
+        this.ground = ground; // Keeping reference to the ground because of LevelEditorScene
+    }
+
+    public GameObject getGround(){
+        return ground;
     }
 }

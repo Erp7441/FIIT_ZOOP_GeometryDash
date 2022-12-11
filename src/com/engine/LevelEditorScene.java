@@ -25,7 +25,6 @@ import java.util.zip.ZipOutputStream;
 public class LevelEditorScene extends Scene {
 
     private GameObject player = null;
-    private GameObject ground = null;
     private Grid grid = null;
     private CameraControls cameraControls = null;
     private GameObject cursor = null;
@@ -77,13 +76,9 @@ public class LevelEditorScene extends Scene {
         );
         player.addComponent(playerComp);
         addGameObject(player);
-
-        ground = new GameObject("Ground", new Transform(new Vector2D(0, Constants.GROUND_Y)), 1); //! Composition
-        ground.addComponent(new Ground());
-        addGameObject(ground);
-
-        ground.setSerializable(false);
         player.setSerializable(false);
+
+        initBackgrounds(5, true);
 
     }
 
@@ -110,7 +105,8 @@ public class LevelEditorScene extends Scene {
     @Override
     public void update(double deltaTime) {
 
-        if (getCamera().getPosition().getY() - ground.getY() > Constants.CAMERA_OFFSET_GROUND_Y + 70.0){
+        //TODO:: Tweak values
+        if (getCamera().getPosition().getY() - getGround().getY() > Constants.CAMERA_OFFSET_GROUND_Y + 70.0){
             getCamera().getPosition().setY(Constants.CAMERA_OFFSET_GROUND_Y + 70.0);
         }
 
@@ -133,7 +129,6 @@ public class LevelEditorScene extends Scene {
             Window.getWindow().changeScene(1);
         }
     }
-
 
     private boolean isCurrentLevel(String fileName){
 
@@ -195,7 +190,7 @@ public class LevelEditorScene extends Scene {
      */
     @Override
     public void draw(Graphics2D graphics2D) {
-        graphics2D.setColor(Color.DARK_GRAY);
+        graphics2D.setColor(Constants.BG_COLOR);
         graphics2D.fillRect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
         getRenderer().render(graphics2D);

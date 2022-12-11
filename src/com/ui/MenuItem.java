@@ -28,6 +28,7 @@ public class MenuItem extends Component {
     private boolean isSelected;
     private int bufferX;
     private int bufferY;
+    private MainContainer parent;
 
     /**
      * Initializes variables needed for positioning and drawing this object.
@@ -39,7 +40,7 @@ public class MenuItem extends Component {
      * @param buttonSprite sprite used for the item
      * @param hoverSprite sprite used for the item while hovering over the item
      */
-    public MenuItem(int x, int y, int width, int height, Sprite buttonSprite, Sprite hoverSprite){
+    public MenuItem(int x, int y, int width, int height, Sprite buttonSprite, Sprite hoverSprite, MainContainer parent){
         this.x = x;
         this.y = y;
         this.width = width;
@@ -47,6 +48,7 @@ public class MenuItem extends Component {
         this.buttonSprite = buttonSprite; //! Aggregation
         this.hoverSprite = hoverSprite; //! Aggregation
         this.isSelected = false;
+        this.parent = parent;
     }
 
     /**
@@ -69,9 +71,9 @@ public class MenuItem extends Component {
     public void update(double deltaTime){
         if(
             !isSelected
+            && Window.getWindow().getMouseListener().isMousePressed() && Window.getWindow().getMouseListener().getMouseButton() == MouseEvent.BUTTON1
             && Window.getWindow().getMouseListener().getX() > this.x && Window.getWindow().getMouseListener().getX() <= this.x + this.width
             && Window.getWindow().getMouseListener().getY() > this.y && Window.getWindow().getMouseListener().getY() <= this.y + this.height
-            && Window.getWindow().getMouseListener().isMousePressed() && Window.getWindow().getMouseListener().getMouseButton() == MouseEvent.BUTTON1
         ){
             // Clicked inside the button
             GameObject obj = getGameObject().copy();
@@ -81,6 +83,7 @@ public class MenuItem extends Component {
             obj.addComponent(snapToGrid);
             scene.setCursor(obj);
             this.isSelected = true;
+            this.parent.setCurrentButton(getGameObject());
         }
     }
 
@@ -92,7 +95,7 @@ public class MenuItem extends Component {
      */
     @Override
     public MenuItem copy() {
-        return new MenuItem(this.x, this.y, this.width, this.height, (Sprite)this.buttonSprite.copy(), (Sprite)this.hoverSprite.copy());
+        return new MenuItem(this.x, this.y, this.width, this.height, (Sprite)this.buttonSprite.copy(), (Sprite)this.hoverSprite.copy(), this.parent);
     }
 
     /**
@@ -113,5 +116,69 @@ public class MenuItem extends Component {
     @Override
     public String serialize(int tabSize) {
         return ""; // Serialize not needed for this component
+    }
+
+    public int getX(){
+        return x;
+    }
+
+    public int getY(){
+        return y;
+    }
+
+    public int getWidth(){
+        return width;
+    }
+
+    public int getHeight(){
+        return height;
+    }
+
+    public Sprite getButtonSprite(){
+        return buttonSprite;
+    }
+
+    public Sprite getHoverSprite(){
+        return hoverSprite;
+    }
+
+    public Sprite getImageAttached(){
+        return imageAttached;
+    }
+
+    public void setImageAttached(Sprite imageAttached){
+        this.imageAttached = imageAttached;
+    }
+
+    public boolean isSelected(){
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected){
+        isSelected = selected;
+    }
+
+    public int getBufferX(){
+        return bufferX;
+    }
+
+    public void setBufferX(int bufferX){
+        this.bufferX = bufferX;
+    }
+
+    public int getBufferY(){
+        return bufferY;
+    }
+
+    public void setBufferY(int bufferY){
+        this.bufferY = bufferY;
+    }
+
+    public MainContainer getParent(){
+        return parent;
+    }
+
+    public void setParent(MainContainer parent){
+        this.parent = parent;
     }
 }

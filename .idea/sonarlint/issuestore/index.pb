@@ -33,8 +33,6 @@ N
 src/com/components/Ground.java,a\8\a8fb7fb0c0761830eb311b3f4a0ab28d2b66deba
 V
 &src/com/components/CameraControls.java,e\3\e3ae8e73d83563ae5e2499f7796039b1dd70d60e
-R
-"src/com/components/SnapToGrid.java,e\0\e0ec81d305ff712ac37a80af3b8c98b498960469
 L
 src/com/engine/Renderer.java,0\d\0d68d99d056cbe8b8ffbbb2393baf532b67aa3f2
 K
@@ -47,7 +45,5 @@ N
 src/com/components/Bounds.java,b\7\b7518e9355732581f126a93b35ac33cc1bf486b4
 Q
 !src/com/components/BoxBounds.java,2\a\2af12220ed5302fef8c82da0104629a810b2ef9b
-Z
-*src/com/components/ParallaxBackground.java,d\c\dc80340601ce3a1bfe16c99427121de5986da2ff
 N
 src/com/components/Player.java,6\e\6ed9933dcfcd827bbbdd65dbe0df6b5311d5c8c1

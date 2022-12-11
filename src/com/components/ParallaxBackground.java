@@ -20,7 +20,7 @@ public class ParallaxBackground extends Component{
     private boolean followGround;
     private int timeStep;
 
-    public ParallaxBackground(String file, ArrayList<GameObject> backgrounds, Ground ground, boolean followGround){
+    public ParallaxBackground(String file, ArrayList<GameObject> backgrounds, Ground ground, boolean followGround, boolean staticBackground){
         this.sprite = new Sprite(file);
         this.width = this.sprite.getWidth();
         this.height = this.sprite.getHeight();
@@ -29,10 +29,15 @@ public class ParallaxBackground extends Component{
 
         if(followGround) { this.speed  = Constants.PLAYER_SPEED - 35; }
         this.followGround = followGround;
+
+        if(staticBackground) { this.speed = 0; }
     }
 
     @Override
     public void update(double deltaTime){
+
+        if (backgrounds == null) { return; }
+
         this.timeStep++;
 
         this.getGameObject().setX(this.getGameObject().getX() - deltaTime * speed);

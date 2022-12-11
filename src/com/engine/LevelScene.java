@@ -60,41 +60,9 @@ public class LevelScene extends Scene {
         getRenderer().submit(player);
 
         // Creating ground
-        initBackgrounds();
+        initBackgrounds(7, false);
 
         importLevel("Level");
-    }
-
-    private void initBackgrounds(){
-        GameObject ground = new GameObject("Ground", new Transform(new Vector2D(0, Constants.GROUND_Y)), 1);
-        ground.addComponent(new Ground());
-        addGameObject(ground);
-
-        int numberOfBackgrounds = 7;
-        ArrayList<GameObject> backgrounds = new ArrayList<>(numberOfBackgrounds);
-        ArrayList<GameObject> groundBackgrounds = new ArrayList<>(numberOfBackgrounds);
-
-        for (int i = 0; i < numberOfBackgrounds; i++){
-
-            ParallaxBackground background = new ParallaxBackground("assets/backgrounds/bg01.png", backgrounds, ground.getComponent(Ground.class), false);
-            int x = i * background.getSprite().getWidth();
-            int y = 0;
-
-            GameObject backgroundGameObject = new GameObject("Background", new Transform(new Vector2D(x, y)), -10, true);
-            backgroundGameObject.addComponent(background);
-            backgrounds.add(backgroundGameObject);
-
-            ParallaxBackground groundBackground = new ParallaxBackground("assets/grounds/ground01.png", groundBackgrounds, ground.getComponent(Ground.class), true);
-            x = i * groundBackground.getSprite().getWidth();
-            y = background.getSprite().getHeight();
-
-            GameObject groundGameObject = new GameObject("GroundBackground", new Transform(new Vector2D(x, y)), -9, true);
-            groundGameObject.addComponent(groundBackground);
-            groundBackgrounds.add(groundGameObject);
-
-            addGameObject(backgroundGameObject);
-            addGameObject(groundGameObject);
-        }
     }
 
     /**
