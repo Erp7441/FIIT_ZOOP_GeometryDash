@@ -118,8 +118,10 @@ public class Player extends Component {
     }
 
     public void die(){
-        getGameObject().setX(0);
-        getGameObject().setY(30);
+        getGameObject().setX(500);
+        getGameObject().setY(350);
+        getGameObject().getComponent(RigidBody.class).getVelocity().setY(0);
+        getGameObject().getTransform().setRotation(0);
         Window.getCamera().setX(0);
     }
 

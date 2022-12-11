@@ -112,7 +112,7 @@ public abstract class Scene{
     }
 
     protected void initBackgrounds(int numberOfBackgrounds, boolean staticBackground){
-        GameObject ground = new GameObject("Ground", new Transform(new Vector2D(0, Constants.GROUND_Y)), 1);
+        GameObject ground = new GameObject("Ground", new Transform(new Vector2D(0, Constants.GROUND_Y)), 1, true, false);
         ground.addComponent(new Ground());
         addGameObject(ground);
 
@@ -125,7 +125,7 @@ public abstract class Scene{
             int x = i * background.getSprite().getWidth();
             int y = 0;
 
-            GameObject backgroundGameObject = new GameObject("Background", new Transform(new Vector2D(x, y)), -10, true);
+            GameObject backgroundGameObject = new GameObject("Background", new Transform(new Vector2D(x, y)), -10, true, false);
             backgroundGameObject.addComponent(background);
             backgrounds.add(backgroundGameObject);
 
@@ -133,7 +133,7 @@ public abstract class Scene{
             x = i * groundBackground.getSprite().getWidth();
             y = (int)ground.getY();
 
-            GameObject groundGameObject = new GameObject("GroundBackground", new Transform(new Vector2D(x, y)), -9, true);
+            GameObject groundGameObject = new GameObject("GroundBackground", new Transform(new Vector2D(x, y)), -9, true, false);
             groundGameObject.addComponent(groundBackground);
             groundBackgrounds.add(groundGameObject);
 

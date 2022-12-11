@@ -20,6 +20,7 @@ public class BoxBounds extends Bounds {
 
     private double halftWidth;
     private double halftHeight;
+    private double enclosingRadius;
     private Vector2D center = new Vector2D();
 
     public BoxBounds(double width, double height){
@@ -27,6 +28,7 @@ public class BoxBounds extends Bounds {
         this.height = height;
         this.halftWidth = width / 2.0;
         this.halftHeight = height / 2.0;
+        this.enclosingRadius = Math.sqrt((this.halftWidth * halftWidth) + (this.halftHeight * halftHeight));
         this.type = BoundsType.BOX;
     }
 
@@ -122,6 +124,7 @@ public class BoxBounds extends Bounds {
         return new BoxBounds(this.width, this.height);
     }
 
+    @Override
     public double getWidth(){
         return width;
     }
@@ -130,11 +133,24 @@ public class BoxBounds extends Bounds {
         this.width = width;
     }
 
+    @Override
     public double getHeight(){
         return height;
     }
 
     public void setHeight(double height){
         this.height = height;
+    }
+
+    public double getHalftWidth(){
+        return halftWidth;
+    }
+
+    public double getHalftHeight(){
+        return halftHeight;
+    }
+
+    public double getEnclosingRadius(){
+        return enclosingRadius;
     }
 }

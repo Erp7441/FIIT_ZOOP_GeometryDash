@@ -39,11 +39,3 @@ K
 src/com/file/Serialize.java,b\e\be59c87cd36d747aa03d06b9df5c21b924a87e74
 O
 src/com/file/Serialization.java,d\c\dcf568fdc590909166d6b47585d4f6679011ffc9
-H
-src/com/file/Parser.java,b\c\bc9fc9fc436eaf1bb5f2ef208a47a119dd1bca8c
-N
-src/com/components/Bounds.java,b\7\b7518e9355732581f126a93b35ac33cc1bf486b4
-Q
-!src/com/components/BoxBounds.java,2\a\2af12220ed5302fef8c82da0104629a810b2ef9b
-N
-src/com/components/Player.java,6\e\6ed9933dcfcd827bbbdd65dbe0df6b5311d5c8c1

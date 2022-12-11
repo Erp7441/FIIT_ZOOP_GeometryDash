@@ -1,8 +1,6 @@
 package com.ui;
 
-import com.components.BoxBounds;
-import com.components.Sprite;
-import com.components.Spritesheet;
+import com.components.*;
 import com.engine.Component;
 import com.engine.GameObject;
 import com.engine.Window;
@@ -62,7 +60,7 @@ public class MainContainer extends Component {
             int x = Constants.TAB_OFFSET_X + (currentTabSprite.getColumn() * Constants.TAB_WIDTH) + (currentTabSprite.getColumn() * Constants.TAB_HORIZONTAL_SPACING);
             int y = Constants.TAB_OFFSET_Y;
 
-            GameObject tab = new GameObject("Tab", new Transform(new Vector2D(x,y)), 10, true);
+            GameObject tab = new GameObject("Tab", new Transform(new Vector2D(x,y)), 10, true, false);
             TabItem tabItem = new TabItem(x, y, Constants.TAB_WIDTH, Constants.TAB_HEIGHT,  currentTabSprite, this);
             tab.addComponent(tabItem);
 
@@ -82,16 +80,16 @@ public class MainContainer extends Component {
         Spritesheet bigSprites = AssetPool.getSpritesheet("assets/bigSprites.png");
         Spritesheet portalSprites = AssetPool.getSpritesheet("assets/portal.png");
 
-        addButtons(groundSprites, Constants.TILE_WIDTH, Constants.TILE_HEIGHT, 0);
-        addButtons(smallBlocks, Constants.TILE_WIDTH, 16, 1);
+        addButtons(groundSprites, Constants.TILE_WIDTH, Constants.TILE_HEIGHT, 0, BoundsType.BOX);
+        addButtons(smallBlocks, Constants.TILE_WIDTH, 16, 1, BoundsType.BOX);
         // TODO:: Add sprites for third tab
-        addButtons(spikeSprites, Constants.TILE_WIDTH, Constants.TILE_HEIGHT, 3);
-        addButtons(bigSprites, Constants.TILE_WIDTH, 56, 4);
-        addButtons(portalSprites, 44, 85, 5);
+        addButtons(spikeSprites, Constants.TILE_WIDTH, Constants.TILE_HEIGHT, 3, BoundsType.TRIANGLE);
+        addButtons(bigSprites, Constants.TILE_WIDTH, 56, 4, BoundsType.BOX);
+        addButtons(portalSprites, 44, 85, 5, BoundsType.BOX);
 
     }
 
-    private void addButtons(Spritesheet sprites, int width, int height, int index) {
+    private void addButtons(Spritesheet sprites, int width, int height, int index, BoundsType type) {
         Spritesheet buttonSprites = AssetPool.getSpritesheet("assets/ui/buttonSprites.png");
 
         for (int i = 0; i < sprites.getSprites().size(); i++){
@@ -104,7 +102,12 @@ public class MainContainer extends Component {
             gameObject.addComponent(currentSprite.copy());
             MenuItem menuItem = new MenuItem(x, y, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, buttonSprites.getSprites().get(0), buttonSprites.getSprites().get(1), this); //! Composition
             gameObject.addComponent(menuItem);
-            gameObject.addComponent(new BoxBounds(width, height));
+            if(type == BoundsType.BOX){
+                gameObject.addComponent(new BoxBounds(width, height));
+            }
+            else if(type == BoundsType.TRIANGLE){
+                gameObject.addComponent(new TriangleBounds(42, 42)); //TODO:: Is this correct?
+            }
             this.tabMaps.get(this.tabs.get(index)).add(gameObject); // Get fist tab and add gameObject to it
         }
     }

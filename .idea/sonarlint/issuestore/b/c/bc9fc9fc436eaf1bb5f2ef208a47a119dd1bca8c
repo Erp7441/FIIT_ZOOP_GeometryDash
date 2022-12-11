@@ -1,17 +1,0 @@
-
-K
-java:S3740›"/Provide the parametrized type for this generic.(½ÔËªüÿÿÿÿ
-g
-java:S1192P"LDefine a constant instead of duplicating this literal "' at line: " 3 times.(‹¸Ó‘ÿÿÿÿÿ
-`
-java:S2095"EUse try-with-resources or close this "ZipFile" in a "finally" clause.(¡¤ð¨ùÿÿÿÿ
-U
-java:S1118":Add a private constructor to hide the implicit public one.(ãòÙÂøÿÿÿÿ
-P
-java:S1854":Remove this useless assignment to local variable "lenght".(ñéÁŠ
-A
-java:S1481"+Remove this unused "lenght" local variable.(ñéÁŠ
-S	java:S106P"9Replace this use of System.out or System.err by a logger.(‹¸Ó‘ÿÿÿÿÿ
-O	java:S106”"9Replace this use of System.out or System.err by a logger.(‰Ä–â
-T	java:S106ª"9Replace this use of System.out or System.err by a logger.(úäÿ˜ùÿÿÿÿ
-O	java:S106ç"9Replace this use of System.out or System.err by a logger.(¸ÿ›è
