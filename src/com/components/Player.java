@@ -3,6 +3,7 @@ package com.components;
 import com.engine.Component;
 
 import com.engine.Window;
+import com.util.AssetPool;
 import com.util.Constants;
 
 import java.awt.Color;
@@ -22,9 +23,11 @@ public class Player extends Component {
     private Sprite layerOne;
     private Sprite layerTwo;
     private Sprite layerThree;
+    private Sprite spaceship;
     private int width;
     private int height;
     private boolean onGround = true;
+    private PlayerState state;
 
     /**
      * Player constructor gets three texture layers and two colors for layer one and
@@ -43,12 +46,16 @@ public class Player extends Component {
      * @see Color Color - object that represents the color of the player's textures.
      */
     public Player(Sprite layerOne, Sprite layerTwo, Sprite layerThree, Color colorOne, Color colorTwo) {
+
+        this.spaceship = AssetPool.getSprite("assets/player/spaceship.png");
+
         int threshold = 200; // Color threshold for changing the texture color values
         this.layerOne = layerOne; //! Aggregation
         this.layerTwo = layerTwo; //! Aggregation
         this.layerThree = layerThree; //! Aggregation
         this.width = Constants.PLAYER_WIDTH;
         this.height = Constants.PLAYER_HEIGHT;
+        this.state = PlayerState.NORMAL;
 
         // Layer one color placement
         for (int y = 0; y < layerOne.getImage().getWidth(); y++){
@@ -88,21 +95,52 @@ public class Player extends Component {
         transform.rotate(getGameObject().getTransform().getRotation(), (this.width * getGameObject().getTransform().getScale().getX()) / 2.0, (this.height * getGameObject().getTransform().getScale().getY()) / 2.0);
         transform.scale(getGameObject().getTransform().getScale().getX(), getGameObject().getTransform().getScale().getY());
 
-        graphics2D.drawImage(this.layerOne.getImage(), transform, null);
-        graphics2D.drawImage(this.layerTwo.getImage(), transform, null);
-        graphics2D.drawImage(this.layerThree.getImage(), transform, null);
+        if(state == PlayerState.NORMAL){
+            graphics2D.drawImage(this.layerOne.getImage(), transform, null);
+            graphics2D.drawImage(this.layerTwo.getImage(), transform, null);
+            graphics2D.drawImage(this.layerThree.getImage(), transform, null);
+        }
+        else if(state == PlayerState.FLYING){
+
+            // Draw smaller player
+            transform.setToIdentity();
+            transform.translate(getGameObject().getX(), getGameObject().getY());
+            transform.rotate(getGameObject().getTransform().getRotation(), (this.width * getGameObject().getTransform().getScale().getX()) / 4.0, (this.height * getGameObject().getTransform().getScale().getY()) / 4.0);
+            transform.scale(getGameObject().getTransform().getScale().getX() / 1.5, getGameObject().getTransform().getScale().getY() / 1.5);
+            transform.translate(15, 15);
+
+            graphics2D.drawImage(this.layerOne.getImage(), transform, null);
+            graphics2D.drawImage(this.layerTwo.getImage(), transform, null);
+            graphics2D.drawImage(this.layerThree.getImage(), transform, null);
+
+            // Then draw spaceship
+            transform.setToIdentity();
+            transform.translate(getGameObject().getX(), getGameObject().getY());
+            transform.rotate(getGameObject().getTransform().getRotation(), (this.width * getGameObject().getTransform().getScale().getX()) / 2.0, (this.height * getGameObject().getTransform().getScale().getY()) / 2.0);
+            transform.scale(getGameObject().getTransform().getScale().getX(), getGameObject().getTransform().getScale().getY());
+
+            graphics2D.drawImage(spaceship.getImage(), transform, null);
+        }
     }
 
     @Override
     public void update(double deltaTime){
         if(onGround && Window.getWindow().getKeyListener().isKeyPressed(KeyEvent.VK_SPACE)){
-            addJumpForce();
+            if(state == PlayerState.NORMAL){
+                addJumpForce();
+            }
             this.onGround = false;
         }
-        if(!onGround){
+
+        if(state == PlayerState.FLYING && Window.getWindow().getKeyListener().isKeyPressed(KeyEvent.VK_SPACE)){
+            addFlyForce();
+            onGround = false;
+        }
+
+        if(this.state != PlayerState.FLYING && !onGround){
             getGameObject().getTransform().setRotation(getGameObject().getTransform().getRotation() + 10.0 * deltaTime);
         }
-        else{
+        else if (this.state != PlayerState.FLYING){
             getGameObject().getTransform().setRotation(getGameObject().getTransform().getRotation() % 360);
             if(getGameObject().getTransform().getRotation() > 180 && getGameObject().getTransform().getRotation() < 360){
                 getGameObject().getTransform().setRotation(0.0);
@@ -111,6 +149,10 @@ public class Player extends Component {
                 getGameObject().getTransform().setRotation(0.0);
             }
         }
+    }
+
+    private void addFlyForce(){
+        getGameObject().getComponent(RigidBody.class).getVelocity().setY(Constants.JUMP_FORCE);
     }
 
     private void addJumpForce(){
@@ -181,5 +223,13 @@ public class Player extends Component {
 
     public void setOnGround(boolean onGround){
         this.onGround = onGround;
+    }
+
+    public PlayerState getState(){
+        return state;
+    }
+
+    public void setState(PlayerState state){
+        this.state = state;
     }
 }

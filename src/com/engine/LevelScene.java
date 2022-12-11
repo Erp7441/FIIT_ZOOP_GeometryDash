@@ -64,6 +64,11 @@ public class LevelScene extends Scene {
         importLevel("Level");
     }
 
+    public void initAssetPool(){
+        super.initAssetPool();
+        AssetPool.getSprite("assets/player/spaceship.png");
+    }
+
     /**
      * Updates the all game objects in the scene, after that it updates player position.
      *

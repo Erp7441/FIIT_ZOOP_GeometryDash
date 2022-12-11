@@ -27,14 +27,24 @@ public class BoxBounds extends Bounds {
     private double halftHeight;
     private double enclosingRadius;
     private Vector2D center = new Vector2D();
+    private boolean isTrigger;
 
     public BoxBounds(double width, double height){
+        init (width, height, false);
+    }
+
+    public BoxBounds(double width, double height, boolean isTrigger){
+        init (width, height, isTrigger);
+    }
+
+    private void init(double width, double height, boolean isTrigger){
         this.width = width;
         this.height = height;
         this.halftWidth = width / 2.0;
         this.halftHeight = height / 2.0;
         this.enclosingRadius = Math.sqrt((this.halftWidth * halftWidth) + (this.halftHeight * halftHeight));
         this.setType(BoundsType.BOX);
+        this.isTrigger = isTrigger;
     }
 
     @Override
@@ -63,6 +73,8 @@ public class BoxBounds extends Bounds {
         return false;
     }
     public void resolveCollision(GameObject player){
+        if (isTrigger) { return; }
+
         BoxBounds playerBounds = player.getComponent(BoxBounds.class);
         playerBounds.calculateCenter();
         this.calculateCenter();
@@ -106,7 +118,8 @@ public class BoxBounds extends Bounds {
 
         builder.append(beginObjectProperty("BoxBounds", tabSize));
         builder.append(addDoubleProperty("Width", width, tabSize + 1, true, true));
-        builder.append(addDoubleProperty("Height", height, tabSize + 1, true, false));
+        builder.append(addDoubleProperty("Height", height, tabSize + 1, true, true));
+        builder.append(addBooleanProperty("isTrigger", this.isTrigger, tabSize + 1, true, false));
         builder.append(endObjectProperty(tabSize));
 
         return builder.toString();
@@ -116,8 +129,10 @@ public class BoxBounds extends Bounds {
         double width = Parser.consumeDoubleProperty("Width");
         Parser.consume(',');
         double height = Parser.consumeDoubleProperty("Height");
+        Parser.consume(',');
+        boolean isTrigger = Parser.consumeBooleanProperty("isTrigger");
         Parser.consumeEndObjectProperty();
-        return new BoxBounds(width, height);
+        return new BoxBounds(width, height, isTrigger);
     }
     @Override
     public void update(double deltaTime){
@@ -126,7 +141,7 @@ public class BoxBounds extends Bounds {
 
     @Override
     public BoxBounds copy(){
-        return new BoxBounds(this.width, this.height);
+        return new BoxBounds(this.width, this.height, this.isTrigger);
     }
 
     @Override
