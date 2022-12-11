@@ -81,7 +81,6 @@ public class MainContainer extends Component {
         Spritesheet portalSprites = AssetPool.getSpritesheet("assets/portal.png");
 
         addButtons(groundSprites, Constants.TILE_WIDTH, Constants.TILE_HEIGHT, 0, BoundsType.BOX);
-        addButtons(smallBlocks, Constants.TILE_WIDTH, 16, 1, BoundsType.BOX);
         // TODO:: Add sprites for third tab
         addButtons(spikeSprites, Constants.TILE_WIDTH, Constants.TILE_HEIGHT, 3, BoundsType.TRIANGLE);
         addButtons(bigSprites, Constants.TILE_WIDTH, 56, 4, BoundsType.BOX);
@@ -89,6 +88,11 @@ public class MainContainer extends Component {
         ArrayList<Component<?>> portalComponents = new ArrayList<>();
         portalComponents.add(new Portal(PlayerState.FLYING));
         addButtons(portalSprites, 44, 85, 5, BoundsType.BOX, true, portalComponents);
+
+        addButtons(smallBlocks, Constants.TILE_WIDTH, 16, 1, BoundsType.BOX);
+        for (GameObject smallBlock : this.tabMaps.get(this.tabs.get(1))){
+            smallBlock.getComponent(BoxBounds.class).setYBuffer(42 - 16);
+        }
 
     }
 

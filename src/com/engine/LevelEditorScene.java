@@ -154,6 +154,17 @@ public class LevelEditorScene extends Scene {
     @Override
     protected void importLevel(String fileName){
         if(isCurrentLevel(fileName)){ return; }
+
+        for (GameObject gameObject : getGameObjects()){
+            if (gameObject.isSerializable()){
+                getGameObjectsToRemove().add(gameObject);
+            }
+        }
+        for (GameObject gameObject : getGameObjectsToRemove()){
+            getRenderer().getGameObjects().remove(gameObject);
+            getGameObjects().remove(gameObject);
+        }
+
         super.importLevel(fileName);
     }
 

@@ -32,7 +32,7 @@ public class Portal extends Component{
     public void update(double deltaTime){
         if(player == null) { return; }
         if (player.getComponent(Player.class).getState() != stateChanger && BoxBounds.checkCollision(bounds, player.getComponent(BoxBounds.class))){
-            System.out.println("Portal change");
+            player.getTransform().setRotation(0);
             player.getComponent(Player.class).setState(stateChanger);
         }
     }

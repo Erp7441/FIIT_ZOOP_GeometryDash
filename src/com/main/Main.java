@@ -14,6 +14,9 @@ import com.engine.Window;
 // TODO make deserialize method override mandatory
 // TODO safe casting
 
+
+// TODO FIX Playere randomly dying on cubes
+
 public class Main {
 
     public static void main(String[] args){

@@ -255,4 +255,8 @@ public class GameObject extends Serialization{
     public int getzIndex(){
         return zIndex;
     }
+
+    public boolean isSerializable(){
+        return serializable;
+    }
 }

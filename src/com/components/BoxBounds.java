@@ -28,16 +28,20 @@ public class BoxBounds extends Bounds {
     private double enclosingRadius;
     private Vector2D center = new Vector2D();
     private boolean isTrigger;
+    private double xBuffer;
+    private double yBuffer;
 
     public BoxBounds(double width, double height){
-        init (width, height, false);
+        init (width, height, 0.0, 0.0, false);
     }
 
     public BoxBounds(double width, double height, boolean isTrigger){
-        init (width, height, isTrigger);
+        init (width, height, 0.0, 0.0, isTrigger);
+    }public BoxBounds(double width, double height, double xBuffer, double yBuffer, boolean isTrigger){
+        init (width, height, xBuffer, yBuffer, isTrigger);
     }
 
-    private void init(double width, double height, boolean isTrigger){
+    private void init(double width, double height, double xBuffer, double yBuffer, boolean isTrigger){
         this.width = width;
         this.height = height;
         this.halftWidth = width / 2.0;
@@ -45,6 +49,8 @@ public class BoxBounds extends Bounds {
         this.enclosingRadius = Math.sqrt((this.halftWidth * halftWidth) + (this.halftHeight * halftHeight));
         this.setType(BoundsType.BOX);
         this.isTrigger = isTrigger;
+        this.xBuffer = xBuffer;
+        this.yBuffer = yBuffer;
     }
 
     @Override
@@ -53,8 +59,8 @@ public class BoxBounds extends Bounds {
     }
 
     public void calculateCenter(){
-        this.center.setX(this.getGameObject().getX() + halftWidth);
-        this.center.setY(this.getGameObject().getY() + halftHeight);
+        this.center.setX(this.getGameObject().getX() + halftWidth + this.xBuffer);
+        this.center.setY(this.getGameObject().getY() + halftHeight + this.yBuffer);
     }
 
     public static boolean checkCollision(BoxBounds a, BoxBounds b){
@@ -91,7 +97,7 @@ public class BoxBounds extends Bounds {
         if (overlapX >= overlapY){
             if (dy > 0){
                 // Collision on top of the player
-                player.setY(getGameObject().getY() - playerBounds.getHeight());
+                player.setY(getGameObject().getY() - playerBounds.getHeight() + yBuffer);
                 player.getComponent(RigidBody.class).getVelocity().setY(0);
                 player.getComponent(Player.class).setOnGround(true);
             }
@@ -103,7 +109,7 @@ public class BoxBounds extends Bounds {
         else{
             // Collision on left or right of the player
             if (dx < 0 && dy <= 0.3){
-                player.setY(getGameObject().getY() - playerBounds.getHeight());
+                player.setY(getGameObject().getY() - playerBounds.getHeight() + yBuffer);
                 player.getComponent(RigidBody.class).getVelocity().setY(0);
                 player.getComponent(Player.class).setOnGround(true);
             }
@@ -119,7 +125,9 @@ public class BoxBounds extends Bounds {
         builder.append(beginObjectProperty("BoxBounds", tabSize));
         builder.append(addDoubleProperty("Width", width, tabSize + 1, true, true));
         builder.append(addDoubleProperty("Height", height, tabSize + 1, true, true));
-        builder.append(addBooleanProperty("isTrigger", this.isTrigger, tabSize + 1, true, false));
+        builder.append(addDoubleProperty("xBuffer", xBuffer, tabSize + 1, true, true));
+        builder.append(addDoubleProperty("yBuffer", yBuffer, tabSize + 1, true, true));
+        builder.append(addBooleanProperty("isTrigger", isTrigger, tabSize + 1, true, false));
         builder.append(endObjectProperty(tabSize));
 
         return builder.toString();
@@ -130,9 +138,13 @@ public class BoxBounds extends Bounds {
         Parser.consume(',');
         double height = Parser.consumeDoubleProperty("Height");
         Parser.consume(',');
+        double xBuffer = Parser.consumeDoubleProperty("xBuffer");
+        Parser.consume(',');
+        double yBuffer = Parser.consumeDoubleProperty("yBuffer");
+        Parser.consume(',');
         boolean isTrigger = Parser.consumeBooleanProperty("isTrigger");
         Parser.consumeEndObjectProperty();
-        return new BoxBounds(width, height, isTrigger);
+        return new BoxBounds(width, height, xBuffer, yBuffer, isTrigger);
     }
     @Override
     public void update(double deltaTime){
@@ -141,7 +153,7 @@ public class BoxBounds extends Bounds {
 
     @Override
     public BoxBounds copy(){
-        return new BoxBounds(this.width, this.height, this.isTrigger);
+        return new BoxBounds(this.width, this.height, this.xBuffer, this.yBuffer, this.isTrigger);
     }
 
     @Override
@@ -177,10 +189,10 @@ public class BoxBounds extends Bounds {
     @Override
     public boolean raycast(Vector2D position){
         return (
-            position.getX() > this.getGameObject().getX() &&
-            position.getX() < this.getGameObject().getX() + this.width &&
-            position.getY() > this.getGameObject().getY() &&
-            position.getY() < this.getGameObject().getY() + this.height
+            position.getX() > this.getGameObject().getX() + xBuffer &&
+            position.getX() < this.getGameObject().getX() +xBuffer + this.width &&
+            position.getY() > this.getGameObject().getY() + yBuffer &&
+            position.getY() < this.getGameObject().getY() + yBuffer + this.height
         );
     }
 
@@ -190,11 +202,27 @@ public class BoxBounds extends Bounds {
             graphics2D.setColor(Color.GREEN);
             graphics2D.setStroke(Constants.THICK_LINE);
             graphics2D.draw(new Rectangle2D.Double(
-                this.getGameObject().getX(),
-                this.getGameObject().getY(),
+                this.getGameObject().getX() + xBuffer,
+                this.getGameObject().getY() + yBuffer,
                 this.width, this.height
             ));
             graphics2D.setStroke(Constants.LINE);
         }
+    }
+
+    public double getXBuffer(){
+        return xBuffer;
+    }
+
+    public void setXBuffer(double xBuffer){
+        this.xBuffer = xBuffer;
+    }
+
+    public double getYBuffer(){
+        return yBuffer;
+    }
+
+    public void setYBuffer(double yBuffer){
+        this.yBuffer = yBuffer;
     }
 }

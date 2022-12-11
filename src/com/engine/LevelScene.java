@@ -83,9 +83,7 @@ public class LevelScene extends Scene {
             getCamera().getPosition().setX(player.getX() - Constants.CAMERA_OFFSET_X);
         }
 
-        if (player.getY() - getCamera().getPosition().getY() > Constants.CAMERA_OFFSET_Y){
-            getCamera().getPosition().setY(player.getY() - Constants.CAMERA_OFFSET_Y);
-        }
+        getCamera().getPosition().setY(player.getY() - Constants.CAMERA_OFFSET_Y);
 
         if (getCamera().getPosition().getY() > Constants.CAMERA_OFFSET_GROUND_Y){
             getCamera().getPosition().setY(Constants.CAMERA_OFFSET_GROUND_Y);
