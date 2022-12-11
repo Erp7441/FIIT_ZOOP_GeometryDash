@@ -1,6 +1,7 @@
 package com.engine;
 
 import com.file.Parser;
+import com.util.AssetPool;
 import com.util.Vector2D;
 
 import java.awt.Graphics2D;
@@ -46,7 +47,7 @@ public abstract class Scene{
     public void addGameObject(GameObject gameObject) {
         gameObjects.add(gameObject);
         renderer.submit(gameObject);
-        for (Component component : gameObject.getComponents()){
+        for (Component<?> component : gameObject.getComponents()){
             component.start();
         }
     }
@@ -86,7 +87,12 @@ public abstract class Scene{
         this.renderer = renderer;
     }
 
-
+    public void initAssetPool(){
+        AssetPool.addSpritesheet("assets/player/layerOne.png", 42, 42, 2, 13, 13 * 5);
+        AssetPool.addSpritesheet("assets/player/layerTwo.png", 42, 42, 2, 13, 13 * 5);
+        AssetPool.addSpritesheet("assets/player/layerThree.png", 42, 42, 2, 13, 13 * 5);
+        AssetPool.addSpritesheet("assets/groundSprites.png", 42, 42, 2, 6, 12);
+    }
     protected void importLevel(String fileName){
 
         Parser.openFile(fileName);

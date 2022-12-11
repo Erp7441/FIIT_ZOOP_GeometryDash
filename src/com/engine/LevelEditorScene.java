@@ -87,12 +87,16 @@ public class LevelEditorScene extends Scene {
 
     }
 
+    @Override
     public void initAssetPool(){
-        AssetPool.addSpritesheet("assets/player/layerOne.png", 42, 42, 2, 13, 13 * 5);
-        AssetPool.addSpritesheet("assets/player/layerTwo.png", 42, 42, 2, 13, 13 * 5);
-        AssetPool.addSpritesheet("assets/player/layerThree.png", 42, 42, 2, 13, 13 * 5);
-        AssetPool.addSpritesheet("assets/groundSprites.png", 42, 42, 2, 6, 12);
-        AssetPool.addSpritesheet("assets/buttonSprites.png", 60, 60, 2, 2, 2);
+        super.initAssetPool();
+        AssetPool.addSpritesheet("assets/ui/buttonSprites.png", 60, 60, 2, 2, 2);
+        AssetPool.addSpritesheet("assets/ui/tabs.png", Constants.TAB_WIDTH, Constants.TAB_HEIGHT, 2, 6, 6);
+        AssetPool.addSpritesheet("assets/spikes.png", Constants.TILE_WIDTH, Constants.TILE_HEIGHT, 2, 6, 4);
+        AssetPool.addSpritesheet("assets/bigSprites.png", Constants.TILE_WIDTH*2, Constants.TILE_HEIGHT*2, 2, 2, 2);
+        AssetPool.addSpritesheet("assets/smallBlocks.png", Constants.TILE_WIDTH, Constants.TILE_HEIGHT, 2, 6, 1);
+        AssetPool.addSpritesheet("assets/portal.png", 44, 85, 2, 2, 2);
+
     }
 
     /**
@@ -106,8 +110,8 @@ public class LevelEditorScene extends Scene {
     @Override
     public void update(double deltaTime) {
 
-        if (getCamera().getPosition().getY() - ground.getY() > Constants.CAMERA_OFFSET_GROUND_Y){
-            getCamera().getPosition().setY(Constants.CAMERA_OFFSET_GROUND_Y);
+        if (getCamera().getPosition().getY() - ground.getY() > Constants.CAMERA_OFFSET_GROUND_Y + 70.0){
+            getCamera().getPosition().setY(Constants.CAMERA_OFFSET_GROUND_Y + 70.0);
         }
 
         for (GameObject gameObject : getGameObjects()){

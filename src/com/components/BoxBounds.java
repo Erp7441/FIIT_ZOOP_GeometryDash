@@ -27,7 +27,7 @@ public class BoxBounds extends Bounds {
         this.height = height;
         this.halftWidth = width / 2.0;
         this.halftHeight = height / 2.0;
-        this.type = BoundsType.Box;
+        this.type = BoundsType.BOX;
     }
 
     @Override

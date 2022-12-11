@@ -60,8 +60,6 @@ public class LevelScene extends Scene {
         getRenderer().submit(player);
 
         // Creating ground
-
-
         initBackgrounds();
 
         importLevel("Level");
@@ -82,8 +80,7 @@ public class LevelScene extends Scene {
             int x = i * background.getSprite().getWidth();
             int y = 0;
 
-            GameObject backgroundGameObject = new GameObject("Background", new Transform(new Vector2D(x, y)), -10);
-            backgroundGameObject.setUi(true);
+            GameObject backgroundGameObject = new GameObject("Background", new Transform(new Vector2D(x, y)), -10, true);
             backgroundGameObject.addComponent(background);
             backgrounds.add(backgroundGameObject);
 
@@ -91,21 +88,13 @@ public class LevelScene extends Scene {
             x = i * groundBackground.getSprite().getWidth();
             y = background.getSprite().getHeight();
 
-            GameObject groundGameObject = new GameObject("GroundBackground", new Transform(new Vector2D(x, y)), -9);
+            GameObject groundGameObject = new GameObject("GroundBackground", new Transform(new Vector2D(x, y)), -9, true);
             groundGameObject.addComponent(groundBackground);
-            groundGameObject.setUi(true);
             groundBackgrounds.add(groundGameObject);
 
             addGameObject(backgroundGameObject);
             addGameObject(groundGameObject);
         }
-    }
-
-    public void initAssetPool(){
-        AssetPool.addSpritesheet("assets/player/layerOne.png", 42, 42, 2, 13, 13 * 5);
-        AssetPool.addSpritesheet("assets/player/layerTwo.png", 42, 42, 2, 13, 13 * 5);
-        AssetPool.addSpritesheet("assets/player/layerThree.png", 42, 42, 2, 13, 13 * 5);
-        AssetPool.addSpritesheet("assets/groundSprites.png", 42, 42, 2, 6, 12);
     }
 
     /**

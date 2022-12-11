@@ -1,16 +1,0 @@
-
-L
-java:S2387"6"mouseListener" is the name of a field in "Component".(Á©Ë«
-O
-java:S2387"4"keyListener" is the name of a field in "Component".(æÑÛùÿÿÿÿ
-E
-java:S1948"/Make "mouseListener" transient or serializable.(Á©Ë«
-H
-java:S1948"-Make "keyListener" transient or serializable.(æÑÛùÿÿÿÿ
-D
-java:S1948!".Make "currentScene" transient or serializable.(È¤À›
-I
-java:S1948)"3Make "doubleBufferImage" transient or serializable.(­§¾®
-Q
-java:S1948*"6Make "doubleBufferGraphics" transient or serializable.(æ€££úÿÿÿÿ
-S	java:S106h"9Replace this use of System.out or System.err by a logger.(‘¾€àûÿÿÿÿ

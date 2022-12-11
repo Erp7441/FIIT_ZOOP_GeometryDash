@@ -5,6 +5,7 @@ import com.components.Sprite;
 import com.components.Spritesheet;
 import com.engine.Component;
 import com.engine.GameObject;
+import com.engine.Window;
 import com.util.AssetPool;
 import com.util.Constants;
 import com.util.Transform;
@@ -12,6 +13,7 @@ import com.util.Vector2D;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,14 +23,19 @@ import java.util.List;
  */
 public class MainContainer extends Component {
 
-    private List<GameObject> menuItems;
+    private Sprite containerBackground;
+    private ArrayList<GameObject> tabs;
+    private HashMap<GameObject, List<GameObject>> tabMaps;
+    private GameObject currentTab;
 
     /**
      * Constructor that initializes empty ArrayList of GameObject
      * to be displayed in the container.
      */
     public MainContainer() {
-        this.menuItems = new ArrayList<>(); //! Composition // TODO make this a List or ArrayList?
+        this.tabs = new ArrayList<>(); //! Composition
+        this.tabMaps = new HashMap<>(); //! Composition
+        this.containerBackground = AssetPool.getSprite("assets/ui/menuContainerBackground.png");
         init();
     }
 
@@ -41,20 +48,61 @@ public class MainContainer extends Component {
      * @see Sprite Sprite – a piece of 2D texture.
      */
     public void init() {
-        Spritesheet groundSprites = AssetPool.getSpritesheet("assets/groundSprites.png");
-        Spritesheet buttonSprites = AssetPool.getSpritesheet("assets/buttonSprites.png");
+        addTabs();
+        addTabObjects();
+    }
 
-        for (int i = 0; i < groundSprites.getSprites().size(); i++){
-            Sprite currentSprite = groundSprites.getSprites().get(i);
+    private void addTabs(){
+        Spritesheet tabSprites = AssetPool.getSpritesheet("assets/ui/tabs.png");
+
+        for (int i = 0; i < tabSprites.getSprites().size(); i++){
+            Sprite currentTabSprite = tabSprites.getSprites().get(i);
+
+            int x = Constants.TAB_OFFSET_X + (currentTabSprite.getColumn() * Constants.TAB_WIDTH) + (currentTabSprite.getColumn() * Constants.TAB_HORIZONTAL_SPACING);
+            int y = Constants.TAB_OFFSET_Y;
+
+            GameObject tab = new GameObject("Tab", new Transform(new Vector2D(x,y)), 10, true);
+            tab.addComponent(currentTabSprite);
+
+            this.tabs.add(tab);
+            this.tabMaps.put(tab, new ArrayList<>());
+            Window.getWindow().getCurrentScene().addGameObject(tab);
+        }
+        this.currentTab = this.tabs.get(5);
+    }
+
+    private void addTabObjects() {
+
+        Spritesheet groundSprites = AssetPool.getSpritesheet("assets/groundSprites.png");
+        Spritesheet smallBlocks = AssetPool.getSpritesheet("assets/smallBlocks.png");
+        Spritesheet spikeSprites = AssetPool.getSpritesheet("assets/spikes.png");
+        Spritesheet bigSprites = AssetPool.getSpritesheet("assets/bigSprites.png");
+        Spritesheet portalSprites = AssetPool.getSpritesheet("assets/portal.png");
+
+        addButtons(groundSprites, Constants.TILE_WIDTH, Constants.TILE_HEIGHT, 0);
+        addButtons(smallBlocks, Constants.TILE_WIDTH, 16, 1);
+        // TODO:: Add sprites for third tab
+        addButtons(spikeSprites, Constants.TILE_WIDTH, Constants.TILE_HEIGHT, 3);
+        addButtons(bigSprites, Constants.TILE_WIDTH, 56, 4);
+        addButtons(portalSprites, 44, 85, 5);
+
+    }
+
+    private void addButtons(Spritesheet sprites, int width, int height, int index) {
+        Spritesheet buttonSprites = AssetPool.getSpritesheet("assets/ui/buttonSprites.png");
+
+        for (int i = 0; i < sprites.getSprites().size(); i++){
+            Sprite currentSprite = sprites.getSprites().get(i);
             int x = Constants.BUTTON_OFFSET_X + (currentSprite.getColumn() * Constants.BUTTON_WIDTH) + (currentSprite.getColumn() * Constants.BUTTON_SPACING_HZ);
             int y = Constants.BUTTON_OFFSET_Y + (currentSprite.getRow() * Constants.BUTTON_HEIGHT) + (currentSprite.getRow() * Constants.BUTTON_SPACING_VT);
 
-            GameObject obj = new GameObject("Generated", new Transform(new Vector2D(x, y)), 10);
-            obj.addComponent(currentSprite.copy());
+            // Adding game objects for first tab section in the editor container
+            GameObject gameObject = new GameObject((index+1)+" TabObject", new Transform(new Vector2D(x, y)), 10, true, false);
+            gameObject.addComponent(currentSprite.copy());
             MenuItem menuItem = new MenuItem(x, y, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, buttonSprites.getSprites().get(0), buttonSprites.getSprites().get(1)); //! Composition
-            obj.addComponent(menuItem);
-            obj.addComponent(new BoxBounds(Constants.TILE_WIDTH, Constants.TILE_HEIGHT));
-            menuItems.add(obj);
+            gameObject.addComponent(menuItem);
+            gameObject.addComponent(new BoxBounds(width, height));
+            this.tabMaps.get(this.tabs.get(index)).add(gameObject); // Get fist tab and add gameObject to it
         }
     }
 
@@ -66,9 +114,11 @@ public class MainContainer extends Component {
      */
     @Override
     public void start() {
-        for(GameObject gameObject : this.menuItems){
-            for(Component component : gameObject.getComponents()){
-                component.start();
+        for(GameObject gameObject : tabs){
+            for(GameObject currentTabObject : tabMaps.get(gameObject)){
+                for(Component<?> component : currentTabObject.getComponents()){
+                    component.start();
+                }
             }
         }
     }
@@ -80,7 +130,7 @@ public class MainContainer extends Component {
      */
     @Override
     public void update(double deltaTime){
-        for(GameObject gameObject : this.menuItems){
+        for(GameObject gameObject : this.tabMaps.get(currentTab)){
             gameObject.update(deltaTime);
         }
     }
@@ -104,7 +154,9 @@ public class MainContainer extends Component {
      */
     @Override
     public void draw(Graphics2D graphics2D) {
-        for(GameObject gameObject : this.menuItems){
+        graphics2D.drawImage(this.containerBackground.getImage(), 0, Constants.CONTAINER_OFFSET_Y, this.containerBackground.getWidth(), this.containerBackground.getHeight(), null);
+
+        for(GameObject gameObject : this.tabMaps.get(currentTab)){
             gameObject.draw(graphics2D);
         }
     }

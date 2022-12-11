@@ -41,4 +41,11 @@ public class Constants {
 
     public static final Color BG_COLOR = new Color(15.f / 255.f, 98.f / 255.f, 212.f / 255.f, 1.f);
     public static final Color GROUND_COLOR = new Color(28.f / 255.f, 70.f / 255.f, 148.f / 255.f, 1.f);
+
+    public static final int CONTAINER_OFFSET_Y = 535;
+    public static final int TAB_WIDTH = 75;
+    public static final int TAB_HEIGHT = 38;
+    public static final int TAB_OFFSET_X = 380;
+    public static final int TAB_OFFSET_Y = 497;
+    public static final int TAB_HORIZONTAL_SPACING = 10;
 }

@@ -4,8 +4,8 @@ import com.engine.Component;
 import com.engine.GameObject;
 
 enum BoundsType {
-    Box,
-    Triangle
+    BOX,
+    TRIANGLE,
 }
 
 public abstract class Bounds extends Component{
@@ -15,7 +15,7 @@ public abstract class Bounds extends Component{
     abstract public double getHeight();
 
     public static boolean checkCollision(Bounds a, Bounds b) {
-        if(a.type == b.type && a.type == BoundsType.Box) {
+        if(a.type == b.type && a.type == BoundsType.BOX) {
             return BoxBounds.checkCollision((BoxBounds)a, (BoxBounds)b);
         }
         else{
@@ -24,7 +24,7 @@ public abstract class Bounds extends Component{
     }
 
     public static void resolveCollision(Bounds b, GameObject player){
-        if(b.type == BoundsType.Box){
+        if(b.type == BoundsType.BOX){
             BoxBounds box = (BoxBounds)b;
             box.resolveCollision(player);
         }

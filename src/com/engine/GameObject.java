@@ -36,6 +36,23 @@ public class GameObject extends Serialization{
         this.zIndex = zIndex;
     }
 
+    public GameObject(String name, Transform transform, int zIndex, boolean ui, boolean serializable) {
+        this.name = name;
+        this.transform = transform;
+        this.components = new ArrayList<>();
+        this.zIndex = zIndex;
+        this.ui = ui;
+        this.serializable = serializable;
+    }
+
+    public GameObject(String name, Transform transform, int zIndex, boolean ui) {
+        this.name = name;
+        this.transform = transform;
+        this.components = new ArrayList<>();
+        this.zIndex = zIndex;
+        this.ui = ui;
+    }
+
     /**
      * Gets specific component type determined by the class name.
      *
