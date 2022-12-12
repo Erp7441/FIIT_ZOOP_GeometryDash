@@ -31,8 +31,10 @@ public class RigidBody extends Component {
      */
     @Override
     public void update(double deltaTime){
-        getGameObject().setX(getGameObject().getX() + velocity.getX() * deltaTime);
-        getGameObject().setY(getGameObject().getY() + velocity.getY() * deltaTime);
+
+        //? Rounding up then casting to int partially fixes bug with player clipping into the side of box when he is on top of the box.
+        getGameObject().setX((int)Math.nextUp(getGameObject().getX() + velocity.getX() *  deltaTime));
+        getGameObject().setY((int)Math.nextUp(getGameObject().getY() + velocity.getY() * deltaTime));
 
         velocity.setY(velocity.getY() + Constants.GRAVITY * deltaTime);
 
