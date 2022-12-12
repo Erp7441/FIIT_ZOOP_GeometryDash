@@ -15,7 +15,7 @@ import com.engine.Window;
 // TODO safe casting
 
 
-// TODO FIX Playere randomly dying on cubes
+// TODO FIX Player randomly dying on cubes
 
 public class Main {
 

@@ -169,6 +169,7 @@ public class Window extends JFrame implements Runnable {
                 lastFrameTime = time;
 
                 update(deltaTime);
+                Thread.sleep(1000 / Constants.FPS); // TODO Is this good enough FPS cap?
             }
         } catch (Exception e){
             e.printStackTrace();
