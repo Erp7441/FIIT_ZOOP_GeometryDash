@@ -71,7 +71,7 @@ public class Window extends JFrame implements Runnable {
      * Initializes the default scene for window.
      */
     public final void init(){
-        changeScene(0);
+        changeScene(2);
     }
 
     /**
@@ -98,6 +98,11 @@ public class Window extends JFrame implements Runnable {
             case 1:
                 isInEditor = false;
                 this.currentScene = new LevelScene("Level"); //! Composition
+                this.currentScene.init();
+                break;
+            case 2:
+                isInEditor = false;
+                this.currentScene = new MenuScene("Menu");
                 this.currentScene.init();
                 break;
             default:

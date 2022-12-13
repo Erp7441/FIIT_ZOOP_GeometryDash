@@ -9,6 +9,8 @@ import sk.stuba.fiit.martinszabo.geometrydash.util.Vector2D;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 /**
  * The scene that displays level. This scene is where the game happens. It is
@@ -20,6 +22,9 @@ public class LevelScene extends Scene {
 
     private GameObject player = null;
     private BoxBounds playerBounds;
+    private boolean isPaused = false;
+    private final double debounceKey = 0.2;
+    private double debounceKeyLeft = 0.0;
 
     /**
      * Initializes the scene with name.
@@ -65,7 +70,11 @@ public class LevelScene extends Scene {
 
     public void initAssetPool(){
         super.initAssetPool();
+        AssetPool.addSpritesheet("assets/spikes.png", Constants.TILE_WIDTH, Constants.TILE_HEIGHT, 2, 6, 4);
         AssetPool.getSprite("assets/player/spaceship.png");
+        AssetPool.addSpritesheet("assets/bigSprites.png", Constants.TILE_WIDTH*2, Constants.TILE_HEIGHT*2, 2, 2, 2);
+        AssetPool.addSpritesheet("assets/smallBlocks.png", Constants.TILE_WIDTH, Constants.TILE_HEIGHT, 2, 6, 1);
+        AssetPool.addSpritesheet("assets/portal.png", 44, 85, 2, 2, 2);
     }
 
     /**
@@ -77,6 +86,19 @@ public class LevelScene extends Scene {
      */
     @Override
     public void update (double deltaTime) {
+        debounceKeyLeft -= deltaTime;
+
+        if(Window.getKeyListener().isKeyPressed(KeyEvent.VK_ESCAPE) && Window.getKeyListener().isKeyPressed(KeyEvent.VK_SHIFT) && debounceKeyLeft < 0){
+            debounceKeyLeft = debounceKey;
+            Window.getWindow().changeScene(2);
+            return;
+        }
+
+        if (Window.getKeyListener().isKeyPressed(KeyEvent.VK_ESCAPE) && debounceKeyLeft < 0){
+            debounceKeyLeft = debounceKey;
+            isPaused = !isPaused;
+        }
+        if(isPaused){ return; }
 
         if (player.getX() - getCamera().getPosition().getX() > Constants.CAMERA_OFFSET_X){
             getCamera().getPosition().setX(player.getX() - Constants.CAMERA_OFFSET_X);

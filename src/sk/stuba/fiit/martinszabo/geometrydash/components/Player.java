@@ -164,6 +164,7 @@ public class Player extends Component {
         getGameObject().setY(350);
         getGameObject().getComponent(RigidBody.class).getVelocity().setY(0);
         getGameObject().getTransform().setRotation(0);
+        this.setState(PlayerState.NORMAL);
         Window.getCamera().setX(0);
     }
 

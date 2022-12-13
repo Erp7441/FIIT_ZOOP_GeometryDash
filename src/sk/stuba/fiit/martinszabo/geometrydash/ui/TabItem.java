@@ -44,9 +44,9 @@ public class TabItem extends Component{
     public void update(double deltaTime){
         if(
                 !isSelected
-                        && Window.getWindow().getMouseListener().isMousePressed() && Window.getWindow().getMouseListener().getMouseButton() == MouseEvent.BUTTON1
-                        && Window.getWindow().getMouseListener().getX() > this.x && Window.getWindow().getMouseListener().getX() <= this.x + this.width
-                        && Window.getWindow().getMouseListener().getY() > this.y && Window.getWindow().getMouseListener().getY() <= this.y + this.height
+                        && Window.getMouseListener().isMousePressed() && Window.getMouseListener().getMouseButton() == MouseEvent.BUTTON1
+                        && Window.getMouseListener().getX() > this.x && Window.getMouseListener().getX() <= this.x + this.width
+                        && Window.getMouseListener().getY() > this.y && Window.getMouseListener().getY() <= this.y + this.height
         ){
             // Clicked inside the button
             this.isSelected = true;

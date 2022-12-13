@@ -38,6 +38,12 @@ public class MainContainer extends Component {
         init();
     }
 
+    public MainContainer(boolean isEmpty) {
+        this.tabs = new ArrayList<>(); //! Composition
+        this.tabMaps = new HashMap<>(); //! Composition
+        this.containerBackground = AssetPool.getSprite("assets/ui/menuContainerBackground.png");
+    }
+
     /**
      * Initializes the container items with textures and formats them in a table layout.
      *

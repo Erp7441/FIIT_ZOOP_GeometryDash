@@ -35,7 +35,7 @@ public class LevelEditorControls extends Component {
     private final double debounceTime = 0.2;
     private double debounceLeft = 0.0;
 
-    private double debounceKey = 0.2;
+    private final double debounceKey = 0.2;
     private double debounceKeyLeft = 0.0;
 
     private boolean shiftKeyPressed = false;
@@ -60,8 +60,8 @@ public class LevelEditorControls extends Component {
     }
 
     public void updateSpritePosition(){
-        this.worldX = Math.floor((Window.getWindow().getMouseListener().getX() + Window.getCamera().getX() + Window.getWindow().getMouseListener().getDx()) / this.width);
-        this.worldY = Math.floor((Window.getWindow().getMouseListener().getY() + Window.getCamera().getY() + Window.getWindow().getMouseListener().getDy()) / this.height);
+        this.worldX = Math.floor((Window.getMouseListener().getX() + Window.getCamera().getX() + Window.getMouseListener().getDx()) / this.width);
+        this.worldY = Math.floor((Window.getMouseListener().getY() + Window.getCamera().getY() + Window.getMouseListener().getDy()) / this.height);
         this.getGameObject().setX(worldX * this.width - Window.getCamera().getX());
         this.getGameObject().setY(worldY * this.height - Window.getCamera().getY());
     }
@@ -156,6 +156,12 @@ public class LevelEditorControls extends Component {
         debounceLeft -= deltaTime;
         debounceKeyLeft -= deltaTime;
 
+        if(Window.getKeyListener().isKeyPressed(KeyEvent.VK_ESCAPE) && Window.getKeyListener().isKeyPressed(KeyEvent.VK_SHIFT) && debounceKeyLeft < 0){
+            debounceKeyLeft = debounceKey;
+            Window.getWindow().changeScene(2);
+            return;
+        }
+
         if (!isEditing && this.getGameObject().getComponent(Sprite.class) != null){
             this.isEditing = true;
         }
@@ -168,9 +174,9 @@ public class LevelEditorControls extends Component {
         }
 
         if (
-            Window.getWindow().getMouseListener().getY() < Constants.TAB_OFFSET_Y &&
-            Window.getWindow().getMouseListener().isMousePressed() &&
-            Window.getWindow().getMouseListener().getMouseButton() == MouseEvent.BUTTON1 &&
+            Window.getMouseListener().getY() < Constants.TAB_OFFSET_Y &&
+            Window.getMouseListener().isMousePressed() &&
+            Window.getMouseListener().getMouseButton() == MouseEvent.BUTTON1 &&
             debounceLeft < 0 &&
             !wasDragged
         ){

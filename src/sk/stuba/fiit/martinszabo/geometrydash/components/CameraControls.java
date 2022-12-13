@@ -34,16 +34,16 @@ public class CameraControls extends Component {
      */
     @Override
     public void update(double deltaTime) {
-        if(Window.getWindow().getMouseListener().isMousePressed() && Window.getWindow().getMouseListener().getMouseButton() == MouseEvent.BUTTON2){
-            double dx = (Window.getWindow().getMouseListener().getX() + Window.getWindow().getMouseListener().getDx() - prevMx);
-            double dy = (Window.getWindow().getMouseListener().getY() + Window.getWindow().getMouseListener().getDy() - prevMy);
+        if(Window.getMouseListener().isMousePressed() && Window.getMouseListener().getMouseButton() == MouseEvent.BUTTON2){
+            double dx = (Window.getMouseListener().getX() + Window.getMouseListener().getDx() - prevMx);
+            double dy = (Window.getMouseListener().getY() + Window.getMouseListener().getDy() - prevMy);
 
             Window.getCamera().setX(Window.getCamera().getX() - dx);
             Window.getCamera().setY(Window.getCamera().getY() - dy);
         }
 
-        prevMx = Window.getWindow().getMouseListener().getX() + Window.getWindow().getMouseListener().getDx();
-        prevMy = Window.getWindow().getMouseListener().getY() + Window.getWindow().getMouseListener().getDy();
+        prevMx = Window.getMouseListener().getX() + Window.getMouseListener().getDx();
+        prevMy = Window.getMouseListener().getY() + Window.getMouseListener().getDy();
     }
 
     @Override
