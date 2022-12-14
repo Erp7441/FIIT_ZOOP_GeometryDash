@@ -1,9 +1,6 @@
 package sk.stuba.fiit.martinszabo.geometrydash.components;
 
-import sk.stuba.fiit.martinszabo.geometrydash.engine.Component;
-import sk.stuba.fiit.martinszabo.geometrydash.engine.GameObject;
-import sk.stuba.fiit.martinszabo.geometrydash.engine.LevelEditorScene;
-import sk.stuba.fiit.martinszabo.geometrydash.engine.Window;
+import sk.stuba.fiit.martinszabo.geometrydash.engine.*;
 
 import sk.stuba.fiit.martinszabo.geometrydash.util.Constants;
 import sk.stuba.fiit.martinszabo.geometrydash.util.Vector2D;
@@ -132,7 +129,14 @@ public class LevelEditorControls extends Component<LevelEditorControls> {
     public void escape(){
         GameObject mouseCursor = new GameObject("Mouse cursor", this.getGameObject().getTransform().copy(), this.getGameObject().getzIndex());
         mouseCursor.addComponent(this);
-        LevelEditorScene scene = (LevelEditorScene) Window.getScene();
+        LevelEditorScene scene;
+        Scene windowScene = Window.getScene();
+        if (windowScene instanceof LevelEditorScene) {
+            scene = (LevelEditorScene) windowScene;
+        }
+        else{
+            return;
+        }
         scene.setCursor(mouseCursor);
         isEditing = false;
         clearSelected(mouseCursor.getTransform().getPosition(), false);

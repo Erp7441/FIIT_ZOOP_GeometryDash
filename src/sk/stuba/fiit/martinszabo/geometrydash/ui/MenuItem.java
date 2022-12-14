@@ -2,10 +2,7 @@ package sk.stuba.fiit.martinszabo.geometrydash.ui;
 
 import sk.stuba.fiit.martinszabo.geometrydash.components.LevelEditorControls;
 import sk.stuba.fiit.martinszabo.geometrydash.components.Sprite;
-import sk.stuba.fiit.martinszabo.geometrydash.engine.Component;
-import sk.stuba.fiit.martinszabo.geometrydash.engine.GameObject;
-import sk.stuba.fiit.martinszabo.geometrydash.engine.LevelEditorScene;
-import sk.stuba.fiit.martinszabo.geometrydash.engine.Window;
+import sk.stuba.fiit.martinszabo.geometrydash.engine.*;
 
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
@@ -88,7 +85,16 @@ public class MenuItem extends Component<MenuItem> {
             // Clicked inside the button
             GameObject obj = getGameObject().copy();
             obj.removeComponent(MenuItem.class);
-            LevelEditorScene scene = (LevelEditorScene) Window.getScene();
+
+            LevelEditorScene scene;
+            Scene windowScene = Window.getScene();
+            if (windowScene instanceof LevelEditorScene) {
+                scene = (LevelEditorScene) windowScene;
+            }
+            else{
+                return;
+            }
+
             LevelEditorControls levelEditorControls = scene.getCursor().getComponent(LevelEditorControls.class);
             obj.addComponent(levelEditorControls);
             scene.setCursor(obj);

@@ -1,9 +1,6 @@
 package sk.stuba.fiit.martinszabo.geometrydash.components;
 
-import sk.stuba.fiit.martinszabo.geometrydash.engine.Component;
-import sk.stuba.fiit.martinszabo.geometrydash.engine.GameObject;
-import sk.stuba.fiit.martinszabo.geometrydash.engine.LevelScene;
-import sk.stuba.fiit.martinszabo.geometrydash.engine.Window;
+import sk.stuba.fiit.martinszabo.geometrydash.engine.*;
 
 import sk.stuba.fiit.martinszabo.geometrydash.util.Constants;
 
@@ -34,7 +31,14 @@ public class Ground extends Component<Ground> {
     @Override
     public void update(double deltaTime) {
         if(!Window.isInEditor()){
-            LevelScene scene = (LevelScene) Window.getScene();
+            LevelScene scene;
+            Scene windowScene = Window.getScene();
+            if (windowScene instanceof LevelScene) {
+                scene = (LevelScene) windowScene;
+            }
+            else{
+                return;
+            }
             GameObject player = scene.getPlayer();
 
             if (player.getY() + player.getComponent(BoxBounds.class).getHeight() > getGameObject().getY()) {
