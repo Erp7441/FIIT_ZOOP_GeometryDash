@@ -20,7 +20,7 @@ import java.awt.Graphics2D;
  *
  * @see Component Component – An add-on to the game object.
  */
-public class Player extends Component {
+public class Player extends Component<Player> {
 
     private Sprite layerOne;
     private Sprite layerTwo;
@@ -127,14 +127,14 @@ public class Player extends Component {
 
     @Override
     public void update(double deltaTime){
-        if(onGround && Window.getWindow().getKeyListener().isKeyPressed(KeyEvent.VK_SPACE)){
+        if(onGround && Window.getKeyListener().isKeyPressed(KeyEvent.VK_SPACE)){
             if(state == PlayerState.NORMAL){
                 addJumpForce();
             }
             this.onGround = false;
         }
 
-        if(state == PlayerState.FLYING && Window.getWindow().getKeyListener().isKeyPressed(KeyEvent.VK_SPACE)){
+        if(state == PlayerState.FLYING && Window.getKeyListener().isKeyPressed(KeyEvent.VK_SPACE)){
             addFlyForce();
             onGround = false;
         }
@@ -144,6 +144,7 @@ public class Player extends Component {
         }
         else if (this.state != PlayerState.FLYING){
             getGameObject().getTransform().setRotation(getGameObject().getTransform().getRotation() % 360);
+            // TODO:: Refactor this if
             if(getGameObject().getTransform().getRotation() > 180 && getGameObject().getTransform().getRotation() < 360){
                 getGameObject().getTransform().setRotation(0.0);
             }
@@ -176,7 +177,7 @@ public class Player extends Component {
     }
 
     @Override
-    public Component copy() {
+    public Component<Player> copy() {
         return null; // Copy not needed for this component
     }
 

@@ -19,13 +19,11 @@ import java.awt.geom.Line2D;
  * @see Component Component – An add-on to the game object.
  * @see Window Window – Window where the game is being rendered.
  */
-public class Grid extends Component {
+public class Grid extends Component<Grid> {
 
     Camera camera; // Reference to the camera in current scene
     private int width;
     private int height;
-    private final int numYLines = 31;
-    private final int numXLines = 31;
 
     /**
      * Setting up tile dimensions and current window camera.
@@ -68,12 +66,12 @@ public class Grid extends Component {
         double startX = Math.floor(this.camera.getPosition().getX() / this.width) * this.width - this.camera.getPosition().getX();
         double startY = Math.floor(this.camera.getPosition().getY() / this.height) * this.height - this.camera.getPosition().getY();
 
-        for (int column = 0; column <= numYLines; column++){
+        for (int column = 0; column <= Constants.GRID_Y_LINES; column++){
             graphics2D.draw(new Line2D.Double(startX, 0, startX, bottom));
             startX += this.width;
         }
 
-        for (int row = 0; row <= numXLines; row++){
+        for (int row = 0; row <= Constants.GRID_X_LINES; row++){
             if(camera.getPosition().getY() + startY < Constants.GROUND_Y){
                 graphics2D.draw(new Line2D.Double(0, startY, Constants.SCREEN_WIDTH, startY));
                 startY += this.height;
@@ -82,7 +80,7 @@ public class Grid extends Component {
     }
 
     @Override
-    public Component copy() {
+    public Component<Grid> copy() {
         return null; // Copy not needed for this component
     }
 

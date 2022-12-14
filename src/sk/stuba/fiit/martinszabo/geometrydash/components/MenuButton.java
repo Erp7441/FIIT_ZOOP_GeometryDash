@@ -3,10 +3,9 @@ package sk.stuba.fiit.martinszabo.geometrydash.components;
 import sk.stuba.fiit.martinszabo.geometrydash.engine.Component;
 import sk.stuba.fiit.martinszabo.geometrydash.engine.Window;
 
-public class MenuButton extends Component{
+public class MenuButton extends Component<MenuButton>{
 
     ButtonType type;
-
     public MenuButton(ButtonType type){
         this.type = type;
     }
@@ -28,7 +27,7 @@ public class MenuButton extends Component{
     }
 
     @Override
-    public Component copy(){
+    public Component<MenuButton> copy(){
         return new MenuButton(this.type);
     }
 

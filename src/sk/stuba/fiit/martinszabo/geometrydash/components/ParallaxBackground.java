@@ -8,7 +8,7 @@ import sk.stuba.fiit.martinszabo.geometrydash.util.Constants;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-public class ParallaxBackground extends Component{
+public class ParallaxBackground extends Component<ParallaxBackground>{
 
     private int width;
     private int height;
@@ -92,7 +92,7 @@ public class ParallaxBackground extends Component{
     }
 
     @Override
-    public Component copy(){
+    public Component<ParallaxBackground> copy(){
         return null;
     }
 

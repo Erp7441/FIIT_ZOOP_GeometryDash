@@ -22,7 +22,7 @@ import java.nio.file.FileAlreadyExistsException;
  *
  * @see Component Component – An add-on to the game object.
  */
-public class Sprite extends Component {
+public class Sprite extends Component<Sprite> {
     private String file;
     private int width;
     private int height;
@@ -102,7 +102,7 @@ public class Sprite extends Component {
      * @return Copy of the current sprite with the same parameters, distinguishing whether it is a full sprite or a subsprite.
      */
     @Override
-    public Component copy() {
+    public Component<Sprite> copy() {
         if(!isSubsprite){
             return new Sprite(this.image, this.file);
         }
@@ -194,7 +194,7 @@ public class Sprite extends Component {
 
     }
 
-    public static Component deserialize(){
+    public static Component<Sprite> deserialize(){
         boolean isSubsprite = Parser.consumeBooleanProperty("isSubsprite");
         Parser.consume(',');
         String filePath = Parser.consumeStringProperty("FilePath");

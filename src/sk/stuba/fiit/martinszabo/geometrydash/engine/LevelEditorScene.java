@@ -15,6 +15,7 @@ import java.awt.event.KeyEvent;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -119,13 +120,13 @@ public class LevelEditorScene extends Scene {
         editingButtons.update(deltaTime);
         cursor.update(deltaTime);
 
-        if(Window.getWindow().getKeyListener().isKeyPressed(KeyEvent.VK_F1)){
+        if(Window.getKeyListener().isKeyPressed(KeyEvent.VK_F1)){
             exportLevel("Level");
         }
-        else if(Window.getWindow().getKeyListener().isKeyPressed(KeyEvent.VK_F2)){
+        else if(Window.getKeyListener().isKeyPressed(KeyEvent.VK_F2)){
             importLevel("Level");
         }
-        else if(Window.getWindow().getKeyListener().isKeyPressed(KeyEvent.VK_F3)){
+        else if(Window.getKeyListener().isKeyPressed(KeyEvent.VK_F3)){
             Window.getWindow().changeScene(1);
         }
 
@@ -161,7 +162,9 @@ public class LevelEditorScene extends Scene {
             }
         }
         for (GameObject gameObject : getGameObjectsToRemove()){
-            getRenderer().getGameObjects().remove(gameObject);
+            for(List<GameObject> renderedObjects : getRenderer().getGameObjects().values()){
+                renderedObjects.remove(gameObject);
+            }
             getGameObjects().remove(gameObject);
         }
 

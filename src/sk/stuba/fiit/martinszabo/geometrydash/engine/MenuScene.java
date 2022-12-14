@@ -11,7 +11,6 @@ import java.awt.event.MouseEvent;
 
 public class MenuScene extends LevelEditorScene{
 
-    private final double debounceTime = 0.2;
     private double debounceLeft = 0.0;
     private GameObject cursor = null;
 
@@ -80,11 +79,11 @@ public class MenuScene extends LevelEditorScene{
             Window.getMouseListener().getMouseButton() == MouseEvent.BUTTON1 &&
             debounceLeft < 0
         ){
-            debounceLeft = debounceTime; // Mouse clicked
+            debounceLeft = Constants.DEBOUNCE_TIME_MOUSE; // Mouse clicked
 
             for (GameObject gameObject : getGameObjects()){
                 Bounds bounds = gameObject.getComponent(Bounds.class);
-                if (bounds != null && bounds.checkCollision(bounds, cursorBounds)){
+                if (bounds != null && Bounds.checkCollision(bounds, cursorBounds)){
                     gameObject.getComponent(MenuButton.class).execute();
                 }
             }

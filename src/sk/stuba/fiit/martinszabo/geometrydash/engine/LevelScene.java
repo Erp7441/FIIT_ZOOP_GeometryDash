@@ -19,7 +19,6 @@ public class LevelScene extends Scene {
     private GameObject player = null;
     private BoxBounds playerBounds;
     private boolean isPaused = false;
-    private final double debounceKey = 0.2;
     private double debounceKeyLeft = 0.0;
     private double levelSpeed = 1.0;
 
@@ -55,7 +54,7 @@ public class LevelScene extends Scene {
         );
         player.addComponent(playerComp);
         player.addComponent(new RigidBody(new Vector2D(Constants.PLAYER_SPEED, 0.0)));
-        playerBounds = new BoxBounds(Constants.PLAYER_WIDTH - 2, Constants.PLAYER_HEIGHT - 2);
+        playerBounds = new BoxBounds(Constants.PLAYER_WIDTH - 2.0, Constants.PLAYER_HEIGHT - 2.0);
         player.addComponent(playerBounds);
         getRenderer().submit(player);
 
@@ -65,6 +64,7 @@ public class LevelScene extends Scene {
         importLevel("Level");
     }
 
+    @Override
     public void initAssetPool(){
         super.initAssetPool();
         AssetPool.addSpritesheet("assets/spikes.png", Constants.TILE_WIDTH, Constants.TILE_HEIGHT, 2, 6, 4);
@@ -92,13 +92,13 @@ public class LevelScene extends Scene {
         }
 
         if(Window.getKeyListener().isKeyPressed(KeyEvent.VK_ESCAPE) && Window.getKeyListener().isKeyPressed(KeyEvent.VK_SHIFT) && debounceKeyLeft < 0){
-            debounceKeyLeft = debounceKey;
+            debounceKeyLeft = Constants.DEBOUNCE_TIME_KEY;
             Window.getWindow().changeScene(2);
             return;
         }
 
         if (Window.getKeyListener().isKeyPressed(KeyEvent.VK_ESCAPE) && debounceKeyLeft < 0){
-            debounceKeyLeft = debounceKey;
+            debounceKeyLeft = Constants.DEBOUNCE_TIME_KEY;
             isPaused = !isPaused;
         }
         if(isPaused){ return; }
@@ -119,10 +119,8 @@ public class LevelScene extends Scene {
             gameObject.update(deltaTime);
 
             Bounds bounds = gameObject.getComponent(Bounds.class);
-            if (bounds != null){
-                if(Bounds.checkCollision(playerBounds, bounds)){
-                    Bounds.resolveCollision(bounds, player);
-                }
+            if (bounds != null && Bounds.checkCollision(playerBounds, bounds)){
+                Bounds.resolveCollision(bounds, player);
             }
         }
 

@@ -12,7 +12,7 @@ import sk.stuba.fiit.martinszabo.geometrydash.util.Vector2D;
  *
  * @see Component Component – An add-on to the game object.
  */
-public class RigidBody extends Component {
+public class RigidBody extends Component<RigidBody> {
     private Vector2D velocity;
 
     /**
@@ -44,7 +44,7 @@ public class RigidBody extends Component {
     }
 
     @Override
-    public Component copy() {
+    public Component<RigidBody> copy() {
         return null; // Copy not needed for this component
     }
 

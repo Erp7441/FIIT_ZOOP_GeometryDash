@@ -57,8 +57,8 @@ public class TriangleBounds extends Bounds {
         double centerX = this.point2.getX();
         double centerY = this.point2.getY() + halfHeight;
 
-        double playerCenterX = a.getGameObject().getX() + a.getHalftWidth();
-        double playerCenterY = a.getGameObject().getY() + a.getHalftHeight();
+        double playerCenterX = a.getGameObject().getX() + a.getHalfWidth();
+        double playerCenterY = a.getGameObject().getY() + a.getHalfHeight();
 
         Vector2D distance = new Vector2D(playerCenterX - centerX, playerCenterY - centerY);
         double magnitudeSquared = (distance.getX() * distance.getX()) + (distance.getY() * distance.getY());
@@ -117,24 +117,24 @@ public class TriangleBounds extends Bounds {
 
         if ((code1 & LEFT) == LEFT){
             // Add 1 to ensure we are clipping
-            p1.setX(xMin + 1);
+            p1.setX(xMin + 1.0);
         }
         else if ((code1 & RIGHT) == RIGHT){
             // Subtract 1 to ensure we are clipping
             // When we are on the right side we use xMax. When we are on the left side we use xMin.
-            p1.setX(xMax - 1);
+            p1.setX(xMax - 1.0);
         }
         p1.setY((m * p1.getX()) + b); // y = mx + b
 
         // Again for p2 vector
         if ((code1 & LEFT) == LEFT){
             // Add 1 to ensure we are clipping
-            p2.setX(xMin + 1);
+            p2.setX(xMin + 1.0);
         }
         else if ((code1 & RIGHT) == RIGHT){
             // Subtract 1 to ensure we are clipping
             // When we are on the right side we use xMax. When we are on the left side we use xMin.
-            p2.setX(xMax - 1);
+            p2.setX(xMax - 1.0);
         }
         p2.setY((m * p2.getX()) + b); // y = mx + b
 
@@ -169,7 +169,7 @@ public class TriangleBounds extends Bounds {
      * @param angle - angle of rotation
      * @param point - point we want to rotate
      * @param origin - origin we want to rotate around
-     * @return
+     * @return - new 2D vector with rotated points
      */
     private Vector2D rotatePoint(double angle, Vector2D point, Vector2D origin){
         double cos = Math.cos(angle);
@@ -229,7 +229,7 @@ public class TriangleBounds extends Bounds {
     }
 
     @Override
-    public Component copy(){
+    public Component<Bounds> copy(){
         return new TriangleBounds(this.base, this.height);
     }
 

@@ -15,7 +15,7 @@ import java.awt.Graphics2D;
  * in the game.
  */
 public class GameObject extends Serialization{
-    private List<Component> components;
+    private List<Component<?>> components;
     private String name;
     private Transform transform;
     private boolean serializable = true;
@@ -60,8 +60,8 @@ public class GameObject extends Serialization{
      * @return component that matches the type specified in parameter
      * @param <T> generic type of the component
      */
-    public <T extends Component> T getComponent(Class<T> componentClass) {
-        for (Component component : components) {
+    public <T extends Component<?>> T getComponent(Class<T> componentClass) {
+        for (Component<?> component : components) {
             if (componentClass.isAssignableFrom(component.getClass())) {
                 try{
                     return componentClass.cast(component);
@@ -81,8 +81,8 @@ public class GameObject extends Serialization{
      * @return component that matches the type specified in parameter
      * @param <T> generic type of the component
      */
-    public <T extends Component> T removeComponent(Class<T> componentClass) {
-        for (Component component : components) {
+    public <T extends Component<?>> T removeComponent(Class<T> componentClass) {
+        for (Component<?> component : components) {
             if (componentClass.isAssignableFrom(component.getClass())) {
                 components.remove(component);
                 return null;
@@ -96,7 +96,7 @@ public class GameObject extends Serialization{
      *
      * @return component list containing all components of this class instance
      */
-    public List<Component> getComponents(){
+    public List<Component<?>> getComponents(){
         return this.components;
     }
 
@@ -105,7 +105,7 @@ public class GameObject extends Serialization{
      *
      * @param component component to be added to this game object instance.
      */
-    public void addComponent(Component component) {
+    public void addComponent(Component<?> component) {
         components.add(component);
         component.setGameObject(this);
     }
@@ -119,8 +119,8 @@ public class GameObject extends Serialization{
      */
     public GameObject copy(){
         GameObject newGameObject = new GameObject("Generated", this.transform.copy(), this.zIndex);
-        for (Component component : this.components) {
-            Component copy = component.copy();
+        for (Component<?> component : this.components) {
+            Component<?> copy = component.copy();
             if(copy != null){
                 newGameObject.addComponent(copy);
             }
@@ -134,7 +134,7 @@ public class GameObject extends Serialization{
      * @param deltaTime Difference between last mouse update time and current mouse update time.
      */
     public void update(double deltaTime){
-        for (Component component : this.components) {
+        for (Component<?> component : this.components) {
             component.update(deltaTime);
         }
     }
@@ -146,13 +146,13 @@ public class GameObject extends Serialization{
      * @see Graphics2D Graphics2D - Handler for 2D operations within a window.
      */
     public void draw(Graphics2D graphics2D){
-        for (Component component : this.components) {
+        for (Component<?> component : this.components) {
             component.draw(graphics2D);
         }
     }
 
     public void draw(Graphics2D graphics2D, Class<?> componentClassToSkip){
-        for (Component component : this.components) {
+        for (Component<?> component : this.components) {
             if (!componentClassToSkip.isAssignableFrom(component.getClass())) {
                 component.draw(graphics2D);
             }
@@ -180,7 +180,7 @@ public class GameObject extends Serialization{
         }
 
         int count = 0;
-        for(Component component : this.components){
+        for(Component<?> component : this.components){
             String str = component.serialize(tabSize + 2);
             if(str.compareTo("") != 0){
                 builder.append(str);

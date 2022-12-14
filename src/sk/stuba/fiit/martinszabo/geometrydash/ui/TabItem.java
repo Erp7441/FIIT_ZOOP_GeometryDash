@@ -8,7 +8,7 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
-public class TabItem extends Component{
+public class TabItem extends Component<TabItem>{
 
     private final int x;
     private final int y;
@@ -73,7 +73,7 @@ public class TabItem extends Component{
     }
 
     @Override
-    public Component copy(){
+    public Component<TabItem> copy(){
         return null; // Copy not needed for this class
     }
 

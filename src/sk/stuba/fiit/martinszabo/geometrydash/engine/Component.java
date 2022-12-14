@@ -28,7 +28,7 @@ public abstract class Component<T> extends Serialization{
      * @see Graphics2D Graphics2D - Handler for 2D operations within a window.
      */
     public void draw(Graphics2D graphics2D){}
-    public abstract Component copy();
+    public abstract Component<T> copy();
     public void start(){}
 
     public GameObject getGameObject(){

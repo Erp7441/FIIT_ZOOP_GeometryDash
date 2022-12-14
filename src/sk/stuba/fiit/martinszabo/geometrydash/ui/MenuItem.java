@@ -17,7 +17,7 @@ import java.awt.event.MouseEvent;
  *
  * @see Component Component – An add-on to the game object.
  */
-public class MenuItem extends Component {
+public class MenuItem extends Component<MenuItem> {
 
     private final int x;
     private final int y;

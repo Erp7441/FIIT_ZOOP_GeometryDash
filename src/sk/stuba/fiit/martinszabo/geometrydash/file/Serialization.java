@@ -1,7 +1,6 @@
 package sk.stuba.fiit.martinszabo.geometrydash.file;
 
 public abstract class Serialization implements Serialize {
-    public abstract String serialize(int tabSize);
 
     public String addStringProperty(String name, String value, int tabSize, boolean newline, boolean comma) {
         return addTabs(tabSize) + "\"" + name + "\": \"" + value + "\"" + addEnding(newline, comma);

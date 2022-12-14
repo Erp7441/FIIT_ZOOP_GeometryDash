@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
  *
  * @see Component Component – An add-on to the game object.
  */
-public class CameraControls extends Component {
+public class CameraControls extends Component<CameraControls> {
 
     // Previous mouse position
     private double prevMx;

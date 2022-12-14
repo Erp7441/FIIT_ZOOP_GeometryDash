@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @see Component Component – An add-on to the game object.
  */
-public class MainContainer extends Component {
+public class MainContainer extends Component<MainContainer> {
 
     private Sprite containerBackground;
     private ArrayList<GameObject> tabs;
@@ -36,12 +36,6 @@ public class MainContainer extends Component {
         this.tabMaps = new HashMap<>(); //! Composition
         this.containerBackground = AssetPool.getSprite("assets/ui/menuContainerBackground.png");
         init();
-    }
-
-    public MainContainer(boolean isEmpty) {
-        this.tabs = new ArrayList<>(); //! Composition
-        this.tabMaps = new HashMap<>(); //! Composition
-        this.containerBackground = AssetPool.getSprite("assets/ui/menuContainerBackground.png");
     }
 
     /**
@@ -213,7 +207,7 @@ public class MainContainer extends Component {
      * @return reference to null object
      */
     @Override
-    public Component copy() {
+    public Component<MainContainer> copy() {
         return null;
     }
 

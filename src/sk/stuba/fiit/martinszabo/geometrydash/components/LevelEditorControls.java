@@ -31,16 +31,17 @@ enum Direction {
  * @see GameObject GameObject – Base object from which everything is derived from.
  * @see Component Component – An add-on to the game object.
  */
-public class LevelEditorControls extends Component {
-    private final double debounceTime = 0.2;
+public class LevelEditorControls extends Component<LevelEditorControls> {
+
     private double debounceLeft = 0.0;
 
-    private final double debounceKey = 0.2;
+    
     private double debounceKeyLeft = 0.0;
 
     private boolean shiftKeyPressed = false;
 
-    private ArrayList<GameObject> selectedObjects;
+    // TODO:: is this right?
+    private final ArrayList<GameObject> selectedObjects;
     private int width;
     private int height;
 
@@ -100,11 +101,13 @@ public class LevelEditorControls extends Component {
         ArrayList<GameObject> objects = new ArrayList<>();
         for(GameObject gameObject : Window.getScene().getGameObjects()){
             Bounds bounds = gameObject.getComponent(Bounds.class);
-            if(bounds != null){
-                if (gameObject.getX() + bounds.getWidth() <= x0 + width && gameObject.getY() + bounds.getHeight() <= y0 + height &&
-                    gameObject.getX() >= x0 && gameObject.getY() >= y0){
-                    objects.add(gameObject);
-                }
+            if(
+                bounds != null &&
+                (gameObject.getX() + bounds.getWidth() <= x0 + width &&
+                gameObject.getY() + bounds.getHeight() <= y0 + height &&
+                gameObject.getX() >= x0 && gameObject.getY() >= y0)
+            ){
+                objects.add(gameObject);
             }
         }
         return objects;
@@ -157,7 +160,7 @@ public class LevelEditorControls extends Component {
         debounceKeyLeft -= deltaTime;
 
         if(Window.getKeyListener().isKeyPressed(KeyEvent.VK_ESCAPE) && Window.getKeyListener().isKeyPressed(KeyEvent.VK_SHIFT) && debounceKeyLeft < 0){
-            debounceKeyLeft = debounceKey;
+            debounceKeyLeft = Constants.DEBOUNCE_TIME_KEY;
             Window.getWindow().changeScene(2);
             return;
         }
@@ -167,12 +170,27 @@ public class LevelEditorControls extends Component {
         }
 
         if (isEditing){
-            if(selectedObjects.size() != 0){
+            if(!selectedObjects.isEmpty()){
                 clearSelected(new Vector2D(Window.getMouseListener().getX(), Window.getMouseListener().getY()), false);
             }
             updateSpritePosition();
         }
 
+        checkMouse();
+
+        if (Window.getKeyListener().isKeyPressed(KeyEvent.VK_ESCAPE)){
+            escape();
+        }
+
+        shiftKeyPressed = Window.getKeyListener().isKeyPressed(KeyEvent.VK_SHIFT);
+        checkMovement();
+        checkRotation();
+        checkDuplication();
+        checkRemoval();
+
+    }
+
+    private void checkMouse(){
         if (
             Window.getMouseListener().getY() < Constants.TAB_OFFSET_Y &&
             Window.getMouseListener().isMousePressed() &&
@@ -180,7 +198,7 @@ public class LevelEditorControls extends Component {
             debounceLeft < 0 &&
             !wasDragged
         ){
-            debounceLeft = debounceTime; // Mouse clicked
+            debounceLeft = Constants.DEBOUNCE_TIME_MOUSE; // Mouse clicked
 
             if (isEditing){
                 copyGameObjectToScene();
@@ -204,53 +222,42 @@ public class LevelEditorControls extends Component {
                 }
             }
         }
-
-        if (Window.getKeyListener().isKeyPressed(KeyEvent.VK_ESCAPE)){
-            escape();
-        }
-
-        shiftKeyPressed = Window.getKeyListener().isKeyPressed(KeyEvent.VK_SHIFT);
-        checkMovement();
-        checkRotation();
-        checkDuplication();
-        checkRemoval();
-
     }
 
     private void checkMovement(){
         if (debounceKeyLeft <= 0 && Window.getKeyListener().isKeyPressed(KeyEvent.VK_LEFT)){
             move(Direction.LEFT);
-            debounceKeyLeft = debounceKey;
+            debounceKeyLeft = Constants.DEBOUNCE_TIME_KEY;
         }
         else if (debounceKeyLeft <= 0 && Window.getKeyListener().isKeyPressed(KeyEvent.VK_RIGHT)){
             move(Direction.RIGHT);
-            debounceKeyLeft = debounceKey;
+            debounceKeyLeft = Constants.DEBOUNCE_TIME_KEY;
         }
         else if (debounceKeyLeft <= 0 && Window.getKeyListener().isKeyPressed(KeyEvent.VK_UP)){
             move(Direction.UP);
-            debounceKeyLeft = debounceKey;
+            debounceKeyLeft = Constants.DEBOUNCE_TIME_KEY;
         }
         else if (debounceKeyLeft <= 0 && Window.getKeyListener().isKeyPressed(KeyEvent.VK_DOWN)){
             move(Direction.DOWN);
-            debounceKeyLeft = debounceKey;
+            debounceKeyLeft = Constants.DEBOUNCE_TIME_KEY;
         }
     }
 
     private void checkRotation(){
         if (debounceKeyLeft <= 0 && (Window.getKeyListener().isKeyPressed(KeyEvent.VK_Q))){
             rotate(90);
-            debounceKeyLeft = debounceKey;
+            debounceKeyLeft = Constants.DEBOUNCE_TIME_KEY;
         }
         else if(debounceKeyLeft <= 0 && (Window.getKeyListener().isKeyPressed(KeyEvent.VK_E))){
             rotate(-90);
-            debounceKeyLeft = debounceKey;
+            debounceKeyLeft = Constants.DEBOUNCE_TIME_KEY;
         }
     }
 
     private void checkDuplication(){
         if (debounceKeyLeft <= 0 && (Window.getKeyListener().isKeyPressed(KeyEvent.VK_D) && Window.getKeyListener().isKeyPressed(KeyEvent.VK_CONTROL))){
             duplicate();
-            debounceKeyLeft = debounceKey;
+            debounceKeyLeft = Constants.DEBOUNCE_TIME_KEY;
         }
     }
 
@@ -372,7 +379,7 @@ public class LevelEditorControls extends Component {
     }
 
     @Override
-    public Component copy() {
+    public Component<LevelEditorControls> copy() {
         return null; // Copy not needed for this component
     }
 

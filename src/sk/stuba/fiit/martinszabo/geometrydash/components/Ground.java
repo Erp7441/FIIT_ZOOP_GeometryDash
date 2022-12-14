@@ -17,7 +17,7 @@ import java.awt.Graphics2D;
  * @see GameObject GameObject – Base object from which everything is derived from.
  * @see Component Component – An add-on to the game object.
  */
-public class Ground extends Component {
+public class Ground extends Component<Ground> {
 
     /**
      * Updates the collision of a game object with the ground. If we are not inside the editor then
@@ -33,7 +33,7 @@ public class Ground extends Component {
      */
     @Override
     public void update(double deltaTime) {
-        if(!Window.getWindow().isInEditor()){
+        if(!Window.isInEditor()){
             LevelScene scene = (LevelScene) Window.getScene();
             GameObject player = scene.getPlayer();
 
@@ -69,7 +69,7 @@ public class Ground extends Component {
     }
 
     @Override
-    public Component copy() {
+    public Component<Ground> copy() {
         return null; // Copy not needed for this component
     }
 

@@ -23,11 +23,12 @@ public class Parser{
         return bytes;
     }
 
+    private Parser() {}
+
     public static void openFile(String fileName){
-        // Checks if file exists. If it does then get its lenght.
+        // Checks if file exists. If it does then get its length.
         File temp = new File("levels/" + fileName + ".zip");
         if(!temp.exists()){ return; }
-        int lenght = (int)temp.length();
 
         try {
             ZipFile zip = new ZipFile("levels/" + fileName + ".zip");
@@ -42,6 +43,8 @@ public class Parser{
             if(line != 1){
                 line = 1;
             }
+
+            zip.close();
         }
         catch(IOException e){
             e.printStackTrace();
@@ -52,7 +55,7 @@ public class Parser{
     public static byte[] readAllBytes(InputStream stream) throws IOException{
         byte[] buffer = new byte[1000];
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        int tempByte = 0;
+        int tempByte;
         while((tempByte = stream.read(buffer)) != -1){
             bos.write(buffer, 0, tempByte);
         }
@@ -76,10 +79,10 @@ public class Parser{
         return current;
     }
 
-    public static void consume(char chracter){
+    public static void consume(char character){
         char current = peek();
-        if(current != chracter){
-            System.out.println("Expecting '" + chracter + "' but got '" + current + "' at line: " + line);
+        if(current != character){
+            System.out.println("Expecting '" + character + "' but got '" + current + "' at line: " + line);
             System.exit(-1);
         }
         offset++;
@@ -154,7 +157,7 @@ public class Parser{
         return Boolean.parseBoolean(builder.toString());
     }
 
-    public static Component parseComponent(){
+    public static Component<?> parseComponent(){
         String componentName = Parser.parseString();
         skipWhitespace();
         Parser.consume(':');
@@ -191,8 +194,8 @@ public class Parser{
         return GameObject.deserialize();
     }
 
-    private static boolean isDigit(char chracter){
-        return chracter >= '0' && chracter <= '9';
+    private static boolean isDigit(char character){
+        return character >= '0' && character <= '9';
     }
 
     public static void consumeBeginObjectProperty(String property){

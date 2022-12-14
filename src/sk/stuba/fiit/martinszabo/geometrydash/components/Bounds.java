@@ -4,14 +4,14 @@ import sk.stuba.fiit.martinszabo.geometrydash.engine.Component;
 import sk.stuba.fiit.martinszabo.geometrydash.engine.GameObject;
 import sk.stuba.fiit.martinszabo.geometrydash.util.Vector2D;
 
-public abstract class Bounds extends Component{
+public abstract class Bounds extends Component<Bounds>{
     private BoundsType type;
     private boolean selected;
 
 
-    abstract public double getWidth();
-    abstract public double getHeight();
-    abstract public boolean raycast(Vector2D position);
+    public abstract double getWidth();
+    public abstract double getHeight();
+    public abstract boolean raycast(Vector2D position);
 
     public static boolean checkCollision(Bounds a, Bounds b) {
         // One bound will always be a box

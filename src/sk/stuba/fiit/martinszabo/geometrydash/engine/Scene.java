@@ -71,8 +71,6 @@ public abstract class Scene{
     }
     protected void importLevel(String fileName){
 
-        // TODO:: Clear level before importing
-
         Parser.openFile(fileName);
 
         Parser.consume('{');
@@ -85,16 +83,16 @@ public abstract class Scene{
     }
 
     protected void initBackgrounds(int numberOfBackgrounds, boolean staticBackground){
-        GameObject ground = new GameObject("Ground", new Transform(new Vector2D(0, Constants.GROUND_Y)), 1, true, false);
-        ground.addComponent(new Ground());
-        addGameObject(ground);
+        GameObject gameGround = new GameObject("Ground", new Transform(new Vector2D(0, Constants.GROUND_Y)), 1, true, false);
+        gameGround.addComponent(new Ground());
+        addGameObject(gameGround);
 
         ArrayList<GameObject> backgrounds = new ArrayList<>(numberOfBackgrounds);
         ArrayList<GameObject> groundBackgrounds = new ArrayList<>(numberOfBackgrounds);
 
         for (int i = 0; i < numberOfBackgrounds; i++){
 
-            ParallaxBackground background = new ParallaxBackground("assets/backgrounds/bg01.png", backgrounds, ground.getComponent(Ground.class), false, staticBackground);
+            ParallaxBackground background = new ParallaxBackground("assets/backgrounds/bg01.png", backgrounds, gameGround.getComponent(Ground.class), false, staticBackground);
             int x = i * background.getSprite().getWidth();
             int y = 0;
 
@@ -102,9 +100,9 @@ public abstract class Scene{
             backgroundGameObject.addComponent(background);
             backgrounds.add(backgroundGameObject);
 
-            ParallaxBackground groundBackground = new ParallaxBackground("assets/grounds/ground01.png", groundBackgrounds, ground.getComponent(Ground.class), true, staticBackground);
+            ParallaxBackground groundBackground = new ParallaxBackground("assets/grounds/ground01.png", groundBackgrounds, gameGround.getComponent(Ground.class), true, staticBackground);
             x = i * groundBackground.getSprite().getWidth();
-            y = (int)ground.getY();
+            y = (int)gameGround.getY();
 
             GameObject groundGameObject = new GameObject("GroundBackground", new Transform(new Vector2D(x, y)), -9, true, false);
             groundGameObject.addComponent(groundBackground);
@@ -113,7 +111,7 @@ public abstract class Scene{
             addGameObject(backgroundGameObject);
             addGameObject(groundGameObject);
         }
-        this.ground = ground; // Keeping reference to the ground because of LevelEditorScene
+        this.ground = gameGround; // Keeping reference to the ground because of LevelEditorScene
     }
 
     public String getName(){

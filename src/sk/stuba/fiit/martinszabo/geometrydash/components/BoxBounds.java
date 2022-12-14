@@ -21,10 +21,10 @@ public class BoxBounds extends Bounds {
     private double width;
     private double height;
 
-    private double halftWidth;
-    private double halftHeight;
+    private double halfWidth;
+    private double halfHeight;
     private double enclosingRadius;
-    private Vector2D center = new Vector2D();
+    private final Vector2D center = new Vector2D();
     private boolean isTrigger;
     private double xBuffer;
     private double yBuffer;
@@ -43,9 +43,9 @@ public class BoxBounds extends Bounds {
     private void init(double width, double height, double xBuffer, double yBuffer, boolean isTrigger){
         this.width = width;
         this.height = height;
-        this.halftWidth = width / 2.0;
-        this.halftHeight = height / 2.0;
-        this.enclosingRadius = Math.sqrt((this.halftWidth * halftWidth) + (this.halftHeight * halftHeight));
+        this.halfWidth = width / 2.0;
+        this.halfHeight = height / 2.0;
+        this.enclosingRadius = Math.sqrt((this.halfWidth * halfWidth) + (this.halfHeight * halfHeight));
         this.setType(BoundsType.BOX);
         this.isTrigger = isTrigger;
         this.xBuffer = xBuffer;
@@ -58,8 +58,8 @@ public class BoxBounds extends Bounds {
     }
 
     public void calculateCenter(){
-        this.center.setX(this.getGameObject().getX() + halftWidth + this.xBuffer);
-        this.center.setY(this.getGameObject().getY() + halftHeight + this.yBuffer);
+        this.center.setX(this.getGameObject().getX() + halfWidth + this.xBuffer);
+        this.center.setY(this.getGameObject().getY() + halfHeight + this.yBuffer);
     }
 
     public static boolean checkCollision(BoxBounds a, BoxBounds b){
@@ -68,8 +68,8 @@ public class BoxBounds extends Bounds {
 
         double dx = b.center.getX() - a.center.getX();
         double dy = b.center.getY() - a.center.getY();
-        double combinedWidth = a.halftWidth + b.halftWidth;
-        double combinedHeight = a.halftHeight + b.halftHeight;
+        double combinedWidth = a.halfWidth + b.halfWidth;
+        double combinedHeight = a.halfHeight + b.halfHeight;
 
         if(Math.abs(dx) <= combinedWidth){
             return Math.abs(dy) <= combinedHeight;
@@ -86,8 +86,8 @@ public class BoxBounds extends Bounds {
 
         double dx = this.center.getX() - playerBounds.center.getX();
         double dy = this.center.getY() - playerBounds.center.getY();
-        double combinedWidth = playerBounds.halftWidth + this.halftWidth;
-        double combinedHeight = playerBounds.halftHeight + this.halftHeight;
+        double combinedWidth = playerBounds.halfWidth + this.halfWidth;
+        double combinedHeight = playerBounds.halfHeight + this.halfHeight;
 
         double overlapX = combinedWidth - Math.abs(dx);
         double overlapY = combinedHeight - Math.abs(dy);
@@ -172,12 +172,12 @@ public class BoxBounds extends Bounds {
         this.height = height;
     }
 
-    public double getHalftWidth(){
-        return halftWidth;
+    public double getHalfWidth(){
+        return halfWidth;
     }
 
-    public double getHalftHeight(){
-        return halftHeight;
+    public double getHalfHeight(){
+        return halfHeight;
     }
 
     public double getEnclosingRadius(){
@@ -206,18 +206,6 @@ public class BoxBounds extends Bounds {
             ));
             graphics2D.setStroke(Constants.LINE);
         }
-    }
-
-    public double getXBuffer(){
-        return xBuffer;
-    }
-
-    public void setXBuffer(double xBuffer){
-        this.xBuffer = xBuffer;
-    }
-
-    public double getYBuffer(){
-        return yBuffer;
     }
 
     public void setYBuffer(double yBuffer){

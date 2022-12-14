@@ -13,7 +13,6 @@ public class Constants {
         // Private constructor used to hide public implicit constructor of this class.
     }
 
-    public static final int FPS = 60;
     public static final int SCREEN_WIDTH = 1280;
     public static final int SCREEN_HEIGHT = 720;
     public static final String SCREEN_TITLE = "Geometry Dash";
@@ -57,4 +56,10 @@ public class Constants {
 
     public static final double TIME_GAME_STARTED = System.nanoTime();
     public static final double TIME_CONVERSION_MONTHS = 2628002.88;
+
+    public static final int GRID_X_LINES = 31;
+    public static final int GRID_Y_LINES = 31;
+
+    public static final double DEBOUNCE_TIME_MOUSE = 0.2;
+    public static final double DEBOUNCE_TIME_KEY = 0.2;
 }

@@ -3,7 +3,7 @@ package sk.stuba.fiit.martinszabo.geometrydash.components;
 import sk.stuba.fiit.martinszabo.geometrydash.engine.*;
 import sk.stuba.fiit.martinszabo.geometrydash.file.Parser;
 
-public class Portal extends Component{
+public class Portal extends Component<Portal>{
 
     private PlayerState stateChanger;
     private GameObject player;
@@ -38,7 +38,7 @@ public class Portal extends Component{
     }
 
     @Override
-    public Component copy(){
+    public Component<Portal> copy(){
         return new Portal(this.stateChanger, this.player);
     }
 
