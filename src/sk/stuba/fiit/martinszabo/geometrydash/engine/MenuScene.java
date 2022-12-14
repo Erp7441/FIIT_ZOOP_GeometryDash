@@ -9,7 +9,7 @@ import sk.stuba.fiit.martinszabo.geometrydash.util.Vector2D;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 
-public class MenuScene extends LevelEditorScene{
+public class MenuScene extends Scene{
 
     private double debounceLeft = 0.0;
     private GameObject cursor = null;
