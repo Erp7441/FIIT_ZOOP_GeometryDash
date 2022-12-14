@@ -1,62 +1,49 @@
 @startuml
-class com.engine.Camera {
-- Vector2D position
-+ <<Create>> Camera(Vector2D)
-+ Vector2D getPosition()
-+ void setPosition(Vector2D)
+enum sk.stuba.fiit.martinszabo.geometrydash.components.ButtonType {
++  PLAY
++  EDITOR
++  QUIT
 }
-abstract class com.engine.Component {
-- GameObject gameObject
-+ void update(double)
-+ void draw(Graphics2D)
-+ {abstract}Component copy()
-+ void start()
-+ GameObject getGameObject()
-+ void setGameObject(GameObject)
+class sk.stuba.fiit.martinszabo.geometrydash.file.Parser {
+- {static} int offset
+- {static} int line
+- {static} byte[] bytes
+- <<Create>> Parser()
++ {static} byte[] getBytes()
++ {static} void openFile(String)
++ {static} byte[] readAllBytes(InputStream)
++ {static} void skipWhitespace()
++ {static} char peek()
++ {static} char advance()
++ {static} void consume(char)
++ {static} boolean atEnd()
++ {static} int parseInt()
++ {static} double parseDouble()
++ {static} float parseFloat()
++ {static} String parseString()
++ {static} boolean parseBoolean()
++ {static} Component<?> parseComponent()
++ {static} GameObject parseGameObject()
+- {static} boolean isDigit(char)
++ {static} void consumeBeginObjectProperty(String)
++ {static} void consumeEndObjectProperty()
++ {static} String consumeStringProperty(String)
++ {static} int consumeIntProperty(String)
++ {static} double consumeDoubleProperty(String)
++ {static} float consumeFloatProperty(String)
++ {static} boolean consumeBooleanProperty(String)
+- {static} void consumeProperty(String)
+- {static} void checkString(String)
+- {static} void consumeBoolean(boolean)
 }
-class com.util.AssetPool {
-- {static} Map<String,Sprite> sprites
-- <<Create>> AssetPool()
-+ {static} boolean hasSprite(String)
-+ {static} Sprite getSprite(String)
-+ {static} void addSprite(String,Sprite)
-}
-class com.util.Vector2D {
-- double x
-- double y
-+ <<Create>> Vector2D(double,double)
-+ <<Create>> Vector2D()
-+ Vector2D copy()
-+ double getX()
-+ void setX(double)
-+ double getY()
-+ void setY(double)
-}
-abstract class com.engine.Scene {
-- String name
-- Camera camera
-- List<GameObject> gameObjects
-- Renderer renderer
-# <<Create>> Scene(String)
-+ void addGameObject(GameObject)
-+ {abstract}void init()
-+ {abstract}void update(double)
-+ {abstract}void draw(Graphics2D)
-+ String getName()
-+ void setName(String)
-+ Camera getCamera()
-+ void setCamera(Camera)
-+ List<GameObject> getGameObjects()
-+ void setGameObjects(List<GameObject>)
-+ Renderer getRenderer()
-+ void setRenderer(Renderer)
-}
-class com.util.Constants {
+class sk.stuba.fiit.martinszabo.geometrydash.util.Constants {
 + {static} int SCREEN_WIDTH
 + {static} int SCREEN_HEIGHT
 + {static} String SCREEN_TITLE
 + {static} int PLAYER_HEIGHT
 + {static} int PLAYER_WIDTH
++ {static} double JUMP_FORCE
++ {static} double PLAYER_SPEED
 + {static} int GROUND_Y
 + {static} int CAMERA_OFFSET_X
 + {static} int CAMERA_OFFSET_Y
@@ -71,144 +58,47 @@ class com.util.Constants {
 + {static} int BUTTON_SPACING_VT
 + {static} int BUTTON_HEIGHT
 + {static} int BUTTON_WIDTH
++ {static} Color BG_COLOR
++ {static} Color GROUND_COLOR
++ {static} int CONTAINER_OFFSET_Y
++ {static} int TAB_WIDTH
++ {static} int TAB_HEIGHT
++ {static} int TAB_OFFSET_X
++ {static} int TAB_OFFSET_Y
++ {static} int TAB_HORIZONTAL_SPACING
++ {static} Stroke LINE
++ {static} Stroke THICK_LINE
++ {static} double TIME_GAME_STARTED
++ {static} double TIME_CONVERSION_MONTHS
++ {static} int GRID_X_LINES
++ {static} int GRID_Y_LINES
++ {static} double DEBOUNCE_TIME_MOUSE
++ {static} double DEBOUNCE_TIME_KEY
 - <<Create>> Constants()
 }
-class com.engine.LevelEditorScene {
-- GameObject player
-- GameObject ground
-- Grid grid
-- CameraControls cameraControls
-- GameObject cursor
-- MainContainer editingButtons
-+ <<Create>> LevelEditorScene(String)
-+ void init()
-+ void update(double)
-+ void draw(Graphics2D)
-+ GameObject getPlayer()
-+ void setPlayer(GameObject)
-+ GameObject getCursor()
-+ void setCursor(GameObject)
-}
-class com.components.RigidBody {
-- Vector2D velocity
-+ <<Create>> RigidBody(Vector2D)
-+ void update(double)
-+ Component copy()
-+ Vector2D getVelocity()
-+ void setVelocity(Vector2D)
-}
-class com.engine.KeyListener {
-- boolean[] keyPressed
-+ void keyPressed(KeyEvent)
-+ void keyReleased(KeyEvent)
-+ boolean isKeyPressed(int)
-}
-class com.components.CameraControls {
-- double prevMx
-- double prevMy
-+ <<Create>> CameraControls()
-+ void update(double)
-+ CameraControls copy()
-}
-class com.util.Time {
-- {static} double timeStarted
-- <<Create>> Time()
-+ {static} double getTime()
-+ {static} double getTimeStarted()
-+ {static} void setTimeStarted(double)
-}
-class com.engine.LevelScene {
-- GameObject player
-+ <<Create>> LevelScene(String)
-+ void init()
-+ void update(double)
-+ void draw(Graphics2D)
-+ GameObject getPlayer()
-+ void setPlayer(GameObject)
-}
-class com.components.Grid {
+class sk.stuba.fiit.martinszabo.geometrydash.components.Grid {
 ~ Camera camera
 - int width
 - int height
-- int numYLines
-- int numXLines
 + <<Create>> Grid()
 + void update(double)
 + void draw(Graphics2D)
-+ Component copy()
++ Component<Grid> copy()
 + int getWidth()
 + void setWidth(int)
 + int getHeight()
 + void setHeight(int)
++ String serialize(int)
++ boolean equals(Object)
++ int hashCode()
 }
-class com.main.Main {
-+ {static} void main(String[])
+class sk.stuba.fiit.martinszabo.geometrydash.util.Time {
+- {static} double timeLevelStarted
+- <<Create>> Time()
++ {static} double getTime()
++ {static} void resetTimeStarted()
 }
-class com.ui.MainContainer {
-- List<GameObject> menuItems
-+ <<Create>> MainContainer()
-+ void init()
-+ void start()
-+ void update(double)
-+ Component copy()
-+ void draw(Graphics2D)
-}
-class com.components.Spritesheet {
-- List<Sprite> sprites
-- int tileWidth
-- int tileHeight
-- int spacing
-+ <<Create>> Spritesheet(String,int,int,int,int,int)
-+ List<Sprite> getSprites()
-+ void setSprites(List<Sprite>)
-+ int getTileWidth()
-+ void setTileWidth(int)
-+ int getTileHeight()
-+ void setTileHeight(int)
-+ int getSpacing()
-+ void setSpacing(int)
-}
-class com.engine.GameObject {
-- List<Component> components
-- String name
-- Transform transform
-+ <<Create>> GameObject(String,Transform)
-+ T getComponent(Class<T>)
-+ T removeComponent(Class<T>)
-+ List<Component> getComponents()
-+ void addComponent(Component)
-+ GameObject copy()
-+ void update(double)
-+ void draw(Graphics2D)
-+ Transform getTransform()
-+ void setTransform(Transform)
-}
-class com.components.BoxBounds {
-- double width
-- double height
-+ <<Create>> BoxBounds(double,double)
-+ void update(double)
-+ BoxBounds copy()
-+ double getWidth()
-+ void setWidth(double)
-+ double getHeight()
-+ void setHeight(double)
-}
-class com.components.SnapToGrid {
-- double debounceTime
-- double debounceLeft
-- int width
-- int height
-+ <<Create>> SnapToGrid(int,int)
-+ void update(double)
-+ void draw(Graphics2D)
-+ Component copy()
-+ int getWidth()
-+ void setWidth(int)
-+ int getHeight()
-+ void setHeight(int)
-}
-class com.engine.Window {
+class sk.stuba.fiit.martinszabo.geometrydash.engine.Window {
 - MouseListener mouseListener
 - KeyListener keyListener
 - boolean isInEditor
@@ -217,7 +107,8 @@ class com.engine.Window {
 - Scene currentScene
 - Image doubleBufferImage
 - Graphics doubleBufferGraphics
-+ <<Create>> Window()
+- <<Create>> Window()
++ {static} Camera getCamera()
 + void init()
 + Scene getCurrentScene()
 + void changeScene(int)
@@ -226,45 +117,85 @@ class com.engine.Window {
 + void draw(Graphics)
 + void renderOffscreen(Graphics)
 + void run()
-+ MouseListener getMouseListener()
-+ void setMouseListener(MouseListener)
-+ KeyListener getKeyListener()
-+ void setKeyListener(KeyListener)
-+ boolean isInEditor()
-+ void setInEditor(boolean)
++ {static} boolean removeTempFile(String)
++ {static} MouseListener getMouseListener()
++ {static} KeyListener getKeyListener()
++ {static} boolean isInEditor()
++ {static} Scene getScene()
++ boolean equals(Object)
++ int hashCode()
 }
-class com.components.Sprite {
-- String file
+enum sk.stuba.fiit.martinszabo.geometrydash.components.PlayerState {
++  NORMAL
++  FLYING
+}
+class sk.stuba.fiit.martinszabo.geometrydash.ui.TabItem {
+- int x
+- int y
 - int width
 - int height
-- BufferedImage image
-- boolean isSubsprite
-- int row
-- int column
-- int index
-+ <<Create>> Sprite(String)
-+ <<Create>> Sprite(BufferedImage)
-+ <<Create>> Sprite(BufferedImage,int,int,int)
+- Sprite sprite
+- boolean isSelected
+- int bufferX
+- int bufferY
+- MainContainer parent
++ <<Create>> TabItem(int,int,int,int,Sprite,MainContainer)
++ void update(double)
 + void draw(Graphics2D)
-+ Component copy()
-+ String getFile()
-+ void setFile(String)
++ Component<TabItem> copy()
++ String serialize(int)
++ int getX()
++ int getY()
 + int getWidth()
-+ void setWidth(int)
 + int getHeight()
-+ void setHeight(int)
-+ BufferedImage getImage()
-+ void setImage(BufferedImage)
-+ boolean isSubsprite()
-+ void setSubsprite(boolean)
-+ int getRow()
-+ void setRow(int)
-+ int getColumn()
-+ void setColumn(int)
-+ int getIndex()
-+ void setIndex(int)
++ Sprite getSprite()
++ boolean isSelected()
++ void setSelected(boolean)
++ int getBufferX()
++ void setBufferX(int)
++ int getBufferY()
++ void setBufferY(int)
++ MainContainer getParent()
++ void setParent(MainContainer)
++ boolean equals(Object)
++ int hashCode()
 }
-class com.engine.MouseListener {
+class sk.stuba.fiit.martinszabo.geometrydash.components.TriangleBounds {
+- double enclosingRadius
+- double base
+- double height
+- double halfWidth
+- double halfHeight
+- Vector2D point1
+- Vector2D point2
+- Vector2D point3
+- int INSIDE
+- int LEFT
+- int RIGHT
+- int BOTTOM
+- int TOP
++ <<Create>> TriangleBounds(double,double)
++ void start()
++ {static} boolean checkCollision(BoxBounds,TriangleBounds)
+- boolean broadPhase(BoxBounds)
+- boolean narrowPhase(BoxBounds)
+- boolean boxIntersection(Vector2D,Vector2D,int,BoxBounds,Vector2D)
+- int regionCode(Vector2D,BoxBounds)
+- Vector2D rotatePoint(double,Vector2D,Vector2D)
++ void calculateTransformation()
++ double getWidth()
++ double getHeight()
++ void draw(Graphics2D)
+- Vector2D transformToWorld(Vector2D)
++ Component<Bounds> copy()
++ String serialize(int)
++ {static} TriangleBounds deserialize()
++ double dot(Vector2D,Vector2D)
++ boolean raycast(Vector2D)
++ boolean equals(Object)
++ int hashCode()
+}
+class sk.stuba.fiit.martinszabo.geometrydash.engine.MouseListener {
 - boolean mousePressed
 - boolean mouseDragged
 - float x
@@ -290,13 +221,73 @@ class com.engine.MouseListener {
 + void setDy(float)
 + int getMouseButton()
 + void setMouseButton(int)
++ boolean equals(Object)
++ int hashCode()
 }
-class com.components.Ground {
+class sk.stuba.fiit.martinszabo.geometrydash.engine.LevelScene {
+- GameObject player
+- BoxBounds playerBounds
+- boolean isPaused
+- double debounceKeyLeft
+- double levelSpeed
++ <<Create>> LevelScene(String)
++ void init()
++ void initAssetPool()
 + void update(double)
 + void draw(Graphics2D)
-+ Component copy()
++ void restartLevel()
++ GameObject getPlayer()
++ void setPlayer(GameObject)
++ boolean equals(Object)
++ int hashCode()
 }
-class com.ui.MenuItem {
+class sk.stuba.fiit.martinszabo.geometrydash.util.AssetPool {
+- {static} Map<String,Sprite> sprites
+- {static} Map<String,Spritesheet> spritesheets
+- <<Create>> AssetPool()
++ {static} boolean hasSprite(String)
++ {static} boolean hasSpritesheet(String)
++ {static} Sprite getSprite(String)
++ {static} Spritesheet getSpritesheet(String)
++ {static} void addSprite(String,Sprite)
++ {static} void addSpritesheet(String,int,int,int,int,int)
+}
+class sk.stuba.fiit.martinszabo.geometrydash.components.BoxBounds {
+- double width
+- double height
+- double halfWidth
+- double halfHeight
+- double enclosingRadius
+- Vector2D center
+- boolean isTrigger
+- double xBuffer
+- double yBuffer
++ <<Create>> BoxBounds(double,double)
++ <<Create>> BoxBounds(double,double,boolean)
++ <<Create>> BoxBounds(double,double,double,double,boolean)
+- void init(double,double,double,double,boolean)
++ void start()
++ void calculateCenter()
++ {static} boolean checkCollision(BoxBounds,BoxBounds)
++ void resolveCollision(GameObject)
++ String serialize(int)
++ {static} BoxBounds deserialize()
++ void update(double)
++ BoxBounds copy()
++ double getWidth()
++ void setWidth(double)
++ double getHeight()
++ void setHeight(double)
++ double getHalfWidth()
++ double getHalfHeight()
++ double getEnclosingRadius()
++ boolean raycast(Vector2D)
++ void draw(Graphics2D)
++ void setYBuffer(double)
++ boolean equals(Object)
++ int hashCode()
+}
+class sk.stuba.fiit.martinszabo.geometrydash.ui.MenuItem {
 - int x
 - int y
 - int width
@@ -307,21 +298,341 @@ class com.ui.MenuItem {
 - boolean isSelected
 - int bufferX
 - int bufferY
-+ <<Create>> MenuItem(int,int,int,int,Sprite,Sprite)
+- MainContainer parent
++ <<Create>> MenuItem(int,int,int,int,Sprite,Sprite,MainContainer)
 + void start()
 + void update(double)
-+ Component copy()
++ MenuItem copy()
 + void draw(Graphics2D)
++ String serialize(int)
++ int getX()
++ int getY()
++ int getWidth()
++ int getHeight()
++ Sprite getButtonSprite()
++ Sprite getHoverSprite()
++ Sprite getImageAttached()
++ void setImageAttached(Sprite)
++ boolean isSelected()
++ void setSelected(boolean)
++ int getBufferX()
++ void setBufferX(int)
++ int getBufferY()
++ void setBufferY(int)
++ MainContainer getParent()
++ void setParent(MainContainer)
++ boolean equals(Object)
++ int hashCode()
 }
-class com.components.Player {
+class sk.stuba.fiit.martinszabo.geometrydash.engine.MenuScene {
+- double debounceLeft
+- GameObject cursor
+- GameObject logo
+- GameObject playButton
+- GameObject editorButton
+- GameObject quitButton
++ <<Create>> MenuScene(String)
++ void init()
+- GameObject initializeButton(String,double,double,Sprite,ButtonType)
++ void update(double)
++ void draw(Graphics2D)
++ boolean equals(Object)
++ int hashCode()
+}
+abstract class sk.stuba.fiit.martinszabo.geometrydash.engine.Component {
+- GameObject gameObject
++ void update(double)
++ void draw(Graphics2D)
++ {abstract}Component<T> copy()
++ void start()
++ GameObject getGameObject()
++ void setGameObject(GameObject)
++ boolean equals(Object)
++ int hashCode()
+}
+abstract class sk.stuba.fiit.martinszabo.geometrydash.engine.Scene {
+- String name
+- Camera camera
+- ArrayList<GameObject> gameObjects
+- ArrayList<GameObject> gameObjectsToRemove
+- Renderer renderer
+- GameObject ground
+# <<Create>> Scene(String)
++ void addGameObject(GameObject)
++ {abstract}void init()
++ {abstract}void update(double)
++ {abstract}void draw(Graphics2D)
++ void initAssetPool()
+# void importLevel(String)
+# void initBackgrounds(int,boolean)
++ String getName()
++ void setName(String)
++ Camera getCamera()
++ void setCamera(Camera)
++ ArrayList<GameObject> getGameObjects()
++ void setGameObjects(ArrayList<GameObject>)
++ Renderer getRenderer()
++ void setRenderer(Renderer)
++ GameObject getGround()
++ void removeGameObject(GameObject)
++ ArrayList<GameObject> getGameObjectsToRemove()
++ boolean equals(Object)
++ int hashCode()
+}
+class sk.stuba.fiit.martinszabo.geometrydash.components.CameraControls {
+- double prevMx
+- double prevMy
++ <<Create>> CameraControls()
++ void update(double)
++ CameraControls copy()
++ String serialize(int)
++ boolean equals(Object)
++ int hashCode()
+}
+enum sk.stuba.fiit.martinszabo.geometrydash.components.Direction {
++  UP
++  DOWN
++  LEFT
++  RIGHT
+}
+class sk.stuba.fiit.martinszabo.geometrydash.components.LevelEditorControls {
+- double debounceLeft
+- double debounceKeyLeft
+- boolean shiftKeyPressed
+- ArrayList<GameObject> selectedObjects
+- int width
+- int height
+- double worldX
+- double worldY
+- boolean isEditing
+- boolean wasDragged
+- double dragX
+- double dragY
+- double dragWidth
+- double dragHeight
++ <<Create>> LevelEditorControls(int,int)
++ void updateSpritePosition()
++ void copyGameObjectToScene()
++ void addToSelected(Vector2D)
++ ArrayList<GameObject> boxCast(double,double,double,double)
++ void clearSelected(Vector2D,boolean)
++ void escape()
++ void update(double)
+- void checkMouse()
+- void checkMovement()
+- void checkRotation()
+- void checkDuplication()
+- void checkRemoval()
+- void move(Direction)
+- void rotate(double)
+- void duplicate()
++ void draw(Graphics2D)
++ Component<LevelEditorControls> copy()
++ int getWidth()
++ void setWidth(int)
++ int getHeight()
++ void setHeight(int)
++ String serialize(int)
++ boolean equals(Object)
++ int hashCode()
+}
+class sk.stuba.fiit.martinszabo.geometrydash.components.Spritesheet {
+- List<Sprite> sprites
+- int tileWidth
+- int tileHeight
+- int spacing
++ <<Create>> Spritesheet(String,int,int,int,int,int)
++ List<Sprite> getSprites()
++ void setSprites(List<Sprite>)
++ int getTileWidth()
++ void setTileWidth(int)
++ int getTileHeight()
++ void setTileHeight(int)
++ int getSpacing()
++ void setSpacing(int)
++ boolean equals(Object)
++ int hashCode()
+}
+class sk.stuba.fiit.martinszabo.geometrydash.engine.Renderer {
+- Map<Integer,List<GameObject>> gameObjects
+- Camera camera
++ <<Create>> Renderer(Camera)
++ void submit(GameObject)
++ void render(Graphics2D)
++ Map<Integer,List<GameObject>> getGameObjects()
++ void setGameObjects(Map<Integer,List<GameObject>>)
++ Camera getCamera()
++ void setCamera(Camera)
++ boolean equals(Object)
++ int hashCode()
+}
+class sk.stuba.fiit.martinszabo.geometrydash.components.Portal {
+- PlayerState stateChanger
+- GameObject player
+- BoxBounds bounds
++ <<Create>> Portal(PlayerState)
++ <<Create>> Portal(PlayerState,GameObject)
++ void start()
++ void update(double)
++ Component<Portal> copy()
++ String serialize(int)
++ {static} Portal deserialize()
++ PlayerState getStateChanger()
++ boolean equals(Object)
++ int hashCode()
+}
+class sk.stuba.fiit.martinszabo.geometrydash.util.Transform {
+- Vector2D position
+- double rotation
+- Vector2D scale
++ <<Create>> Transform(Vector2D)
++ <<Create>> Transform(Vector2D,double,Vector2D)
++ Transform copy()
++ String toString()
++ Vector2D getPosition()
++ void setPosition(Vector2D)
++ double getRotation()
++ void setRotation(double)
++ Vector2D getScale()
++ void setScale(Vector2D)
++ String serialize(int)
++ {static} Transform deserialize()
++ boolean equals(Object)
++ int hashCode()
+}
+class sk.stuba.fiit.martinszabo.geometrydash.engine.GameObject {
+- List<Component<?>> components
+- String name
+- Transform transform
+- boolean serializable
+- boolean ui
+- int zIndex
++ <<Create>> GameObject(String,Transform,int)
++ <<Create>> GameObject(String,Transform,int,boolean,boolean)
++ <<Create>> GameObject(String,Transform,int,boolean)
++ T getComponent(Class<T>)
++ T removeComponent(Class<T>)
++ List<Component<?>> getComponents()
++ void addComponent(Component<?>)
++ GameObject copy()
++ void update(double)
++ void draw(Graphics2D)
++ void draw(Graphics2D,Class<?>)
++ String serialize(int)
++ {static} GameObject deserialize()
++ Transform getTransform()
++ boolean isUi()
++ void setTransform(Transform)
++ void setSerializable(boolean)
++ void setUi(boolean)
++ double getX()
++ double getY()
++ void setX(double)
++ void setY(double)
++ int getzIndex()
++ boolean isSerializable()
++ boolean equals(Object)
++ int hashCode()
+}
+enum sk.stuba.fiit.martinszabo.geometrydash.components.BoundsType {
++  BOX
++  TRIANGLE
+}
+class sk.stuba.fiit.martinszabo.geometrydash.util.Vector2D {
+- double x
+- double y
++ <<Create>> Vector2D(double,double)
++ <<Create>> Vector2D()
++ Vector2D copy()
++ double getX()
++ void setX(double)
++ double getY()
++ void setY(double)
++ String serialize(int)
++ {static} Vector2D deserialize()
++ boolean equals(Object)
++ int hashCode()
+}
+interface sk.stuba.fiit.martinszabo.geometrydash.file.Serialize {
+~ String serialize(int)
+~ String addStringProperty(String,String,int,boolean,boolean)
+~ String addIntProperty(String,int,int,boolean,boolean)
+~ String addFloatProperty(String,float,int,boolean,boolean)
+~ String addDoubleProperty(String,double,int,boolean,boolean)
+~ String addBooleanProperty(String,boolean,int,boolean,boolean)
+~ String beginObjectProperty(String,int)
+~ String endObjectProperty(int)
+~ String addTabs(int)
+~ String addEnding(boolean,boolean)
+}
+class sk.stuba.fiit.martinszabo.geometrydash.components.RigidBody {
+- Vector2D velocity
++ <<Create>> RigidBody(Vector2D)
++ void update(double)
++ Component<RigidBody> copy()
++ Vector2D getVelocity()
++ void setVelocity(Vector2D)
++ String serialize(int)
++ boolean equals(Object)
++ int hashCode()
+}
+abstract class sk.stuba.fiit.martinszabo.geometrydash.components.Bounds {
+- BoundsType type
+- boolean selected
++ {abstract}double getWidth()
++ {abstract}double getHeight()
++ {abstract}boolean raycast(Vector2D)
++ {static} boolean checkCollision(Bounds,Bounds)
++ {static} void resolveCollision(Bounds,GameObject)
++ BoundsType getType()
++ void setType(BoundsType)
++ boolean isSelected()
++ void setSelected(boolean)
++ boolean equals(Object)
++ int hashCode()
+}
+class sk.stuba.fiit.martinszabo.geometrydash.components.Ground {
++ void update(double)
++ void draw(Graphics2D)
++ Component<Ground> copy()
++ String serialize(int)
+}
+class sk.stuba.fiit.martinszabo.geometrydash.engine.KeyListener {
+- boolean[] keyPressed
++ void keyPressed(KeyEvent)
++ void keyReleased(KeyEvent)
++ boolean isKeyPressed(int)
++ boolean equals(Object)
++ int hashCode()
+}
+abstract class sk.stuba.fiit.martinszabo.geometrydash.file.Serialization {
++ String addStringProperty(String,String,int,boolean,boolean)
++ String addIntProperty(String,int,int,boolean,boolean)
++ String addFloatProperty(String,float,int,boolean,boolean)
++ String addDoubleProperty(String,double,int,boolean,boolean)
++ String addBooleanProperty(String,boolean,int,boolean,boolean)
++ String beginObjectProperty(String,int)
++ String endObjectProperty(int)
++ String addTabs(int)
++ String addEnding(boolean,boolean)
+}
+class sk.stuba.fiit.martinszabo.geometrydash.components.Player {
 - Sprite layerOne
 - Sprite layerTwo
 - Sprite layerThree
+- Sprite spaceship
 - int width
 - int height
+- boolean onGround
+- PlayerState state
 + <<Create>> Player(Sprite,Sprite,Sprite,Color,Color)
 + void draw(Graphics2D)
-+ Component copy()
++ void update(double)
+- void addFlyForce()
+- void addJumpForce()
++ void die()
++ Component<Player> copy()
++ String serialize(int)
 + Sprite getLayerOne()
 + void setLayerOne(Sprite)
 + Sprite getLayerTwo()
@@ -332,125 +643,252 @@ class com.components.Player {
 + void setWidth(int)
 + int getHeight()
 + void setHeight(int)
++ boolean isOnGround()
++ void setOnGround(boolean)
++ PlayerState getState()
++ void setState(PlayerState)
++ boolean equals(Object)
++ int hashCode()
 }
-class com.engine.Renderer {
-- List<GameObject> gameObjects
-- Camera camera
-+ <<Create>> Renderer(Camera)
-+ void submit(GameObject)
-+ void render(Graphics2D)
-+ List<GameObject> getGameObjects()
-+ void setGameObjects(List<GameObject>)
-+ Camera getCamera()
-+ void setCamera(Camera)
+class sk.stuba.fiit.martinszabo.geometrydash.components.MenuButton {
+~ ButtonType type
++ <<Create>> MenuButton(ButtonType)
++ void execute()
++ Component<MenuButton> copy()
++ String serialize(int)
++ boolean equals(Object)
++ int hashCode()
 }
-class com.util.Transform {
+class sk.stuba.fiit.martinszabo.geometrydash.components.Sprite {
+- String file
+- int width
+- int height
+- BufferedImage image
+- boolean isSubsprite
+- int row
+- int column
+- int index
++ <<Create>> Sprite(String)
++ <<Create>> Sprite(BufferedImage,String)
++ <<Create>> Sprite(BufferedImage,String,int,int,int)
++ void draw(Graphics2D)
++ Component<Sprite> copy()
++ String getFile()
++ void setFile(String)
++ int getWidth()
++ void setWidth(int)
++ int getHeight()
++ void setHeight(int)
++ BufferedImage getImage()
++ void setImage(BufferedImage)
++ boolean isSubsprite()
++ void setSubsprite(boolean)
++ int getRow()
++ void setRow(int)
++ int getColumn()
++ void setColumn(int)
++ int getIndex()
++ void setIndex(int)
++ String serialize(int)
++ {static} Component<Sprite> deserialize()
++ boolean equals(Object)
++ int hashCode()
+}
+class sk.stuba.fiit.martinszabo.geometrydash.ui.MainContainer {
+- Sprite containerBackground
+- ArrayList<GameObject> tabs
+- HashMap<GameObject,List<GameObject>> tabMaps
+- GameObject currentTab
+- GameObject currentButton
++ <<Create>> MainContainer()
++ void init()
+- void addTabs()
+- void addTabObjects()
+- void addButtons(Spritesheet,int,int,int,BoundsType)
+- void addButtons(Spritesheet,int,int,int,BoundsType,boolean,ArrayList<Component<?>>)
++ void start()
++ void update(double)
++ Component<MainContainer> copy()
++ void draw(Graphics2D)
++ String serialize(int)
++ GameObject getCurrentTab()
++ void setCurrentTab(GameObject)
++ GameObject getCurrentButton()
++ void setCurrentButton(GameObject)
++ boolean equals(Object)
++ int hashCode()
+}
+class sk.stuba.fiit.martinszabo.geometrydash.components.ParallaxBackground {
+- int width
+- int height
+- Sprite sprite
+- ArrayList<GameObject> backgrounds
+- double speed
+- Ground ground
+- boolean followGround
+- int timeStep
++ <<Create>> ParallaxBackground(String,ArrayList<GameObject>,Ground,boolean,boolean)
++ void update(double)
++ void draw(Graphics2D)
++ Component<ParallaxBackground> copy()
++ String serialize(int)
++ Sprite getSprite()
++ boolean equals(Object)
++ int hashCode()
+}
+class sk.stuba.fiit.martinszabo.geometrydash.engine.LevelEditorScene {
+- GameObject player
+- Grid grid
+- CameraControls cameraControls
+- GameObject cursor
+- MainContainer editingButtons
++ <<Create>> LevelEditorScene(String)
++ void init()
++ void initAssetPool()
++ void update(double)
+- boolean isCurrentLevel(String)
+# void importLevel(String)
+- void exportLevel(String)
++ void draw(Graphics2D)
++ GameObject getPlayer()
++ void setPlayer(GameObject)
++ GameObject getCursor()
++ void setCursor(GameObject)
++ boolean equals(Object)
++ int hashCode()
+}
+class sk.stuba.fiit.martinszabo.geometrydash.engine.Camera {
 - Vector2D position
-- double rotation
-- Vector2D scale
-+ <<Create>> Transform(Vector2D)
-+ Transform copy()
-+ String toString()
++ <<Create>> Camera(Vector2D)
 + Vector2D getPosition()
 + void setPosition(Vector2D)
-+ double getRotation()
-+ void setRotation(double)
-+ Vector2D getScale()
-+ void setScale(Vector2D)
++ double getX()
++ double getY()
++ void setX(double)
++ void setY(double)
++ boolean equals(Object)
++ int hashCode()
+}
+class sk.stuba.fiit.martinszabo.geometrydash.main.Main {
++ {static} void main(String[])
 }
 
+'------------------------------------------------
+' Implementation
+'------------------------------------------------
 
+sk.stuba.fiit.martinszabo.geometrydash.engine.Runnable <|.. sk.stuba.fiit.martinszabo.geometrydash.engine.Window
+sk.stuba.fiit.martinszabo.geometrydash.engine.KeyListener <|.. sk.stuba.fiit.martinszabo.geometrydash.engine.KeyListener
+sk.stuba.fiit.martinszabo.geometrydash.file.Serialize <|.. sk.stuba.fiit.martinszabo.geometrydash.file.Serialization
+
+'------------------------------------------------
+' Association
+'------------------------------------------------
+
+sk.stuba.fiit.martinszabo.geometrydash.components.Bounds <-- sk.stuba.fiit.martinszabo.geometrydash.components.BoundsType
+sk.stuba.fiit.martinszabo.geometrydash.components.Player <-- sk.stuba.fiit.martinszabo.geometrydash.components.PlayerState
 
 '------------------------------------------------
 ' Inheritance
 '------------------------------------------------
 
-com.engine.Scene <|-- com.engine.LevelEditorScene
-com.engine.Scene <|-- com.engine.LevelScene
-
-com.engine.KeyListener <|.. com.engine.KeyListener
-java.awt.event.KeyAdapter <|-- com.engine.KeyListener
-
-java.awt.event.MouseAdapter <|-- com.engine.MouseListener
-
-com.engine.Component <|-- com.components.CameraControls
-com.engine.Component <|-- com.components.RigidBody
-com.engine.Component <|-- com.components.Grid
-com.engine.Component <|-- com.ui.MainContainer
-com.engine.Component <|-- com.components.BoxBounds
-com.engine.Component <|-- com.components.SnapToGrid
-com.engine.Component <|-- com.components.Sprite
-com.engine.Component <|-- com.components.Ground
-com.engine.Component <|-- com.ui.MenuItem
-com.engine.Component <|-- com.components.Player
-
-com.engine.Runnable <|.. com.engine.Window
-
-javax.swing.JFrame <|-- com.engine.Window
+sk.stuba.fiit.martinszabo.geometrydash.engine.Component <|-- sk.stuba.fiit.martinszabo.geometrydash.components.Grid
+javax.swing.JFrame <|-- sk.stuba.fiit.martinszabo.geometrydash.engine.Window
+sk.stuba.fiit.martinszabo.geometrydash.engine.Component <|-- sk.stuba.fiit.martinszabo.geometrydash.ui.TabItem
+sk.stuba.fiit.martinszabo.geometrydash.components.Bounds <|-- sk.stuba.fiit.martinszabo.geometrydash.components.TriangleBounds
+java.awt.event.MouseAdapter <|-- sk.stuba.fiit.martinszabo.geometrydash.engine.MouseListener
+sk.stuba.fiit.martinszabo.geometrydash.engine.Scene <|-- sk.stuba.fiit.martinszabo.geometrydash.engine.LevelScene
+sk.stuba.fiit.martinszabo.geometrydash.components.Bounds <|-- sk.stuba.fiit.martinszabo.geometrydash.components.BoxBounds
+sk.stuba.fiit.martinszabo.geometrydash.engine.Component <|-- sk.stuba.fiit.martinszabo.geometrydash.ui.MenuItem
+sk.stuba.fiit.martinszabo.geometrydash.engine.LevelEditorScene <|-- sk.stuba.fiit.martinszabo.geometrydash.engine.MenuScene
+sk.stuba.fiit.martinszabo.geometrydash.file.Serialization <|-- sk.stuba.fiit.martinszabo.geometrydash.engine.Component
+sk.stuba.fiit.martinszabo.geometrydash.engine.Component <|-- sk.stuba.fiit.martinszabo.geometrydash.components.CameraControls
+sk.stuba.fiit.martinszabo.geometrydash.engine.Component <|-- sk.stuba.fiit.martinszabo.geometrydash.components.LevelEditorControls
+sk.stuba.fiit.martinszabo.geometrydash.components.Component <|-- sk.stuba.fiit.martinszabo.geometrydash.components.Portal
+sk.stuba.fiit.martinszabo.geometrydash.file.Serialization <|-- sk.stuba.fiit.martinszabo.geometrydash.util.Transform
+sk.stuba.fiit.martinszabo.geometrydash.file.Serialization <|-- sk.stuba.fiit.martinszabo.geometrydash.engine.GameObject
+sk.stuba.fiit.martinszabo.geometrydash.file.Serialization <|-- sk.stuba.fiit.martinszabo.geometrydash.util.Vector2D
+sk.stuba.fiit.martinszabo.geometrydash.engine.Component <|-- sk.stuba.fiit.martinszabo.geometrydash.components.RigidBody
+sk.stuba.fiit.martinszabo.geometrydash.engine.Component <|-- sk.stuba.fiit.martinszabo.geometrydash.components.Bounds
+sk.stuba.fiit.martinszabo.geometrydash.engine.Component <|-- sk.stuba.fiit.martinszabo.geometrydash.components.Ground
+java.awt.event.KeyAdapter <|-- sk.stuba.fiit.martinszabo.geometrydash.engine.KeyListener
+sk.stuba.fiit.martinszabo.geometrydash.engine.Component <|-- sk.stuba.fiit.martinszabo.geometrydash.components.Player
+sk.stuba.fiit.martinszabo.geometrydash.engine.Component <|-- sk.stuba.fiit.martinszabo.geometrydash.components.MenuButton
+sk.stuba.fiit.martinszabo.geometrydash.engine.Component <|-- sk.stuba.fiit.martinszabo.geometrydash.components.Sprite
+sk.stuba.fiit.martinszabo.geometrydash.engine.Component <|-- sk.stuba.fiit.martinszabo.geometrydash.ui.MainContainer
+sk.stuba.fiit.martinszabo.geometrydash.engine.Component <|-- sk.stuba.fiit.martinszabo.geometrydash.components.ParallaxBackground
+sk.stuba.fiit.martinszabo.geometrydash.engine.Scene <|-- sk.stuba.fiit.martinszabo.geometrydash.engine.LevelEditorScene
 
 '------------------------------------------------
 ' Agregation
 '------------------------------------------------
 
-com.components.Player o-- com.components.Sprite
+sk.stuba.fiit.martinszabo.geometrydash.components.Player o-- sk.stuba.fiit.martinszabo.geometrydash.components.Sprite
 
-com.components.Grid o-- com.engine.Camera
+sk.stuba.fiit.martinszabo.geometrydash.components.Grid o-- sk.stuba.fiit.martinszabo.geometrydash.engine.Camera
 
-com.components.Ground o-- com.engine.LevelScene
-com.components.Ground o-- com.engine.GameObject
+sk.stuba.fiit.martinszabo.geometrydash.components.Ground o-- sk.stuba.fiit.martinszabo.geometrydash.engine.LevelScene
+sk.stuba.fiit.martinszabo.geometrydash.components.Ground o-- sk.stuba.fiit.martinszabo.geometrydash.engine.GameObject
 
-com.components.RigidBody o-- com.util.Vector2D
+sk.stuba.fiit.martinszabo.geometrydash.components.RigidBody o-- sk.stuba.fiit.martinszabo.geometrydash.util.Vector2D
 
-com.components.Sprite o-- java.awt.image.BufferedImage
+sk.stuba.fiit.martinszabo.geometrydash.components.Sprite o-- java.awt.image.BufferedImage
 
-com.engine.Camera o-- com.util.Vector2D
+sk.stuba.fiit.martinszabo.geometrydash.components.LevelEditorControls o-- java.util.ArrayList
 
-com.engine.GameObject o-- com.util.Transform
+sk.stuba.fiit.martinszabo.geometrydash.engine.Camera o-- sk.stuba.fiit.martinszabo.geometrydash.util.Vector2D
 
-com.ui.MenuItem o-- com.components.Sprite
+sk.stuba.fiit.martinszabo.geometrydash.engine.GameObject o-- sk.stuba.fiit.martinszabo.geometrydash.util.Transform
 
-com.util.Transform o--  com.util.Vector2D
+sk.stuba.fiit.martinszabo.geometrydash.ui.MenuItem o-- sk.stuba.fiit.martinszabo.geometrydash.components.Sprite
+sk.stuba.fiit.martinszabo.geometrydash.ui.TabItem o-- sk.stuba.fiit.martinszabo.geometrydash.components.Sprite
+
+sk.stuba.fiit.martinszabo.geometrydash.util.Transform o--  sk.stuba.fiit.martinszabo.geometrydash.util.Vector2D
+sk.stuba.fiit.martinszabo.geometrydash.components.BoxBounds o--  sk.stuba.fiit.martinszabo.geometrydash.util.Vector2D
+sk.stuba.fiit.martinszabo.geometrydash.components.TriangleBounds o--  sk.stuba.fiit.martinszabo.geometrydash.util.Vector2D
+sk.stuba.fiit.martinszabo.geometrydash.components.Bounds o--  sk.stuba.fiit.martinszabo.geometrydash.util.Vector2D
 
 '------------------------------------------------
 ' Composition
 '------------------------------------------------
 
-com.components.Grid *-- java.awt.geom.AffineTransform
+sk.stuba.fiit.martinszabo.geometrydash.components.Grid *-- java.awt.geom.AffineTransform
 
-com.components.Player *-- java.awt.paint.Color
-com.components.Player *-- java.awt.geom.AffineTransform
+sk.stuba.fiit.martinszabo.geometrydash.components.Player *-- java.awt.paint.Color
+sk.stuba.fiit.martinszabo.geometrydash.components.Player *-- java.awt.geom.AffineTransform
 
-com.components.Spritesheet *-- com.components.Sprite
+sk.stuba.fiit.martinszabo.geometrydash.components.Spritesheet *-- sk.stuba.fiit.martinszabo.geometrydash.components.Sprite
 
-com.engine.LevelEditorScene *-- com.components.Grid
-com.engine.LevelEditorScene *-- com.components.CameraControls
-com.engine.LevelEditorScene *-- com.engine.GameObject
-com.engine.LevelEditorScene *-- com.components.Spritesheet
-com.engine.LevelEditorScene *-- com.components.Player
-com.engine.LevelEditorScene *-- com.ui.MainContainer
+sk.stuba.fiit.martinszabo.geometrydash.engine.LevelEditorScene *-- sk.stuba.fiit.martinszabo.geometrydash.components.Grid
+sk.stuba.fiit.martinszabo.geometrydash.engine.LevelEditorScene *-- sk.stuba.fiit.martinszabo.geometrydash.components.CameraControls
+sk.stuba.fiit.martinszabo.geometrydash.engine.LevelEditorScene *-- sk.stuba.fiit.martinszabo.geometrydash.engine.GameObject
+sk.stuba.fiit.martinszabo.geometrydash.engine.LevelEditorScene *-- sk.stuba.fiit.martinszabo.geometrydash.components.Spritesheet
+sk.stuba.fiit.martinszabo.geometrydash.engine.LevelEditorScene *-- sk.stuba.fiit.martinszabo.geometrydash.components.Player
+sk.stuba.fiit.martinszabo.geometrydash.engine.LevelEditorScene *-- sk.stuba.fiit.martinszabo.geometrydash.ui.MainContainer
 
-com.engine.LevelScene *-- com.components.Spritesheet
-com.engine.LevelScene *-- com.engine.GameObject
-com.engine.LevelScene *-- com.components.Player
+sk.stuba.fiit.martinszabo.geometrydash.engine.LevelScene *-- sk.stuba.fiit.martinszabo.geometrydash.components.Spritesheet
+sk.stuba.fiit.martinszabo.geometrydash.engine.LevelScene *-- sk.stuba.fiit.martinszabo.geometrydash.engine.GameObject
+sk.stuba.fiit.martinszabo.geometrydash.engine.LevelScene *-- sk.stuba.fiit.martinszabo.geometrydash.components.Player
 
-com.engine.Scene *-- com.engine.Camera
-com.engine.Scene *-- java.util.ArrayList
-com.engine.Scene *-- com.engine.Renderer
+sk.stuba.fiit.martinszabo.geometrydash.engine.Scene *-- sk.stuba.fiit.martinszabo.geometrydash.engine.Camera
+sk.stuba.fiit.martinszabo.geometrydash.engine.Scene *-- java.util.ArrayList
+sk.stuba.fiit.martinszabo.geometrydash.engine.Scene *-- sk.stuba.fiit.martinszabo.geometrydash.engine.Renderer
 
-com.engine.Window *-- com.engine.MouseListener
-com.engine.Window *-- com.engine.KeyListener
-com.engine.Window *-- com.engine.LevelEditorScene
-com.engine.Window *-- com.engine.LevelScene
+sk.stuba.fiit.martinszabo.geometrydash.engine.Window *-- sk.stuba.fiit.martinszabo.geometrydash.engine.MouseListener
+sk.stuba.fiit.martinszabo.geometrydash.engine.Window *-- sk.stuba.fiit.martinszabo.geometrydash.engine.KeyListener
+sk.stuba.fiit.martinszabo.geometrydash.engine.Window *-- sk.stuba.fiit.martinszabo.geometrydash.engine.LevelEditorScene
+sk.stuba.fiit.martinszabo.geometrydash.engine.Window *-- sk.stuba.fiit.martinszabo.geometrydash.engine.LevelScene
 
-com.ui.MainContainer *-- java.util.ArrayList
-com.ui.MainContainer *-- com.components.Spritesheet
-com.ui.MainContainer *-- com.engine.GameObject
-com.ui.MainContainer *-- com.ui.MenuItem
+sk.stuba.fiit.martinszabo.geometrydash.ui.MainContainer *-- java.util.ArrayList
+sk.stuba.fiit.martinszabo.geometrydash.ui.MainContainer *-- sk.stuba.fiit.martinszabo.geometrydash.components.Spritesheet
+sk.stuba.fiit.martinszabo.geometrydash.ui.MainContainer *-- sk.stuba.fiit.martinszabo.geometrydash.engine.GameObject
+sk.stuba.fiit.martinszabo.geometrydash.ui.MainContainer *-- sk.stuba.fiit.martinszabo.geometrydash.ui.MenuItem
+sk.stuba.fiit.martinszabo.geometrydash.ui.MainContainer *-- sk.stuba.fiit.martinszabo.geometrydash.ui.TabItem
 
-com.util.AssetPool *-- java.io.File
-com.util.AssetPool *-- com.components.Sprite
-com.util.AssetPool *-- java.util.HashMap
+sk.stuba.fiit.martinszabo.geometrydash.util.AssetPool *-- java.io.File
+sk.stuba.fiit.martinszabo.geometrydash.util.AssetPool *-- sk.stuba.fiit.martinszabo.geometrydash.components.Sprite
+sk.stuba.fiit.martinszabo.geometrydash.util.AssetPool *-- java.util.HashMap
 
-com.util.Transform *-- com.util.Vector2D
+sk.stuba.fiit.martinszabo.geometrydash.util.Transform *-- sk.stuba.fiit.martinszabo.geometrydash.util.Vector2D
 
 @enduml

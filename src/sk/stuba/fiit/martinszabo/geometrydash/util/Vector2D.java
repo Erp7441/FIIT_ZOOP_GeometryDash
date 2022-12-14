@@ -3,6 +3,8 @@ package sk.stuba.fiit.martinszabo.geometrydash.util;
 import sk.stuba.fiit.martinszabo.geometrydash.file.Parser;
 import sk.stuba.fiit.martinszabo.geometrydash.file.Serialization;
 
+import java.util.Objects;
+
 /**
  * Vector class representing 2 dimensional vector from physics with X and Y coordinates.
  */
@@ -65,5 +67,21 @@ public class Vector2D extends Serialization{
         Parser.consume(',');
         double y = Parser.consumeDoubleProperty("y");
         return new Vector2D(x, y);
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        if(o instanceof  Vector2D){
+            Vector2D vector2D = (Vector2D) o;
+            return Double.compare(vector2D.x, x) == 0 && Double.compare(vector2D.y, y) == 0;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(x, y);
     }
 }
