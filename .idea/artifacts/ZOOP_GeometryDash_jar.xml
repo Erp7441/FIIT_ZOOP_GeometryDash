@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ZOOP_GeometryDash:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ZOOP_GeometryDash_jar</output-path>
+    <root id="archive" name="ZOOP_GeometryDash.jar">
+      <element id="module-output" name="ZOOP_GeometryDash" />
+    </root>
+  </artifact>
+</component>

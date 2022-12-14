@@ -2,15 +2,11 @@ package sk.stuba.fiit.martinszabo.geometrydash.engine;
 
 import sk.stuba.fiit.martinszabo.geometrydash.components.*;
 
-import sk.stuba.fiit.martinszabo.geometrydash.util.AssetPool;
-import sk.stuba.fiit.martinszabo.geometrydash.util.Constants;
-import sk.stuba.fiit.martinszabo.geometrydash.util.Transform;
-import sk.stuba.fiit.martinszabo.geometrydash.util.Vector2D;
+import sk.stuba.fiit.martinszabo.geometrydash.util.*;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 
 /**
  * The scene that displays level. This scene is where the game happens. It is
@@ -25,6 +21,7 @@ public class LevelScene extends Scene {
     private boolean isPaused = false;
     private final double debounceKey = 0.2;
     private double debounceKeyLeft = 0.0;
+    private double levelSpeed = 1.0;
 
     /**
      * Initializes the scene with name.
@@ -88,6 +85,12 @@ public class LevelScene extends Scene {
     public void update (double deltaTime) {
         debounceKeyLeft -= deltaTime;
 
+        // Speeding up the level
+        deltaTime = deltaTime * levelSpeed;
+        if(levelSpeed < 2.0){
+            levelSpeed += (Time.getTime() / Constants.TIME_CONVERSION_MONTHS); // Converts from seconds to months
+        }
+
         if(Window.getKeyListener().isKeyPressed(KeyEvent.VK_ESCAPE) && Window.getKeyListener().isKeyPressed(KeyEvent.VK_SHIFT) && debounceKeyLeft < 0){
             debounceKeyLeft = debounceKey;
             Window.getWindow().changeScene(2);
@@ -140,6 +143,11 @@ public class LevelScene extends Scene {
         graphics2D.fillRect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
 
         getRenderer().render(graphics2D);
+    }
+
+    public void restartLevel(){
+        levelSpeed = 1.0;
+        Time.resetTimeStarted();
     }
 
     public GameObject getPlayer(){

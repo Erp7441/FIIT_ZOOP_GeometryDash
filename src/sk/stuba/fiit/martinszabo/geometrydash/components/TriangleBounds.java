@@ -86,7 +86,7 @@ public class TriangleBounds extends Bounds {
         );
     }
 
-    // TODO refactor from recursion to loop
+    // TODO:: refactor from recursion to loop
     private boolean boxIntersection(Vector2D p1, Vector2D p2, int depth, BoxBounds bounds, Vector2D position) {
 
         // Cohen Sutherland clipping algorithm

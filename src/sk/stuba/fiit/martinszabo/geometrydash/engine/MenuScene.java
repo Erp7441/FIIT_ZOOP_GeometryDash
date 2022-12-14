@@ -7,9 +7,7 @@ import sk.stuba.fiit.martinszabo.geometrydash.util.Transform;
 import sk.stuba.fiit.martinszabo.geometrydash.util.Vector2D;
 
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
 public class MenuScene extends LevelEditorScene{
 
@@ -65,7 +63,6 @@ public class MenuScene extends LevelEditorScene{
     @Override
     public void update(double deltaTime){
         debounceLeft -= deltaTime;
-
 
         // Updates cursor position
         Bounds cursorBounds = cursor.getComponent(Bounds.class);

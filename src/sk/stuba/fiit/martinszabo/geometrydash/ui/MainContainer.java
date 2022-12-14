@@ -113,7 +113,7 @@ public class MainContainer extends Component {
 
             // Adding game objects for first tab section in the editor container
             GameObject gameObject = new GameObject((index+1)+" TabObject", new Transform(new Vector2D(x, y)), 10, true, false);
-            gameObject.addComponent(currentSprite.copy()); // TODO #1:: adding this to the game object
+            gameObject.addComponent(currentSprite.copy()); // TODO:: adding this to the game object
             MenuItem menuItem = new MenuItem(x, y, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT, buttonSprites.getSprites().get(0), buttonSprites.getSprites().get(1), this); //! Composition
             gameObject.addComponent(menuItem);
             if(type == BoundsType.BOX){

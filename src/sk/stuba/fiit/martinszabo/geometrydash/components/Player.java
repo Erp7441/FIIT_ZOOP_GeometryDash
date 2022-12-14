@@ -2,6 +2,8 @@ package sk.stuba.fiit.martinszabo.geometrydash.components;
 
 import sk.stuba.fiit.martinszabo.geometrydash.engine.Component;
 
+import sk.stuba.fiit.martinszabo.geometrydash.engine.LevelScene;
+import sk.stuba.fiit.martinszabo.geometrydash.engine.Scene;
 import sk.stuba.fiit.martinszabo.geometrydash.engine.Window;
 import sk.stuba.fiit.martinszabo.geometrydash.util.AssetPool;
 import sk.stuba.fiit.martinszabo.geometrydash.util.Constants;
@@ -166,6 +168,11 @@ public class Player extends Component {
         getGameObject().getTransform().setRotation(0);
         this.setState(PlayerState.NORMAL);
         Window.getCamera().setX(0);
+
+        Scene scene = Window.getScene();
+        if (scene instanceof LevelScene){
+            ((LevelScene) scene).restartLevel();
+        }
     }
 
     @Override

@@ -54,4 +54,7 @@ public class Constants {
 
     public static final Stroke LINE = new BasicStroke(1.0f);
     public static final Stroke THICK_LINE = new BasicStroke(2.0f);
+
+    public static final double TIME_GAME_STARTED = System.nanoTime();
+    public static final double TIME_CONVERSION_MONTHS = 2628002.88;
 }

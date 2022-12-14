@@ -1,0 +1,16 @@
+
+K
+java:S3740""/Provide the parametrized type for this generic.(­™ë8­Ù»åĞ0
+J
+java:S1066h"/Merge this if statement with the enclosing one.(§íÉûÿÿÿÿ
+
+java:S1319_"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(è™…¤8²Ù»åĞ0
+<
+java:S1170#"!Make this final field static too.(‰—ôéúÿÿÿÿ
+C
+java:S1170&"!Make this final field static too.(ğî¯…üÿÿÿÿ8‡ç”êĞ0
+i
+java:S3776›"RRefactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.(öÍóö
+a
+java:S1155ª">Use isEmpty() to check whether the collection is empty or not.(İù¢äøÿÿÿÿ8€å»åĞ0
+V	java:S106¥"9Replace this use of System.out or System.err by a logger.(ŒƒÖ°8‡ø†ÃĞ0
