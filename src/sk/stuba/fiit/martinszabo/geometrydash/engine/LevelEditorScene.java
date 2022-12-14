@@ -67,7 +67,7 @@ public class LevelEditorScene extends Scene {
         Spritesheet layerTwo = AssetPool.getSpritesheet("assets/player/layerTwo.png");
         Spritesheet layerThree = AssetPool.getSpritesheet("assets/player/layerThree.png");
 
-        player = new GameObject("Some game object", new Transform(new Vector2D(300.0,300.0)), 0); //! Composition
+        player = new GameObject("Player", new Transform(new Vector2D(300.0,300.0)), 0); //! Composition
         Player playerComp = new Player(
                 layerOne.getSprites().get(0),
                 layerTwo.getSprites().get(0),
