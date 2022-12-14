@@ -9,6 +9,7 @@ import javax.swing.WindowConstants;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.io.File;
 
 /**
  * This is the main window which displays the game. It manages flow of the game,
@@ -177,6 +178,17 @@ public class Window extends JFrame implements Runnable {
             }
         } catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+    public static boolean removeTempFile(String path){
+        try{
+            File tempFile = new File(path);
+            return tempFile.delete();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return false;
         }
     }
 

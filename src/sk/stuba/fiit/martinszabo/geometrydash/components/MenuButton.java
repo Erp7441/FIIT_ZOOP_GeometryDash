@@ -21,6 +21,7 @@ public class MenuButton extends Component<MenuButton>{
                 break;
             }
             case QUIT: {
+                Window.removeTempFile("levels/.current.zip");
                 System.exit(0);
             }
         }
