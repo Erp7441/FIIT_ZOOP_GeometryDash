@@ -244,11 +244,11 @@ public class LevelEditorControls extends Component<LevelEditorControls> {
     }
 
     private void checkRotation(){
-        if (debounceKeyLeft <= 0 && (Window.getKeyListener().isKeyPressed(KeyEvent.VK_Q))){
+        if (debounceKeyLeft <= 0 && (Window.getKeyListener().isKeyPressed(KeyEvent.VK_E))){
             rotate(90);
             debounceKeyLeft = Constants.DEBOUNCE_TIME_KEY;
         }
-        else if(debounceKeyLeft <= 0 && (Window.getKeyListener().isKeyPressed(KeyEvent.VK_E))){
+        else if(debounceKeyLeft <= 0 && (Window.getKeyListener().isKeyPressed(KeyEvent.VK_Q))){
             rotate(-90);
             debounceKeyLeft = Constants.DEBOUNCE_TIME_KEY;
         }
